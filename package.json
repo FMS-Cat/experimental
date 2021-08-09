@@ -1,10 +1,10 @@
 {
-  "name": "@fms-cat/experimental",
-  "description": "Experimental edition of FMS_Cat",
-  "author": "FMS_Cat",
+  "name": "@0b5vr/experimental",
+  "description": "Experimental edition of 0b5vr",
+  "author": "0b5vr",
   "version": "0.6.1",
-  "main": "dist/fms-cat-experimental.js",
-  "module": "dist/fms-cat-experimental.module.js",
+  "main": "dist/0b5vr-experimental.js",
+  "module": "dist/0b5vr-experimental.module.js",
   "types": "types/index.d.ts",
   "typesVersions": {
     "<3.8": {
@@ -21,16 +21,16 @@
     "/LICENSE"
   ],
   "scripts": {
-    "dev": "cross-env DEV=1 SERVE=1 rollup -w -c -o dist/fms-cat-experimental.js",
+    "dev": "cross-env DEV=1 SERVE=1 rollup -w -c -o dist/0b5vr-experimental.js",
     "all": "yarn lint && yarn test && yarn clean && yarn build && yarn docs",
     "clean": "rimraf dist/ docs/ ts*/ types/",
     "test": "jest",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "build": "yarn build-dev && yarn build-prod && yarn build-esm && yarn build-esmprod && yarn build-types",
-    "build-dev": "cross-env DEV=1 rollup -c -o dist/fms-cat-experimental.js",
-    "build-prod": "rollup -c -o dist/fms-cat-experimental.min.js",
-    "build-esm": "cross-env DEV=1 ESM=1 rollup -c -o dist/fms-cat-experimental.module.js",
-    "build-esmprod": "cross-env ESM=1 rollup -c -o dist/fms-cat-experimental.module.min.js",
+    "build-dev": "cross-env DEV=1 rollup -c -o dist/0b5vr-experimental.js",
+    "build-prod": "rollup -c -o dist/0b5vr-experimental.min.js",
+    "build-esm": "cross-env DEV=1 ESM=1 rollup -c -o dist/0b5vr-experimental.module.js",
+    "build-esmprod": "cross-env ESM=1 rollup -c -o dist/0b5vr-experimental.module.min.js",
     "build-types": "tsc --declaration --declarationDir ./types --emitDeclarationOnly && downlevel-dts types ts3.4/types",
     "docs": "typedoc --entryPoints ./src/index.ts --out docs",
     "gh-pages": "node ./utils/gh-pages.js"

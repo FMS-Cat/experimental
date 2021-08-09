@@ -5,7 +5,6 @@ export * from './Clock';
 export * from './edt';
 export * from './ExpSmooth';
 export * from './FizzBuzz';
-export * from './FMS_Cat';
 export * from './HistoryMeanCalculator';
 export * from './math';
 export * from './Pool';

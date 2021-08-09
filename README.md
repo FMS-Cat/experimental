@@ -1,5 +1,5 @@
-# `@fms-cat/experimental`
+# `@0b5vr/experimental`
 
-[![@fms-cat/experimental](https://badge.fury.io/js/%40fms-cat%2Fexperimental.svg)](https://badge.fury.io/js/%40fms-cat%2Fexperimental)
+[![@0b5vr/experimental](https://badge.fury.io/js/%400b5vr%2Fexperimental.svg)](https://badge.fury.io/js/%400b5vr%2Fexperimental)
 
-Experimental edition of FMS_Cat
+Experimental edition of 0b5vr

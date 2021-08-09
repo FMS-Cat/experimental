@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@fms-cat/experimental - fms-cat.html</title>
+    <title>@0b5vr/experimental - clock.html</title>
   </head>
   <body>
     <div>
@@ -19,9 +19,9 @@
       <div id="divTime"></div>
       <div id="divDeltaTime"></div>
     </div>
-    <script src="../dist/fms-cat-experimental.js"></script>
+    <script src="../dist/0b5vr-experimental.js"></script>
     <script>
-      let clock = new FMS_CAT_EXPERIMENTAL.ClockRealtime();
+      let clock = new OBSVR_EXPERIMENTAL.ClockRealtime();
 
       const update = () => {
         clock.update();
@@ -42,11 +42,11 @@
       } );
 
       buttonFrame.addEventListener( 'click', () => {
-        clock = new FMS_CAT_EXPERIMENTAL.ClockFrame();
+        clock = new OBSVR_EXPERIMENTAL.ClockFrame();
       } );
 
       buttonRealtime.addEventListener( 'click', () => {
-        clock = new FMS_CAT_EXPERIMENTAL.ClockRealtime();
+        clock = new OBSVR_EXPERIMENTAL.ClockRealtime();
       } );
     </script>
   </body>

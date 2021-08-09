@@ -7,9 +7,9 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 
 // == constants ====================================================================================
-const copyright = '(c) 2019-2020 FMS_Cat';
+const copyright = '(c) 2019-2020 0b5vr';
 const licenseName = 'MIT License';
-const licenseUri = 'https://github.com/FMS-Cat/experimental-npm/blob/master/LICENSE';
+const licenseUri = 'https://github.com/0b5vr/experimental-npm/blob/master/LICENSE';
 
 // == envs =========================================================================================
 const DEV = process.env.DEV === '1';
@@ -46,7 +46,7 @@ export default {
   input: 'src/index.ts',
   output: {
     format: ESM ? 'esm' : 'umd',
-    name: ESM ? undefined : 'FMS_CAT_EXPERIMENTAL',
+    name: ESM ? undefined : 'OBSVR_EXPERIMENTAL',
     banner: DEV ? bannerTextDev : null,
     sourcemap: DEV ? 'inline' : false,
   },
