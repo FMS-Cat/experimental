@@ -1,0 +1,19 @@
+{
+  "name": "treeshaking-testbed",
+  "private": true,
+  "version": "0.0.1",
+  "license": "MIT",
+  "browserslist": "last 2 Chrome versions",
+  "scripts": {
+    "clean": "rimraf dist/",
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "@0b5vr/experimental": "file:..",
+    "@types/webpack-env": "^1.16.2",
+    "html-webpack-plugin": "^5.3.2",
+    "ts-loader": "^9.2.6",
+    "webpack": "^5.54.0",
+    "webpack-cli": "^4.8.0"
+  }
+}
