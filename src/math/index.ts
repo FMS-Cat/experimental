@@ -1,3 +1,6 @@
+export * from './vec';
+export * from './vec3';
+export * from './vec4';
 export * from './Matrix4';
 export * from './Quaternion';
 export * from './Vector';
