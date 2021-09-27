@@ -4,7 +4,10 @@ export * from './CDS';
 export * from './Clock';
 export * from './edt';
 export * from './ExpSmooth';
-export * from './FizzBuzz';
+
+// This is somehow very not treeshaking friendly so removing
+// export * from './FizzBuzz';
+
 export * from './HistoryMeanCalculator';
 export * from './math';
 export * from './Pool';
