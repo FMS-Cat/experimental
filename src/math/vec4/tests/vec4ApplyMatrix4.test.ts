@@ -1,7 +1,7 @@
 import '../../../tests/matchers/toBeCloseToArray';
+import { vec4ApplyMatrix4 } from '../vec4ApplyMatrix4';
 import type { RawMatrix4 } from '../../mat4';
 import type { RawVector4 } from '../RawVector4';
-import { vec4ApplyMatrix4 } from '../vec4ApplyMatrix4';
 
 describe( 'vec4ApplyMatrix4', () => {
   it( 'returns a vector applied a matrix', () => {

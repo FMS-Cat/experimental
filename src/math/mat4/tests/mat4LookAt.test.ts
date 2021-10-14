@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawVector3 } from '../../vec3/RawVector3';
 import { mat4LookAt } from '../mat4LookAt';
+import type { RawVector3 } from '../../vec3/RawVector3';
 
 describe( 'mat4LookAt', () => {
   it( 'returns a lookAt matrix', () => {

@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawQuaternion } from '../../quat/RawQuaternion';
 import { mat4FromQuaternion } from '../mat4FromQuaternion';
+import type { RawQuaternion } from '../../quat/RawQuaternion';
 
 describe( 'mat4FromQuaternion', () => {
   it( 'returns a matrix made out of a quaternion', () => {

@@ -1,7 +1,7 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawVector3 } from '../../vec3/RawVector3';
 import { quatFromAxisAngle } from '../quatFromAxisAngle';
 import { vecNormalize } from '../../vec/vecNormalize';
+import type { RawVector3 } from '../../vec3/RawVector3';
 
 describe( 'quatFromAxisAngle', () => {
   it( 'returns a quaternion made out of axis and angle', () => {

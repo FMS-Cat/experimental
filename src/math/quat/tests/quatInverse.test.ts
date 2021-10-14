@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawQuaternion } from '../RawQuaternion';
 import { quatInverse } from '../quatInverse';
+import type { RawQuaternion } from '../RawQuaternion';
 
 describe( 'quatInverse', () => {
   it( 'returns an inverse of a quaternion', () => {

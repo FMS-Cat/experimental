@@ -1,6 +1,6 @@
 import './matchers/toBeCloseToQuaternion';
-import type { RawMatrix4 } from '../../mat4/RawMatrix4';
 import { quatFromMatrix4 } from '../quatFromMatrix4';
+import type { RawMatrix4 } from '../../mat4/RawMatrix4';
 
 describe( 'quatFromMatrix4', () => {
   it( 'returns a quaternion made out of a matrix', () => {

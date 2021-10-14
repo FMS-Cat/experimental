@@ -1,7 +1,7 @@
-import type { RawQuaternion } from '../quat/RawQuaternion';
-import type { RawVector3 } from './RawVector3';
 import { quatInverse } from '../quat/quatInverse';
 import { quatMultiply } from '../quat/quatMultiply';
+import type { RawQuaternion } from '../quat/RawQuaternion';
+import type { RawVector3 } from './RawVector3';
 
 /**
  * Apply a vec3 (with an implicit 1 in the 4th dimension) a quaternion.

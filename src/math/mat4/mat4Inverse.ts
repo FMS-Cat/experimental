@@ -1,5 +1,5 @@
-import type { RawMatrix4 } from './RawMatrix4';
 import { vecScale } from '../vec/vecScale';
+import type { RawMatrix4 } from './RawMatrix4';
 
 /**
  *  an inverse of given mat4.

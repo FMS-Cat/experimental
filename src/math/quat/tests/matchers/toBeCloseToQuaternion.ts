@@ -1,5 +1,5 @@
-import type { RawQuaternion } from '../../RawQuaternion';
 import { vecDot } from '../../../vec/vecDot';
+import type { RawQuaternion } from '../../RawQuaternion';
 
 function quatToString( quat: RawQuaternion ): string {
   return `( ${ quat[ 0 ].toFixed( 3 ) }, ${ quat[ 1 ].toFixed( 3 ) }, ${ quat[ 2 ].toFixed( 3 ) }; ${ quat[ 3 ].toFixed( 3 ) } )`;

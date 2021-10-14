@@ -1,7 +1,7 @@
 import '../../../tests/matchers/toBeCloseToArray';
+import { vec3ApplyQuaternion } from '../vec3ApplyQuaternion';
 import type { RawQuaternion } from '../../quat/RawQuaternion';
 import type { RawVector3 } from '../RawVector3';
-import { vec3ApplyQuaternion } from '../vec3ApplyQuaternion';
 
 describe( 'vec3ApplyQuaternion', () => {
   it( 'returns a vector applied a quaternion', () => {

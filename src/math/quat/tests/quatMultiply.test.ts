@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawQuaternion } from '../RawQuaternion';
 import { quatMultiply } from '../quatMultiply';
+import type { RawQuaternion } from '../RawQuaternion';
 
 describe( 'quatMultiply', () => {
   it( 'returns a multiplication result of two quaternions', () => {

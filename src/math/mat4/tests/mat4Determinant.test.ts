@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawMatrix4 } from '../RawMatrix4';
 import { mat4Determinant } from '../mat4Determinant';
+import type { RawMatrix4 } from '../RawMatrix4';
 
 describe( 'mat4Determinant', () => {
   it( 'returns a determinant of the matrix', () => {

@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawQuaternion } from '../RawQuaternion';
 import { quatNormalize } from '../quatNormalize';
+import type { RawQuaternion } from '../RawQuaternion';
 
 describe( 'quatNormalize', () => {
   it( 'returns a normalized quaternion', () => {

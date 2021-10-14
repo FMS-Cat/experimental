@@ -1,7 +1,7 @@
+import { mat4FromQuaternion } from './mat4FromQuaternion';
 import type { RawMatrix4 } from './RawMatrix4';
 import type { RawQuaternion } from '../quat/RawQuaternion';
 import type { RawVector3 } from '../vec3/RawVector3';
-import { mat4FromQuaternion } from './mat4FromQuaternion';
 
 /**
  * Compose a matrix out of position, scale, and rotation.

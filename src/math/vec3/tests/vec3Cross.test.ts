@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawVector3 } from '../RawVector3';
 import { vec3Cross } from '../vec3Cross';
+import type { RawVector3 } from '../RawVector3';
 
 describe( 'vec3Cross', () => {
   it( 'returns a cross product of two vecs', () => {

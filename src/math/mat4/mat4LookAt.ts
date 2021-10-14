@@ -1,10 +1,10 @@
-import type { RawMatrix4 } from './RawMatrix4';
-import type { RawVector3 } from '../vec3/RawVector3';
 import { vec3Cross } from '../vec3/vec3Cross';
 import { vecAdd } from '../vec/vecAdd';
 import { vecNormalize } from '../vec/vecNormalize';
 import { vecScale } from '../vec/vecScale';
 import { vecSub } from '../vec/vecSub';
+import type { RawMatrix4 } from './RawMatrix4';
+import type { RawVector3 } from '../vec3/RawVector3';
 
 /**
  * Generate a "LookAt" matrix.

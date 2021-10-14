@@ -1,9 +1,9 @@
-import type { RawMatrix4 } from './RawMatrix4';
-import type { RawQuaternion } from '../quat/RawQuaternion';
-import type { RawVector3 } from '../vec3/RawVector3';
 import { mat4Determinant } from './mat4Determinant';
 import { quatFromMatrix4 } from '../quat/quatFromMatrix4';
 import { vecLength } from '../vec/vecLength';
+import type { RawMatrix4 } from './RawMatrix4';
+import type { RawQuaternion } from '../quat/RawQuaternion';
+import type { RawVector3 } from '../vec3/RawVector3';
 
 /**
  * Decompose a matrix into a position, a scale, and a rotation.

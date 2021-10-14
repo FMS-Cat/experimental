@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawMatrix4 } from '../RawMatrix4';
 import { mat4Multiply } from '../mat4Multiply';
+import type { RawMatrix4 } from '../RawMatrix4';
 
 const rawMatrixRotateAroundX45: RawMatrix4 = [
   1.0, 0.0, 0.0, 0.0,

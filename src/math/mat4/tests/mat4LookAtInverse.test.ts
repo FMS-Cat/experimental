@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawVector3 } from '../../vec3/RawVector3';
 import { mat4LookAtInverse } from '../mat4LookAtInverse';
+import type { RawVector3 } from '../../vec3/RawVector3';
 
 describe( 'mat4LookAtInverse', () => {
   it( 'returns an inverse of lookAt matrix', () => {

@@ -1,6 +1,6 @@
-import type { RawQuaternion } from './RawQuaternion';
 import { vecLength } from '../vec/vecLength';
 import { vecScale } from '../vec/vecScale';
+import type { RawQuaternion } from './RawQuaternion';
 
 /**
  * Normalize given quaternion.

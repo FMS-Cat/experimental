@@ -1,6 +1,6 @@
 import '../../../tests/matchers/toBeCloseToArray';
-import type { RawMatrix4 } from '../RawMatrix4';
 import { mat4Inverse } from '../mat4Inverse';
+import type { RawMatrix4 } from '../RawMatrix4';
 
 const rawMatrixLookAtFrom345: RawMatrix4 = [
   0.857, 0.000, -0.514, 0.000,
