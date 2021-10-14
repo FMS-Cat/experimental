@@ -22,6 +22,7 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "version": "yarn all",
     "dev": "cross-env DEV=1 SERVE=1 rollup -w -c -o dist/0b5vr-experimental.js",
     "all": "yarn lint && yarn test && yarn clean && yarn build && yarn docs",
     "clean": "rimraf dist/ docs/ ts*/ types/",
