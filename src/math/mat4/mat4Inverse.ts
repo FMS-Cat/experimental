@@ -19,7 +19,7 @@ export function mat4Inverse( m: RawMatrix4 ): RawMatrix4 {
 
   const det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
 
-  if ( det === 0.0 ) { return vecScale( m, 0.0 ) as RawMatrix4; }
+  if ( det === 0.0 ) { return vecScale( m, 0.0 ); }
 
   return vecScale( [
     a11 * b11 - a12 * b10 + a13 * b09,
@@ -38,5 +38,5 @@ export function mat4Inverse( m: RawMatrix4 ): RawMatrix4 {
     a00 * b09 - a01 * b07 + a02 * b06,
     a31 * b01 - a30 * b03 - a32 * b00,
     a20 * b03 - a21 * b01 + a22 * b00,
-  ], 1.0 / det ) as RawMatrix4;
+  ], 1.0 / det );
 }

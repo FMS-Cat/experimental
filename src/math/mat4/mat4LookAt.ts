@@ -17,15 +17,15 @@ export function mat4LookAt(
   up: RawVector3 = [ 0.0, 1.0, 0.0 ],
   roll = 0.0,
 ): RawMatrix4 {
-  const dir = vecNormalize( vecSub( position, target ) ) as RawVector3;
+  const dir = vecNormalize( vecSub( position, target ) );
 
-  let sid = vecNormalize( vec3Cross( up, dir ) ) as RawVector3;
+  let sid = vecNormalize( vec3Cross( up, dir ) );
 
   if ( roll !== 0.0 ) {
     sid = vecAdd(
       vecScale( sid, Math.cos( roll ) ),
       vecScale( vec3Cross( dir, sid ), Math.sin( roll ) ),
-    ) as RawVector3;
+    );
   }
 
   const top = vec3Cross( dir, sid );

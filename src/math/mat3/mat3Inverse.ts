@@ -16,7 +16,7 @@ export function mat3Inverse( m: RawMatrix3 ): RawMatrix3 {
     t13 = n23 * n12 - n22 * n13,
     det = n11 * t11 + n21 * t12 + n31 * t13;
 
-  if ( det === 0.0 ) { return vecScale( m, 0.0 ) as RawMatrix3; }
+  if ( det === 0.0 ) { return vecScale( m, 0.0 ); }
 
   return vecScale( [
     t11,
@@ -28,5 +28,5 @@ export function mat3Inverse( m: RawMatrix3 ): RawMatrix3 {
     t13,
     n21 * n13 - n23 * n11,
     n22 * n11 - n21 * n12,
-  ], 1.0 / det ) as RawMatrix3;
+  ], 1.0 / det );
 }

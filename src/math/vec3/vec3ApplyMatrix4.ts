@@ -8,6 +8,7 @@ import type { RawVector3 } from './RawVector3';
  */
 export function vec3ApplyMatrix4( v: RawVector3, m: RawMatrix4 ): RawVector3 {
   const vec4 = vec4ApplyMatrix4( [ ...v, 1 ], m );
-  const w = vec4.pop()!;
-  return vecScale( vec4, 1.0 / w ) as RawVector3;
+  const xyz: RawVector3 = [ vec4[ 0 ], vec4[ 1 ], vec4[ 2 ] ];
+  const w = vec4[ 3 ];
+  return vecScale( xyz, 1.0 / w );
 }

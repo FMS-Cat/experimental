@@ -5,7 +5,7 @@ import type { RawVector3 } from '../../vec3/RawVector3';
 
 describe( 'quatFromAxisAngle', () => {
   it( 'returns a quaternion made out of axis and angle', () => {
-    const axis = vecNormalize( [ 1.0, 2.0, 3.0 ] ) as RawVector3;
+    const axis: RawVector3 = vecNormalize( [ 1.0, 2.0, 3.0 ] );
     const angle = Math.PI / 2.0;
     const subject = quatFromAxisAngle( axis, angle );
 

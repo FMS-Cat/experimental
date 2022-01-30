@@ -14,5 +14,5 @@ export function quatNormalize( vec: RawQuaternion ): RawQuaternion {
   if ( len === 0.0 ) {
     return [ 0.0, 0.0, 0.0, 1.0 ];
   }
-  return vecScale( vec, 1.0 / len ) as RawQuaternion;
+  return vecScale( vec, 1.0 / len );
 }
