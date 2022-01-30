@@ -8,7 +8,7 @@ import type { RawVector3 } from './RawVector3';
  */
 export function vec3OrthoNormalize(
   normal: RawVector3,
-  tangent: RawVector3,
+  tangent: RawVector3 = [ 0.0, 1.0, 0.0 ],
   binormal?: RawVector3,
 ): {
     normal: RawVector3,
