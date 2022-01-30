@@ -20,7 +20,7 @@ export function vec3OrthoNormalize(
   const dotNT = vecDot( n, tangent );
   const t = vecNormalize( vecSub( tangent, vecScale( n, dotNT ) ) );
 
-  let b = vec3Cross( n, t );
+  let b = vec3Cross( t, n );
   if ( binormal && vecDot( b, binormal ) < 0.0 ) {
     b = vecNeg( b );
   }
