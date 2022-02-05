@@ -38,6 +38,11 @@ describe( 'eulerFromMat3', () => {
     expect( subject ).toBeCloseToArray( [ 0.785, 0.785, 0.785 ] );
   } );
 
+  it( 'assumes the euler order to be XYZ if it is not specified', () => {
+    const subject = eulerFromMat3( mat3X45Y45Z45 );
+    expect( subject ).toBeCloseToArray( [ 0.785, 0.785, 0.785 ] );
+  } );
+
   it( 'returns an euler angles out of a matrix3 (XZY)', () => {
     const subject = eulerFromMat3( mat3X45Y45Z45, 'XZY' );
     expect( subject ).toBeCloseToArray( [ 0.170, 0.955, 0.524 ] );

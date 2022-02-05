@@ -8,10 +8,13 @@ import type { RawVector3 } from '../vec3/RawVector3';
 /**
  * Return a euler angles out of a matrix3.
  * Make sure the input matrix is normalized.
+ *
+ * @param m An input rotation matrix
+ * @param order An order of output euler angles. Assume as `XYZ` if not specified
  */
-export function eulerFromMat3( m: RawMatrix3, order: EulerOrder ): RawVector3 {
+export function eulerFromMat3( m: RawMatrix3, order?: EulerOrder ): RawVector3 {
   const [ i, j, k, sign ] =
-    order === 'XYZ' ? [ 0, 1, 2, 1 ] :
+    !order || order === 'XYZ' ? [ 0, 1, 2, 1 ] :
     order === 'XZY' ? [ 0, 2, 1, -1 ] :
     order === 'YXZ' ? [ 1, 0, 2, -1 ] :
     order === 'YZX' ? [ 1, 2, 0, 1 ] :
