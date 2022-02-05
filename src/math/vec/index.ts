@@ -2,6 +2,7 @@ export { vecAdd } from './vecAdd';
 export { vecDivide } from './vecDivide';
 export { vecDot } from './vecDot';
 export { vecLength } from './vecLength';
+export { vecLengthSq } from './vecLengthSq';
 export { vecMultiply } from './vecMultiply';
 export { vecNeg } from './vecNeg';
 export { vecNormalize } from './vecNormalize';
