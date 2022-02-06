@@ -1,6 +1,7 @@
 export { mat4Compose } from './mat4Compose';
 export { mat4Decompose } from './mat4Decompose';
 export { mat4Determinant } from './mat4Determinant';
+export { mat4FromMat3 } from './mat4FromMat3';
 export { mat4FromQuaternion } from './mat4FromQuaternion';
 export { mat4Inverse } from './mat4Inverse';
 export { mat4LookAt } from './mat4LookAt';
