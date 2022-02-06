@@ -1,4 +1,5 @@
 export { quatFromAxisAngle } from './quatFromAxisAngle';
+export { quatFromEuler } from './quatFromEuler';
 export { quatFromMatrix4 } from './quatFromMatrix4';
 export { quatInverse } from './quatInverse';
 export { quatMultiply } from './quatMultiply';
