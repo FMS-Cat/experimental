@@ -9,3 +9,4 @@ export { vecNeg } from './vecNeg';
 export { vecNormalize } from './vecNormalize';
 export { vecScale } from './vecScale';
 export { vecSub } from './vecSub';
+export { Vector } from './Vector';

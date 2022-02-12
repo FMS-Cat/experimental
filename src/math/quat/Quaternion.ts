@@ -1,14 +1,14 @@
-import { Matrix4 } from './Matrix4';
-import { Vector3 } from './Vector3';
-import { mat4FromQuaternion } from './mat4/mat4FromQuaternion';
-import { quatFromAxisAngle } from './quat/quatFromAxisAngle';
-import { quatFromMatrix4 } from './quat/quatFromMatrix4';
-import { quatInverse } from './quat/quatInverse';
-import { quatMultiply } from './quat/quatMultiply';
-import { quatNormalize } from './quat/quatNormalize';
-import { vecLength } from './vec/vecLength';
-import { vecLengthSq } from './vec/vecLengthSq';
-import type { RawQuaternion } from './quat/RawQuaternion';
+import { Matrix4 } from '../mat4/Matrix4';
+import { Vector3 } from '../vec3/Vector3';
+import { mat4FromQuaternion } from '../mat4/mat4FromQuaternion';
+import { quatFromAxisAngle } from './quatFromAxisAngle';
+import { quatFromMatrix4 } from './quatFromMatrix4';
+import { quatInverse } from './quatInverse';
+import { quatMultiply } from './quatMultiply';
+import { quatNormalize } from './quatNormalize';
+import { vecLength } from '../vec/vecLength';
+import { vecLengthSq } from '../vec/vecLengthSq';
+import type { RawQuaternion } from './RawQuaternion';
 
 const rawIdentityQuaternion: RawQuaternion = [ 0.0, 0.0, 0.0, 1.0 ];
 

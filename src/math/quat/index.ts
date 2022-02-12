@@ -1,3 +1,4 @@
+export { Quaternion } from './Quaternion';
 export { quatFromAxisAngle } from './quatFromAxisAngle';
 export { quatFromEuler } from './quatFromEuler';
 export { quatFromMatrix4 } from './quatFromMatrix4';

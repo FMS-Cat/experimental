@@ -1,14 +1,14 @@
-import { vecAdd } from './vec/vecAdd';
-import { vecDivide } from './vec/vecDivide';
-import { vecDot } from './vec/vecDot';
-import { vecLength } from './vec/vecLength';
-import { vecLengthSq } from './vec/vecLengthSq';
-import { vecManhattanLength } from './vec/vecManhattanLength';
-import { vecMultiply } from './vec/vecMultiply';
-import { vecNeg } from './vec/vecNeg';
-import { vecNormalize } from './vec/vecNormalize';
-import { vecScale } from './vec/vecScale';
-import { vecSub } from './vec/vecSub';
+import { vecAdd } from './vecAdd';
+import { vecDivide } from './vecDivide';
+import { vecDot } from './vecDot';
+import { vecLength } from './vecLength';
+import { vecLengthSq } from './vecLengthSq';
+import { vecManhattanLength } from './vecManhattanLength';
+import { vecMultiply } from './vecMultiply';
+import { vecNeg } from './vecNeg';
+import { vecNormalize } from './vecNormalize';
+import { vecScale } from './vecScale';
+import { vecSub } from './vecSub';
 
 /**
  * A Vector.

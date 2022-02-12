@@ -1,10 +1,10 @@
-import { Matrix4 } from './Matrix4';
-import { Quaternion } from './Quaternion';
-import { Vector } from './Vector';
-import { vec3ApplyMatrix4 } from './vec3/vec3ApplyMatrix4';
-import { vec3ApplyQuaternion } from './vec3/vec3ApplyQuaternion';
-import { vec3Cross } from './vec3/vec3Cross';
-import type { RawVector3 } from './vec3/RawVector3';
+import { Matrix4 } from '../mat4/Matrix4';
+import { Quaternion } from '../quat/Quaternion';
+import { Vector } from '../vec/Vector';
+import { vec3ApplyMatrix4 } from './vec3ApplyMatrix4';
+import { vec3ApplyQuaternion } from './vec3ApplyQuaternion';
+import { vec3Cross } from './vec3Cross';
+import type { RawVector3 } from './RawVector3';
 
 /**
  * A Vector3.

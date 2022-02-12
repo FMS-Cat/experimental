@@ -1,7 +1,7 @@
-import { Matrix4 } from './Matrix4';
-import { Vector } from './Vector';
-import { vec4ApplyMatrix4 } from './vec4/vec4ApplyMatrix4';
-import type { RawVector4 } from './vec4/RawVector4';
+import { Matrix4 } from '../mat4/Matrix4';
+import { Vector } from '../vec/Vector';
+import { vec4ApplyMatrix4 } from './vec4ApplyMatrix4';
+import type { RawVector4 } from './RawVector4';
 
 /**
  * A Vector3.

@@ -1,7 +1,7 @@
 import { Matrix4 } from '../Matrix4';
-import { Vector3 } from '../Vector3';
-import { toBeCloseToArray } from './matchers/toBeCloseToArray';
-import type { RawMatrix4 } from '../mat4/RawMatrix4';
+import { Vector3 } from '../../vec3/Vector3';
+import { toBeCloseToArray } from '../../../tests/matchers/toBeCloseToArray';
+import type { RawMatrix4 } from '../RawMatrix4';
 
 const rawMatrixLookAtFrom345: RawMatrix4 = [
   0.8574929257125442, 0, -0.5144957554275265, 0,

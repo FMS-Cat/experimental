@@ -1,23 +1,23 @@
-import { Quaternion } from './Quaternion';
-import { Vector3 } from './Vector3';
-import { mat4Compose } from './mat4/mat4Compose';
-import { mat4Decompose } from './mat4/mat4Decompose';
-import { mat4Determinant } from './mat4/mat4Determinant';
-import { mat4FromQuaternion } from './mat4/mat4FromQuaternion';
-import { mat4Inverse } from './mat4/mat4Inverse';
-import { mat4LookAt } from './mat4/mat4LookAt';
-import { mat4LookAtInverse } from './mat4/mat4LookAtInverse';
-import { mat4Multiply } from './mat4/mat4Multiply';
-import { mat4Perspective } from './mat4/mat4Perspective';
-import { mat4RotateX } from './mat4/mat4RotateX';
-import { mat4RotateY } from './mat4/mat4RotateY';
-import { mat4RotateZ } from './mat4/mat4RotateZ';
-import { mat4Scale } from './mat4/mat4Scale';
-import { mat4ScaleScalar } from './mat4/mat4ScaleScalar';
-import { mat4Translate } from './mat4/mat4Translate';
-import { mat4Transpose } from './mat4/mat4Transpose';
-import { vecScale } from './vec/vecScale';
-import type { RawMatrix4 } from './mat4/RawMatrix4';
+import { Quaternion } from '../quat/Quaternion';
+import { Vector3 } from '../vec3/Vector3';
+import { mat4Compose } from './mat4Compose';
+import { mat4Decompose } from './mat4Decompose';
+import { mat4Determinant } from './mat4Determinant';
+import { mat4FromQuaternion } from './mat4FromQuaternion';
+import { mat4Inverse } from './mat4Inverse';
+import { mat4LookAt } from './mat4LookAt';
+import { mat4LookAtInverse } from './mat4LookAtInverse';
+import { mat4Multiply } from './mat4Multiply';
+import { mat4Perspective } from './mat4Perspective';
+import { mat4RotateX } from './mat4RotateX';
+import { mat4RotateY } from './mat4RotateY';
+import { mat4RotateZ } from './mat4RotateZ';
+import { mat4Scale } from './mat4Scale';
+import { mat4ScaleScalar } from './mat4ScaleScalar';
+import { mat4Translate } from './mat4Translate';
+import { mat4Transpose } from './mat4Transpose';
+import { vecScale } from '../vec/vecScale';
+import type { RawMatrix4 } from './RawMatrix4';
 
 const rawIdentityMatrix4: RawMatrix4 = [
   1.0, 0.0, 0.0, 0.0,

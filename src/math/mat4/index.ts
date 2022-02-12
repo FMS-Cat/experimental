@@ -15,4 +15,5 @@ export { mat4Scale } from './mat4Scale';
 export { mat4ScaleScalar } from './mat4ScaleScalar';
 export { mat4Translate } from './mat4Translate';
 export { mat4Transpose } from './mat4Transpose';
+export { Matrix4 } from './Matrix4';
 export type { RawMatrix4 } from './RawMatrix4';
