@@ -1,0 +1,28 @@
+name: Deploy Nightly
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: dev
+    - name: Init Stuff
+      uses: ./.github/actions/init
+    - name: Fetch Deps
+      run: yarn install --frozen-lockfile
+    - name: Create Nightly Version
+      run: npm version $(node ./bin/gen-nightly-version.js)
+    - name: Publish
+      run: npm publish --tag next
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
