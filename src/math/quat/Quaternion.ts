@@ -66,7 +66,7 @@ export class Quaternion {
   /**
    * Itself but converted into a Matrix4.
    */
-  public get matrix(): Matrix4 {
+  public get matrix4(): Matrix4 {
     return new Matrix4( mat4FromQuaternion( this.elements ) );
   }
 
