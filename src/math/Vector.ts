@@ -1,3 +1,15 @@
+import { vecAdd } from './vec/vecAdd';
+import { vecDivide } from './vec/vecDivide';
+import { vecDot } from './vec/vecDot';
+import { vecLength } from './vec/vecLength';
+import { vecLengthSq } from './vec/vecLengthSq';
+import { vecManhattanLength } from './vec/vecManhattanLength';
+import { vecMultiply } from './vec/vecMultiply';
+import { vecNeg } from './vec/vecNeg';
+import { vecNormalize } from './vec/vecNormalize';
+import { vecScale } from './vec/vecScale';
+import { vecSub } from './vec/vecSub';
+
 /**
  * A Vector.
  */
@@ -9,14 +21,35 @@ export abstract class Vector<T extends Vector<T>> {
    * a.k.a. `magnitude`
    */
   public get length(): number {
-    return Math.sqrt( this.elements.reduce( ( sum, v ) => sum + v * v, 0.0 ) );
+    return vecLength( this.elements );
+  }
+
+  /**
+   * The squared length of this.
+   */
+  public get lengthSq(): number {
+    return vecLengthSq( this.elements );
+  }
+
+  /**
+   * The manhattan length of this.
+   */
+  public get manhattanLength(): number {
+    return vecManhattanLength( this.elements );
   }
 
   /**
    * A normalized Vector3 of this.
    */
   public get normalized(): T {
-    return this.scale( 1.0 / this.length );
+    return this.__new( vecNormalize( this.elements ) );
+  }
+
+  /**
+   * This but negated.
+   */
+  public get negated(): T {
+    return this.__new( vecNeg( this.elements ) );
   }
 
   /**
@@ -27,11 +60,11 @@ export abstract class Vector<T extends Vector<T>> {
   }
 
   /**
-   * Add a Vector into this.
-   * @param vector Another Vector
+   * Add one or more Vector into this.
+   * @param vectors Other Vectors
    */
-  public add( vector: T ): T {
-    return this.__new( this.elements.map( ( v, i ) => v + vector.elements[ i ] ) );
+  public add( ...vectors: T[] ): T {
+    return this.__new( vecAdd( this.elements, ...vectors.map( ( v ) => v.elements ) ) );
   }
 
   /**
@@ -39,15 +72,15 @@ export abstract class Vector<T extends Vector<T>> {
    * @param v Another vector
    */
   public sub( vector: T ): T {
-    return this.__new( this.elements.map( ( v, i ) => v - vector.elements[ i ] ) );
+    return this.__new( vecSub( this.elements, vector.elements ) );
   }
 
   /**
-   * Multiply a Vector with this.
-   * @param vector Another Vector
+   * Multiply one or more Vector with this.
+   * @param vectors Other Vectors
    */
-  public multiply( vector: T ): T {
-    return this.__new( this.elements.map( ( v, i ) => v * vector.elements[ i ] ) );
+  public multiply( ...vectors: T[] ): T {
+    return this.__new( vecMultiply( this.elements, ...vectors.map( ( v ) => v.elements ) ) );
   }
 
   /**
@@ -55,7 +88,7 @@ export abstract class Vector<T extends Vector<T>> {
    * @param vector Another Vector
    */
   public divide( vector: T ): T {
-    return this.__new( this.elements.map( ( v, i ) => v / vector.elements[ i ] ) );
+    return this.__new( vecDivide( this.elements, vector.elements ) );
   }
 
   /**
@@ -64,7 +97,7 @@ export abstract class Vector<T extends Vector<T>> {
    * @param scalar A scalar
    */
   public scale( scalar: number ): T {
-    return this.__new( this.elements.map( ( v ) => v * scalar ) );
+    return this.__new( vecScale( this.elements, scalar ) );
   }
 
   /**
@@ -72,7 +105,7 @@ export abstract class Vector<T extends Vector<T>> {
    * @param vector Another vector
    */
   public dot( vector: T ): number {
-    return this.elements.reduce( ( sum, v, i ) => sum + v * vector.elements[ i ], 0.0 );
+    return vecDot( this.elements, vector.elements );
   }
 
   protected abstract __new( v: number[] ): T;

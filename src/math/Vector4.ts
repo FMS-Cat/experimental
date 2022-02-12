@@ -1,15 +1,15 @@
 import { Matrix4 } from './Matrix4';
 import { Vector } from './Vector';
-
-export type rawVector4 = [ number, number, number, number ];
+import { vec4ApplyMatrix4 } from './vec4/vec4ApplyMatrix4';
+import type { RawVector4 } from './vec4/RawVector4';
 
 /**
  * A Vector3.
  */
 export class Vector4 extends Vector<Vector4> {
-  public elements: rawVector4;
+  public elements: RawVector4;
 
-  public constructor( v: rawVector4 = [ 0.0, 0.0, 0.0, 0.0 ] ) {
+  public constructor( v: RawVector4 = [ 0.0, 0.0, 0.0, 0.0 ] ) {
     super();
     this.elements = v;
   }
@@ -66,17 +66,10 @@ export class Vector4 extends Vector<Vector4> {
    * Multiply this vector (with an implicit 1 in the 4th dimension) by m.
    */
   public applyMatrix4( matrix: Matrix4 ): Vector4 {
-    const m = matrix.elements;
-
-    return new Vector4( [
-      m[ 0 ] * this.x + m[ 4 ] * this.y + m[ 8 ] * this.z + m[ 12 ] * this.w,
-      m[ 1 ] * this.x + m[ 5 ] * this.y + m[ 9 ] * this.z + m[ 13 ] * this.w,
-      m[ 2 ] * this.x + m[ 6 ] * this.y + m[ 10 ] * this.z + m[ 14 ] * this.w,
-      m[ 3 ] * this.x + m[ 7 ] * this.y + m[ 11 ] * this.z + m[ 15 ] * this.w
-    ] );
+    return new Vector4( vec4ApplyMatrix4( this.elements, matrix.elements ) );
   }
 
-  protected __new( v: rawVector4 ): Vector4 {
+  protected __new( v: RawVector4 ): Vector4 {
     return new Vector4( v );
   }
 

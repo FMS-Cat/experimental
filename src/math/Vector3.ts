@@ -1,16 +1,18 @@
 import { Matrix4 } from './Matrix4';
 import { Quaternion } from './Quaternion';
 import { Vector } from './Vector';
-
-export type rawVector3 = [ number, number, number ];
+import { vec3ApplyMatrix4 } from './vec3/vec3ApplyMatrix4';
+import { vec3ApplyQuaternion } from './vec3/vec3ApplyQuaternion';
+import { vec3Cross } from './vec3/vec3Cross';
+import type { RawVector3 } from './vec3/RawVector3';
 
 /**
  * A Vector3.
  */
 export class Vector3 extends Vector<Vector3> {
-  public elements: rawVector3;
+  public elements: RawVector3;
 
-  public constructor( v: rawVector3 = [ 0.0, 0.0, 0.0 ] ) {
+  public constructor( v: RawVector3 = [ 0.0, 0.0, 0.0 ] ) {
     super();
     this.elements = v;
   }
@@ -57,11 +59,7 @@ export class Vector3 extends Vector<Vector3> {
    * @param vector Another vector
    */
   public cross( vector: Vector3 ): Vector3 {
-    return new Vector3( [
-      this.y * vector.z - this.z * vector.y,
-      this.z * vector.x - this.x * vector.z,
-      this.x * vector.y - this.y * vector.x
-    ] );
+    return new Vector3( vec3Cross( this.elements, vector.elements ) );
   }
 
   /**
@@ -69,29 +67,17 @@ export class Vector3 extends Vector<Vector3> {
    * @param quaternion A quaternion
    */
   public applyQuaternion( quaternion: Quaternion ): Vector3 {
-    const p = new Quaternion( [ this.x, this.y, this.z, 0.0 ] );
-    const r = quaternion.inversed;
-    const res = quaternion.multiply( p ).multiply( r );
-    return new Vector3( [ res.x, res.y, res.z ] );
+    return new Vector3( vec3ApplyQuaternion( this.elements, quaternion.elements ) );
   }
 
   /**
    * Multiply this vector (with an implicit 1 in the 4th dimension) by m.
    */
   public applyMatrix4( matrix: Matrix4 ): Vector3 {
-    const m = matrix.elements;
-
-    const w = m[ 3 ] * this.x + m[ 7 ] * this.y + m[ 11 ] * this.z + m[ 15 ];
-    const invW = 1.0 / w;
-
-    return new Vector3( [
-      ( m[ 0 ] * this.x + m[ 4 ] * this.y + m[ 8 ] * this.z + m[ 12 ] ) * invW,
-      ( m[ 1 ] * this.x + m[ 5 ] * this.y + m[ 9 ] * this.z + m[ 13 ] ) * invW,
-      ( m[ 2 ] * this.x + m[ 6 ] * this.y + m[ 10 ] * this.z + m[ 14 ] ) * invW
-    ] );
+    return new Vector3( vec3ApplyMatrix4( this.elements, matrix.elements ) );
   }
 
-  protected __new( v: rawVector3 ): Vector3 {
+  protected __new( v: RawVector3 ): Vector3 {
     return new Vector3( v );
   }
 
