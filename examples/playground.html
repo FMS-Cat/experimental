@@ -64,7 +64,7 @@
     <script type="importmap">
       {
         "imports": {
-          "@0b5vr/experimental": "../dist/0b5vr-experimental.module.js"
+          "@0b5vr/experimental": "../dist/0b5vr-experimental.esm.js"
         }
       }
     </script>
@@ -184,7 +184,6 @@ export default ( { divContainer } ) => {
       fetch( '../dist/0b5vr-experimental.d.ts' )
         .then( ( res ) => res.text() )
         .then( async ( typedef ) => {
-          console.log(typedef);
           monaco.languages.typescript.javascriptDefaults.addExtraLib( typedef, 'file:///node_modules/@types/0b5vr__experimental/index.d.ts' );
         } );
 

@@ -11,9 +11,8 @@
       delta level per pixel distance: <input id="inputLevel" type="range" step="1" value="4" min="0" max="16" /> <span id="spanLevel">4</span><br />
       <canvas id="canvas"></canvas>
     </div>
-    <script src="../dist/0b5vr-experimental.js"></script>
-    <script>
-      const { edt2d, range } = OBSVR_EXPERIMENTAL;
+    <script type="module">
+      import { edt2d, range } from '../dist/0b5vr-experimental.esm.js';
 
       let width = canvas.width = 256;
       let height = canvas.height = 256;
