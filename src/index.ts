@@ -11,7 +11,9 @@ export * from './ExpSmooth';
 
 export * from './GPUTimer';
 export * from './HistoryMeanCalculator';
+export * from './MapOfSet';
 export * from './math';
+export * from './poker';
 export * from './Pool';
 export * from './Swap';
 export * from './TapTempo';
