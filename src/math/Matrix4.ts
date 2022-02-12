@@ -90,6 +90,10 @@ export class Matrix4 {
     return new Matrix4( rawIdentityMatrix4 );
   }
 
+  /**
+   * Multiply two or more matrices.
+   * @param matrices Matrices
+   */
   public static multiply( ...matrices: Matrix4[] ): Matrix4 {
     if ( matrices.length === 0 ) {
       return Matrix4.identity;
