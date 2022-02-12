@@ -4,8 +4,10 @@ import { mat4FromQuaternion } from '../mat4/mat4FromQuaternion';
 import { quatFromAxisAngle } from './quatFromAxisAngle';
 import { quatFromMatrix4 } from './quatFromMatrix4';
 import { quatInverse } from './quatInverse';
+import { quatLookRotation } from './quatLookRotation';
 import { quatMultiply } from './quatMultiply';
 import { quatNormalize } from './quatNormalize';
+import { quatSlerp } from './quatSlerp';
 import { vecLength } from '../vec/vecLength';
 import { vecLengthSq } from '../vec/vecLengthSq';
 import type { RawQuaternion } from './RawQuaternion';
@@ -105,6 +107,15 @@ export class Quaternion {
   }
 
   /**
+   * Interpolate between this and given quaternion.
+   * @param b Another Quaternion
+   * @param t How much do we want to rotate this to b
+   */
+  public slerp( b: Quaternion, t: number ): Quaternion {
+    return Quaternion.slerp( this, b, t );
+  }
+
+  /**
    * An identity Quaternion.
    */
   public static get identity(): Quaternion {
@@ -113,7 +124,7 @@ export class Quaternion {
 
   /**
    * Multiply two or more matrices.
-   * @param matrices Matrices
+   * @param quaternion Quaternions
    */
   public static multiply( ...quaternions: Quaternion[] ): Quaternion {
     if ( quaternions.length === 0 ) {
@@ -121,6 +132,25 @@ export class Quaternion {
     } else {
       return new Quaternion( quatMultiply( ...quaternions.map( ( q ) => q.elements ) ) );
     }
+  }
+
+  /**
+   * Interpolate between two quaternions.
+   * @param a "from" quaternion
+   * @param b "to" quaternion
+   * @param t How much do we want to rotate the a to b
+   */
+  public static slerp( a: Quaternion, b: Quaternion, t: number ): Quaternion {
+    return new Quaternion( quatSlerp( a.elements, b.elements, t ) );
+  }
+
+  /**
+   * Return a quaternion which looks at the direction of `look`.
+   * @param look Position where the quaternion will look at
+   * @param up The "up vector"
+   */
+  public static lookRotation( look: Vector3, up: Vector3 ): Quaternion {
+    return new Quaternion( quatLookRotation( look.elements, up.elements ) );
   }
 
   /**
@@ -132,7 +162,6 @@ export class Quaternion {
 
   /**
    * Generate a Quaternion out of a rotation matrix.
-   * Yoinked from Three.js.
    */
   public static fromMatrix( matrix: Matrix4 ): Quaternion {
     return new Quaternion( quatFromMatrix4( matrix.elements ) );
