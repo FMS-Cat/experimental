@@ -9,5 +9,5 @@ export function vecMultiply<T extends number[]>( ...vecs: T[] ): T {
   const a = vecs.shift()!;
   const b = vecMultiply( ...vecs );
 
-  return a.map( ( v, i ) => v + b[ i ] ) as T;
+  return a.map( ( v, i ) => v * b[ i ] ) as T;
 }
