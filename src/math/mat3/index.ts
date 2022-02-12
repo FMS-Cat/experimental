@@ -5,4 +5,5 @@ export { mat3FromQuaternion } from './mat3FromQuaternion';
 export { mat3Inverse } from './mat3Inverse';
 export { mat3Multiply } from './mat3Multiply';
 export { mat3Transpose } from './mat3Transpose';
+export { Matrix3 } from './Matrix3';
 export type { RawMatrix3 } from './RawMatrix3';

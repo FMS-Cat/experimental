@@ -1,8 +1,10 @@
+import { Matrix3 } from '../mat3/Matrix3';
 import { Quaternion } from '../quat/Quaternion';
 import { Vector3 } from '../vec3/Vector3';
 import { mat4Compose } from './mat4Compose';
 import { mat4Decompose } from './mat4Decompose';
 import { mat4Determinant } from './mat4Determinant';
+import { mat4FromMat3 } from './mat4FromMat3';
 import { mat4FromQuaternion } from './mat4FromQuaternion';
 import { mat4Inverse } from './mat4Inverse';
 import { mat4LookAt } from './mat4LookAt';
@@ -57,6 +59,13 @@ export class Matrix4 {
     return new Matrix4( mat4Inverse( this.elements ) );
   }
 
+  /**
+   * Itself but matrix3.
+   */
+  public get matrix3(): Matrix3 {
+    return Matrix3.fromMatrix4( this );
+  }
+
   public toString(): string {
     const m = this.elements.map( ( v ) => v.toFixed( 3 ) );
     return `Matrix4( ${ m[ 0 ] }, ${ m[ 4 ] }, ${ m[ 8 ] }, ${ m[ 12 ] }; ${ m[ 1 ] }, ${ m[ 5 ] }, ${ m[ 9 ] }, ${ m[ 13 ] }; ${ m[ 2 ] }, ${ m[ 6 ] }, ${ m[ 10 ] }, ${ m[ 14 ] }; ${ m[ 3 ] }, ${ m[ 7 ] }, ${ m[ 11 ] }, ${ m[ 15 ] } )`;
@@ -84,6 +93,19 @@ export class Matrix4 {
   }
 
   /**
+   * Decompose this matrix into a position, a scale, and a rotation.
+   */
+  public decompose(): { position: Vector3; scale: Vector3; rotation: Quaternion } {
+    const { position, scale, rotation } = mat4Decompose( this.elements );
+
+    return {
+      position: new Vector3( position ),
+      scale: new Vector3( scale ),
+      rotation: new Quaternion( rotation ),
+    };
+  }
+
+  /**
    * An identity Matrix4.
    */
   public static get identity(): Matrix4 {
@@ -108,6 +130,14 @@ export class Matrix4 {
    */
   public static fromQuaternion( quaternion: Quaternion ): Matrix4 {
     return new Matrix4( mat4FromQuaternion( quaternion.elements ) );
+  }
+
+  /**
+   * Cast a {@link Matrix3} into a Matrix4.
+   * @param matrix3 A matrix3
+   */
+  public static fromMatrix3( matrix3: Matrix3 ): Matrix4 {
+    return new Matrix4( mat4FromMat3( matrix3.elements ) );
   }
 
   /**
@@ -202,20 +232,6 @@ export class Matrix4 {
    */
   public static perspective( fov = 45.0, near = 0.01, far = 100.0 ): Matrix4 {
     return new Matrix4( mat4Perspective( fov, near, far ) );
-  }
-
-  /**
-   * Decompose this matrix into a position, a scale, and a rotation.
-   * Yoinked from Three.js.
-   */
-  public decompose(): { position: Vector3; scale: Vector3; rotation: Quaternion } {
-    const { position, scale, rotation } = mat4Decompose( this.elements );
-
-    return {
-      position: new Vector3( position ),
-      scale: new Vector3( scale ),
-      rotation: new Quaternion( rotation ),
-    };
   }
 
   /**
