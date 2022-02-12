@@ -2,7 +2,7 @@
   "name": "@0b5vr/experimental",
   "description": "Experimental edition of 0b5vr",
   "author": "0b5vr",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "main": "dist/0b5vr-experimental.cjs.js",
   "module": "dist/0b5vr-experimental.esm.js",
   "types": "types/index.d.ts",
