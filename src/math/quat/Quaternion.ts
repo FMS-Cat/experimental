@@ -163,7 +163,7 @@ export class Quaternion {
   /**
    * Generate a Quaternion out of a rotation matrix.
    */
-  public static fromMatrix( matrix: Matrix4 ): Quaternion {
+  public static fromMatrix4( matrix: Matrix4 ): Quaternion {
     return new Quaternion( quatFromMatrix4( matrix.elements ) );
   }
 }
