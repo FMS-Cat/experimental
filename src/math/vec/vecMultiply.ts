@@ -1,6 +1,13 @@
 /**
- * Multiply a vector by a vector.
+ * Return a product of vectors.
  */
-export function vecMultiply<T extends number[]>( vecA: T, vecB: T ): T {
-  return vecA.map( ( v, i ) => v * vecB[ i ] ) as T;
+export function vecMultiply<T extends number[]>( ...vecs: T[] ): T {
+  if ( vecs.length < 2 ) {
+    return vecs[ 0 ];
+  }
+
+  const a = vecs.shift()!;
+  const b = vecMultiply( ...vecs );
+
+  return a.map( ( v, i ) => v + b[ i ] ) as T;
 }
