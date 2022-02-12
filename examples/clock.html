@@ -19,9 +19,10 @@
       <div id="divTime"></div>
       <div id="divDeltaTime"></div>
     </div>
-    <script src="../dist/0b5vr-experimental.js"></script>
-    <script>
-      let clock = new OBSVR_EXPERIMENTAL.ClockRealtime();
+    <script type="module">
+      import { ClockFrame, ClockRealtime } from '../dist/0b5vr-experimental.esm.js';
+
+      let clock = new ClockRealtime();
 
       const update = () => {
         clock.update();
@@ -42,11 +43,11 @@
       } );
 
       buttonFrame.addEventListener( 'click', () => {
-        clock = new OBSVR_EXPERIMENTAL.ClockFrame();
+        clock = new ClockFrame();
       } );
 
       buttonRealtime.addEventListener( 'click', () => {
-        clock = new OBSVR_EXPERIMENTAL.ClockRealtime();
+        clock = new ClockRealtime();
       } );
     </script>
   </body>

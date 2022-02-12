@@ -1,0 +1,1 @@
+export { getYugopText } from './getYugopText';

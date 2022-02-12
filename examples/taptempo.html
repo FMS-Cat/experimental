@@ -24,10 +24,10 @@
       <div id="divBPM"></div>
       <div id="divBeat"></div>
     </div>
-    <script src="../dist/0b5vr-experimental.js"></script>
-    <script>
-      console.log(OBSVR_EXPERIMENTAL);
-      let tapTempo = new OBSVR_EXPERIMENTAL.TapTempo();
+    <script type="module">
+      import { TapTempo } from '../dist/0b5vr-experimental.esm.js';
+
+      const tapTempo = new TapTempo();
 
       const update = () => {
         divBPM.innerText = tapTempo.bpm;

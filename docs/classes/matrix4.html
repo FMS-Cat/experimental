@@ -101,6 +101,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="matrix4.html#determinant" class="tsd-kind-icon">determinant</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="matrix4.html#inverse" class="tsd-kind-icon">inverse</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="matrix4.html#matrix3" class="tsd-kind-icon">matrix3</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="matrix4.html#transpose" class="tsd-kind-icon">transpose</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-static"><a href="matrix4.html#identity" class="tsd-kind-icon">identity</a></li>
 							</ul>
@@ -114,6 +115,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="matrix4.html#scalescalar" class="tsd-kind-icon">scale<wbr>Scalar</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="matrix4.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="matrix4.html#compose" class="tsd-kind-icon">compose</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="matrix4.html#frommatrix3" class="tsd-kind-icon">from<wbr>Matrix3</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="matrix4.html#fromquaternion" class="tsd-kind-icon">from<wbr>Quaternion</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="matrix4.html#lookat" class="tsd-kind-icon">look<wbr>At</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="matrix4.html#lookatinverse" class="tsd-kind-icon">look<wbr>AtInverse</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="matrix4.html#multiply-1" class="tsd-kind-icon">multiply</a></li>
@@ -135,19 +138,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Matrix4<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">?: </span><a href="../modules.html#rawmatrix4" class="tsd-signature-type" data-tsd-kind="Type alias">rawMatrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Matrix4<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">?: </span><a href="../modules.html#rawmatrix4" class="tsd-signature-type" data-tsd-kind="Type alias">RawMatrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L22">math/Matrix4.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L35">math/mat4/Matrix4.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>v: <a href="../modules.html#rawmatrix4" class="tsd-signature-type" data-tsd-kind="Type alias">rawMatrix4</a><span class="tsd-signature-symbol"> = ...</span></h5>
+									<h5>v: <a href="../modules.html#rawmatrix4" class="tsd-signature-type" data-tsd-kind="Type alias">RawMatrix4</a><span class="tsd-signature-symbol"> = ...</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h4>
@@ -160,10 +163,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="elements" class="tsd-anchor"></a>
 					<h3>elements</h3>
-					<div class="tsd-signature tsd-kind-icon">elements<span class="tsd-signature-symbol">:</span> <a href="../modules.html#rawmatrix4" class="tsd-signature-type" data-tsd-kind="Type alias">rawMatrix4</a></div>
+					<div class="tsd-signature tsd-kind-icon">elements<span class="tsd-signature-symbol">:</span> <a href="../modules.html#rawmatrix4" class="tsd-signature-type" data-tsd-kind="Type alias">RawMatrix4</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L22">math/Matrix4.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L35">math/mat4/Matrix4.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -180,7 +183,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L45">math/Matrix4.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L51">math/mat4/Matrix4.ts:51</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -196,13 +199,13 @@
 					<a name="inverse" class="tsd-anchor"></a>
 					<h3>inverse</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> inverse<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> inverse<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L65">math/Matrix4.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L58">math/mat4/Matrix4.ts:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -210,7 +213,29 @@
 									<p>Itself but inverted.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="matrix3" class="tsd-anchor"></a>
+					<h3>matrix3</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> matrix3<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L65">math/mat4/Matrix4.ts:65</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Itself but matrix3.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix3</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -224,7 +249,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L31">math/Matrix4.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L44">math/mat4/Matrix4.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -246,7 +271,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L167">math/Matrix4.ts:167</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L111">math/mat4/Matrix4.ts:111</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -271,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L113">math/Matrix4.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L77">math/mat4/Matrix4.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -293,13 +318,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L331">math/Matrix4.ts:331</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L98">math/mat4/Matrix4.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Decompose this matrix into a position, a scale, and a rotation.
-									Yoinked from Three.js.</p>
+									<p>Decompose this matrix into a position, a scale, and a rotation.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>position<span class="tsd-signature-symbol">: </span><a href="vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">; </span>rotation<span class="tsd-signature-symbol">: </span><a href="quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">; </span>scale<span class="tsd-signature-symbol">: </span><a href="vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol"> }</span></h4>
@@ -327,7 +351,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L120">math/Matrix4.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L84">math/mat4/Matrix4.ts:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -355,12 +379,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L160">math/Matrix4.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L91">math/mat4/Matrix4.ts:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Multiply this Matrix4 by a scalar</p>
+									<p>Multiply this Matrix4 by a scalar.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -383,7 +407,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L105">math/Matrix4.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L69">math/mat4/Matrix4.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -400,7 +424,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L371">math/Matrix4.ts:371</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L241">math/mat4/Matrix4.ts:241</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -426,6 +450,68 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="frommatrix3" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>Matrix3</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Matrix3<span class="tsd-signature-symbol">(</span>matrix3<span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L139">math/mat4/Matrix4.ts:139</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Cast a <a href="matrix3.html">Matrix3</a> into a Matrix4.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>matrix3: <a href="matrix3.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix3</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A matrix3</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="fromquaternion" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> from<wbr>Quaternion</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Quaternion<span class="tsd-signature-symbol">(</span>quaternion<span class="tsd-signature-symbol">: </span><a href="quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L131">math/mat4/Matrix4.ts:131</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a matrix out of a <a href="quaternion.html">Quaternion</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>quaternion: <a href="quaternion.html" class="tsd-signature-type" data-tsd-kind="Class">Quaternion</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A quaternion</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
 					<a name="lookat" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> look<wbr>At</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -435,7 +521,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L264">math/Matrix4.ts:264</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L196">math/mat4/Matrix4.ts:196</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -473,7 +559,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L289">math/Matrix4.ts:289</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L215">math/mat4/Matrix4.ts:215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -511,13 +597,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L171">math/Matrix4.ts:171</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L119">math/mat4/Matrix4.ts:119</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Multiply two or more matrices.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>matrices: <a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Matrices</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h4>
@@ -534,7 +628,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L316">math/Matrix4.ts:316</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L233">math/mat4/Matrix4.ts:233</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -569,7 +663,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L224">math/Matrix4.ts:224</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L171">math/mat4/Matrix4.ts:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -597,7 +691,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L237">math/Matrix4.ts:237</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L179">math/mat4/Matrix4.ts:179</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -625,7 +719,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L250">math/Matrix4.ts:250</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L187">math/mat4/Matrix4.ts:187</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -653,7 +747,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L198">math/Matrix4.ts:198</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L155">math/mat4/Matrix4.ts:155</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -684,7 +778,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L211">math/Matrix4.ts:211</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L163">math/mat4/Matrix4.ts:163</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -712,7 +806,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FMS-Cat/experimental-npm/blob/57e575e/src/math/Matrix4.ts#L185">math/Matrix4.ts:185</a></li>
+									<li>Defined in <a href="https://github.com/0b5vr/experimental-npm/blob/37ff581/src/math/mat4/Matrix4.ts#L147">math/mat4/Matrix4.ts:147</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -763,6 +857,9 @@
 								<a href="matrix4.html#inverse" class="tsd-kind-icon">inverse</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="matrix4.html#matrix3" class="tsd-kind-icon">matrix3</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="matrix4.html#transpose" class="tsd-kind-icon">transpose</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
@@ -785,6 +882,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="matrix4.html#compose" class="tsd-kind-icon">compose</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="matrix4.html#frommatrix3" class="tsd-kind-icon">from<wbr>Matrix3</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="matrix4.html#fromquaternion" class="tsd-kind-icon">from<wbr>Quaternion</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="matrix4.html#lookat" class="tsd-kind-icon">look<wbr>At</a>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@0b5vr/experimental - yugop.html</title>
+    <style>
+      * {
+        font-family: monospace;
+      }
+
+      #pShow {
+        font-size: 3em;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="pShow"></p>
+    <p>phase: <span id="spanPhase"></span></p>
+    <p>
+      <form id="form">
+        text: <input id="inputText" type="text" value="https://twitter.com/yugop" /><br />
+        duration: <input id="inputDuration" type="range" value="1.0" min="0.0" max="5.0" step="0.001" /><span id="spanDuration">1.000</span><br />
+        randomRatio: <input id="inputRandomRatio" type="range" value="0.3" min="0.0" max="1.0" step="0.001" /><span id="spanRandomRatio">0.300</span><br />
+        <input type="submit" value="yugop" /><br />
+      </form>
+    </p>
+    <script type="module">
+      import { ClockRealtime, getYugopText, saturate } from '../dist/0b5vr-experimental.esm.js';
+
+      const form = document.getElementById( 'form' );
+      const pShow = document.getElementById( 'pShow' );
+      const spanPhase = document.getElementById( 'spanPhase' );
+      const inputText = document.getElementById( 'inputText' );
+      const inputDuration = document.getElementById( 'inputDuration' );
+      const spanDuration = document.getElementById( 'spanDuration' );
+      const inputRandomRatio = document.getElementById( 'inputRandomRatio' );
+      const spanRandomRatio = document.getElementById( 'spanRandomRatio' );
+
+      const clock = new ClockRealtime();
+      clock.play();
+
+      form.addEventListener( 'submit', ( event ) => {
+        event.preventDefault();
+
+        clock.setTime( 0.0 );
+      } );
+
+      inputDuration.addEventListener( 'input', () => {
+        spanDuration.textContent = parseFloat( inputDuration.value ).toFixed( 3 );
+      } );
+
+      inputRandomRatio.addEventListener( 'input', () => {
+        spanRandomRatio.textContent = parseFloat( inputRandomRatio.value ).toFixed( 3 );
+      } );
+
+      function update() {
+        clock.update();
+
+        const phase = saturate( clock.time / inputDuration.value );
+
+        spanPhase.textContent = phase.toFixed( 3 );
+        pShow.textContent = getYugopText( inputText.value, phase, inputRandomRatio.value );
+
+        requestAnimationFrame( update );
+      };
+      requestAnimationFrame( update );
+    </script>
+  </body>
+</html>
