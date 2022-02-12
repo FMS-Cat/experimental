@@ -1,9 +1,7 @@
 name: Deploy Release
 
 on:
-  push:
-    tags:
-    - v*
+  push
 
 defaults:
   run:
