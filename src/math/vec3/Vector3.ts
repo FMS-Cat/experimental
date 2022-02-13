@@ -90,6 +90,48 @@ export class Vector3 extends Vector<Vector3> {
   }
 
   /**
+   * Vector3( 1.0, 0.0, 0.0 )
+   */
+  public static get px(): Vector3 {
+    return new Vector3( [ 1.0, 0.0, 0.0 ] );
+  }
+
+  /**
+   * Vector3( -1.0, 0.0, 0.0 )
+   */
+  public static get nx(): Vector3 {
+    return new Vector3( [ -1.0, 0.0, 0.0 ] );
+  }
+
+  /**
+   * Vector3( 0.0, 1.0, 0.0 )
+   */
+  public static get py(): Vector3 {
+    return new Vector3( [ 0.0, 1.0, 0.0 ] );
+  }
+
+  /**
+   * Vector3( 0.0, -1.0, 0.0 )
+   */
+  public static get ny(): Vector3 {
+    return new Vector3( [ 0.0, -1.0, 0.0 ] );
+  }
+
+  /**
+   * Vector3( 0.0, 0.0, 1.0 )
+   */
+  public static get pz(): Vector3 {
+    return new Vector3( [ 0.0, 0.0, 1.0 ] );
+  }
+
+  /**
+   * Vector3( 0.0, 0.0, -1.0 )
+   */
+  public static get nz(): Vector3 {
+    return new Vector3( [ 0.0, 0.0, -1.0 ] );
+  }
+
+  /**
    * Vector3( 1.0, 1.0, 1.0 )
    */
   public static get one(): Vector3 {
