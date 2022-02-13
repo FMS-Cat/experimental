@@ -1,5 +1,6 @@
 import { Matrix4 } from '../mat4/Matrix4';
 import { Quaternion } from '../quat/Quaternion';
+import { mat3CreateNormalMatrix } from './mat3CreateNormalMatrix';
 import { mat3Determinant } from './mat3Determinant';
 import { mat3FromMat4 } from './mat3FromMat4';
 import { mat3FromQuaternion } from './mat3FromQuaternion';
@@ -96,6 +97,14 @@ export class Matrix3 {
     } else {
       return new Matrix3( mat3Multiply( ...matrices.map( ( m ) => m.elements ) ) );
     }
+  }
+
+  /**
+   * Create a normal matrix out of matrix4.
+   * @param matrix4 A matrix4
+   */
+  public static createNormalMatrix( matrix4: Matrix4 ): Matrix3 {
+    return new Matrix3( mat3CreateNormalMatrix( matrix4.elements ) );
   }
 
   /**

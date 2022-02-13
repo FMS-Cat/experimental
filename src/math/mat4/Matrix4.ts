@@ -66,6 +66,13 @@ export class Matrix4 {
     return Matrix3.fromMatrix4( this );
   }
 
+  /**
+   * Itself but normal matrix.
+   */
+  public get normalMatrix(): Matrix3 {
+    return Matrix3.createNormalMatrix( this );
+  }
+
   public toString(): string {
     const m = this.elements.map( ( v ) => v.toFixed( 3 ) );
     return `Matrix4( ${ m[ 0 ] }, ${ m[ 4 ] }, ${ m[ 8 ] }, ${ m[ 12 ] }; ${ m[ 1 ] }, ${ m[ 5 ] }, ${ m[ 9 ] }, ${ m[ 13 ] }; ${ m[ 2 ] }, ${ m[ 6 ] }, ${ m[ 10 ] }, ${ m[ 14 ] }; ${ m[ 3 ] }, ${ m[ 7 ] }, ${ m[ 11 ] }, ${ m[ 15 ] } )`;
