@@ -1,4 +1,6 @@
+import { Matrix4 } from '../mat4/Matrix4';
 import { Vector3 } from '../vec3/Vector3';
+import { line3ApplyMatrix4 } from './line3ApplyMatrix4';
 import { line3At } from './line3At';
 import { line3ClosestPointToPoint } from './line3ClosestPointToPoint';
 import { line3Delta } from './line3Delta';
@@ -46,6 +48,20 @@ export class Line3 {
    */
   public at( t: number ): Vector3 {
     return new Vector3( line3At( this.raw, t ) );
+  }
+
+  /**
+   * Apply given matrix4 to the line.
+   *
+   * @param matrix A matrix4 which will be applied to the line
+   */
+  public applyMatrix4( matrix: Matrix4 ): Line3 {
+    return Line3.fromRaw(
+      line3ApplyMatrix4(
+        this.raw,
+        matrix.elements,
+      )
+    );
   }
 
   /**

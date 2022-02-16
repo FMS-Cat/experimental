@@ -34,7 +34,7 @@ export class Plane3 {
   }
 
   /**
-   * Apply given matrix4 to given plane.
+   * Apply given matrix4 to the plane.
    *
    * @param matrix A matrix4 which will be applied to the plane
    * @param normalMatrix A normalMatrix made out of {@link matrix}. Optional
