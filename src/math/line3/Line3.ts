@@ -1,4 +1,5 @@
 import { Matrix4 } from '../mat4/Matrix4';
+import { Ray3 } from '../ray3/Ray3';
 import { Vector3 } from '../vec3/Vector3';
 import { line3ApplyMatrix4 } from './line3ApplyMatrix4';
 import { line3At } from './line3At';
@@ -8,7 +9,7 @@ import { line3DistanceToPoint } from './line3DistanceToPoint';
 import type { RawLine3 } from './RawLine3';
 
 /**
- * A 3D box.
+ * A 3D line.
  */
 export class Line3 {
   public start: Vector3;
@@ -24,6 +25,13 @@ export class Line3 {
    */
   public get raw(): RawLine3 {
     return [ this.start.elements, this.end.elements ];
+  }
+
+  /**
+   * Itself but a ray.
+   */
+  public get ray(): Ray3 {
+    return Ray3.fromLine3( this );
   }
 
   /**
