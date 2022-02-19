@@ -19,13 +19,11 @@ export function dagEdgesResolve<T>( edges: RawDagEdge<T>[], nodes: T[] ): T[] {
       const hasParents = dagEdgesParent( tempEdges, node ) != null;
 
       if ( !hasParents ) {
-        if ( nodeSet.has( node ) ) {
-          nodeSet.delete( node );
-          order.push( node );
+        nodeSet.delete( node );
+        order.push( node );
 
-          // delete the structure of tempEdges from entrypoint side
-          tempEdges = tempEdges.filter( ( [ src ] ) => ( src !== node ) );
-        }
+        // delete the structure of tempEdges from entrypoint side
+        tempEdges = tempEdges.filter( ( [ src ] ) => ( src !== node ) );
       }
     } );
   }
