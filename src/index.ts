@@ -3,6 +3,7 @@ export * from './array';
 export * from './CDS';
 export * from './Clock';
 export * from './color';
+export * from './dag';
 export * from './edt';
 export * from './ExpSmooth';
 
