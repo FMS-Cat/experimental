@@ -1,5 +1,7 @@
 # `@0b5vr/experimental`
 
-[![@0b5vr/experimental](https://badge.fury.io/js/%400b5vr%2Fexperimental.svg)](https://badge.fury.io/js/%400b5vr%2Fexperimental)
+[![npm](https://img.shields.io/npm/v/@0b5vr/experimental?logo=npm&style=flat-square)](https://www.npmjs.com/package/@0b5vr/experimental)
 
 Experimental edition of 0b5vr
+
+[https://0b5vr.com/experimental-npm/examples/](https://0b5vr.com/experimental-npm/examples/)
