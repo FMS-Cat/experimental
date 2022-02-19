@@ -1,5 +1,5 @@
 import { RawDagEdge } from './RawDagEdge';
-import { dagEdgesParents } from './dagEdgesParents';
+import { dagEdgesParent } from './dagEdgesParent';
 
 /**
  * Resolve dag dependency relationship and give you a correct order.
@@ -16,7 +16,7 @@ export function dagEdgesResolve<T>( edges: RawDagEdge<T>[], nodes: T[] ): T[] {
   while ( tempEdges.length > 0 ) {
     nodeSet.forEach( ( node ) => {
       // is this an entrypoint?
-      const hasParents = dagEdgesParents( tempEdges, node ).length > 0;
+      const hasParents = dagEdgesParent( tempEdges, node ) != null;
 
       if ( !hasParents ) {
         if ( nodeSet.has( node ) ) {
