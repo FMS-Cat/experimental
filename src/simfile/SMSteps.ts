@@ -7,5 +7,6 @@ export interface SMSteps {
   description: string;
   difficulty: SMDifficulty;
   meter: number;
+  radarValues: [ number, number, number, number, number ];
   noteData: SMNoteData;
 }

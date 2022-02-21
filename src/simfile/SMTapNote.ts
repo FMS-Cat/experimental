@@ -3,5 +3,5 @@ import type { SMTapNoteType } from './SMTapNoteType';
 
 export interface SMTapNote {
   type: SMTapNoteType;
-  subType: SMTapNoteSubType;
+  subType?: SMTapNoteSubType;
 }
