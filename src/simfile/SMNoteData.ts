@@ -1,3 +1,3 @@
-import type { SMTapNote } from './SMTapNote';
+import type { SMNote } from './SMNote';
 
-export type SMNoteData = { [ row: number ]: SMTapNote }[];
+export type SMNoteData = { [ row: number ]: SMNote }[];

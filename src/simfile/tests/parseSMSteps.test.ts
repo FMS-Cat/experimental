@@ -16,13 +16,18 @@ describe( 'parseSMSteps', () => {
 0001
 ,  // measure 2
 2000
-0200
+0400
 0020
-0002
+0004
 3000
 0300
 0030
 0003
+,
+0000
+0000
+0000
+MMMM
 ` ];
 
     const subject = parseSMSteps( params );
@@ -30,23 +35,23 @@ describe( 'parseSMSteps', () => {
     const expectedNoteData: SMNoteData = [
       {
         0: { type: 'tap' },
-        192: { type: 'hold_head', subType: 'hold' },
-        288: { type: 'hold_tail' },
+        192: { type: 'hold', subType: 'hold', duration: 96 },
+        528: { type: 'mine' },
       },
       {
         48: { type: 'tap' },
-        216: { type: 'hold_head', subType: 'hold' },
-        312: { type: 'hold_tail' },
+        216: { type: 'hold', subType: 'roll', duration: 96 },
+        528: { type: 'mine' },
       },
       {
         96: { type: 'tap' },
-        240: { type: 'hold_head', subType: 'hold' },
-        336: { type: 'hold_tail' },
+        240: { type: 'hold', subType: 'hold', duration: 96 },
+        528: { type: 'mine' },
       },
       {
         144: { type: 'tap' },
-        264: { type: 'hold_head', subType: 'hold' },
-        360: { type: 'hold_tail' },
+        264: { type: 'hold', subType: 'roll', duration: 96 },
+        528: { type: 'mine' },
       },
     ];
 

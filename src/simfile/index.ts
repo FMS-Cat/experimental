@@ -7,6 +7,4 @@ export * from './SMNoteData';
 export * from './SMSimfile';
 export * from './SMSteps';
 export * from './SMStepsType';
-export * from './SMTapNote';
-export * from './SMTapNoteSubType';
-export * from './SMTapNoteType';
+export * from './SMNote';
