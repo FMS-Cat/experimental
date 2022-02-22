@@ -29,27 +29,27 @@ function parseTimingData(
 ): SMTimingData {
   const offset = parseFloat( offsetStr ?? '0' );
 
-  const bpmSegments: { [ row: number ]: number } = {};
-  bpmStr
+  const bpmSegments = bpmStr
     ?.split( ',' )
     .map( ( seg ) => seg.split( '=' ) )
+    .filter( ( change ) => change.length !== 1 ) // handle trailing comma
     .map( ( seg ) => {
       const beat = parseFloat( seg[ 0 ] );
       const bpm = parseFloat( seg[ 1 ] );
       const rowIndex = Math.round( beat * SM_ROWS_PER_BEAT );
-      bpmSegments[ rowIndex ] = bpm;
-    } );
+      return [ rowIndex, bpm ] as [ number, number ];
+    } ) ?? [];
 
-  const stopSegments: { [ row: number ]: number } = {};
-  stopStr
+  const stopSegments = stopStr
     ?.split( ',' )
     .map( ( seg ) => seg.split( '=' ) )
+    .filter( ( change ) => change.length !== 1 ) // handle trailing comma
     .map( ( seg ) => {
       const beat = parseFloat( seg[ 0 ] );
       const seconds = parseFloat( seg[ 1 ] );
       const rowIndex = Math.round( beat * SM_ROWS_PER_BEAT );
-      stopSegments[ rowIndex ] = seconds;
-    } );
+      return [ rowIndex, seconds ] as [ number, number ];
+    } ) ?? [];
 
   return {
     offset,
@@ -90,12 +90,10 @@ function parseSteps( notesParam: string[] ): SMSteps {
     throw new Error( `Unknown stepsType "${ stepsType }"` );
   }
 
-  const noteData: SMNoteData = [ ...Array( numColumns ) ].map( () => ( {} ) );
+  const noteData: SMNoteData = [ ...Array( numColumns ) ].map( () => [] );
 
   const noteParam = trimLineComments( notesParam[ 6 ].replace( '\r\n', '\n' ) );
   const noteMeasures = noteParam.split( ',' );
-
-  const ongoingHoldIndexByColumn: { [ row: number ]: number } = {};
 
   noteMeasures.map( ( measure, iMeasure ) => {
     const rows = measure.trim().split( '\n' );
@@ -111,25 +109,29 @@ function parseSteps( notesParam: string[] ): SMSteps {
         if ( ch === '0' ) { // empty
           // do nothing
         } else if ( ch === '1' ) { // tap
-          noteData[ iColumn ][ rowIndex ] = {
-            type: 'tap',
-          };
+          noteData[ iColumn ].push( [
+            rowIndex,
+            { type: 'tap' },
+          ] );
         } else if ( ch === 'M' ) { // mine
-          noteData[ iColumn ][ rowIndex ] = {
-            type: 'mine',
-          };
+          noteData[ iColumn ].push( [
+            rowIndex,
+            { type: 'mine' },
+          ] );
         } else if ( ch === '2' || ch === '4' ) { // hold or roll
-          ongoingHoldIndexByColumn[ iColumn ] = rowIndex;
-          noteData[ iColumn ][ rowIndex ] = { // spicy substitution
-            type: 'hold',
-            subType: ch === '2' ? 'hold' : 'roll',
-            duration: 0, // we will set this later
-          };
+          noteData[ iColumn ].push( [
+            rowIndex,
+            {
+              type: 'hold',
+              subType: ch === '2' ? 'hold' : 'roll',
+              duration: 0, // we will set this later
+            },
+          ] );
         } else if ( ch === '3' ) {
-          const ongoingIndex = ongoingHoldIndexByColumn[ iColumn ];
-          const ongoing = noteData[ iColumn ][ ongoingIndex ];
-          if ( ongoing ) {
-            ( ongoing as SMNoteHold ).duration = rowIndex - ongoingIndex;
+          const column = noteData[ iColumn ];
+          const prevNote = column[ column.length - 1 ];
+          if ( prevNote[ 1 ].type === 'hold' ) {
+            ( prevNote[ 1 ] as SMNoteHold ).duration = rowIndex - prevNote[ 0 ];
           } else {
             console.warn( 'Unmatched hold tail' );
           }

@@ -21,28 +21,28 @@ describe( 'parseSMSimfile', () => {
       selectable: 'yes',
       displayBPM: [ 100, 400 ],
       timingData: {
-        bpmSegments: {
-          0: 100,
-          960: 400,
-          4032: 200,
-          4128: 400,
-          4896: 200,
-          4944: 400,
-          5472: 200,
-          5544: 400,
-          6360: 200,
-          6408: 400,
-          6840: 100,
-          7608: 200,
-          12918: 400,
-          18294: 100,
-          18486: 200,
-          18870: 400,
-        },
-        stopSegments: {
-          12216: 2.4,
-          12582: 0.412,
-        },
+        bpmSegments: [
+          [ 0, 100 ],
+          [ 960, 400 ],
+          [ 4032, 200 ],
+          [ 4128, 400 ],
+          [ 4896, 200 ],
+          [ 4944, 400 ],
+          [ 5472, 200 ],
+          [ 5544, 400 ],
+          [ 6360, 200 ],
+          [ 6408, 400 ],
+          [ 6840, 100 ],
+          [ 7608, 200 ],
+          [ 12918, 400 ],
+          [ 18294, 100 ],
+          [ 18486, 200 ],
+          [ 18870, 400 ],
+        ],
+        stopSegments: [
+          [ 12216, 2.4 ],
+          [ 12582, 0.412 ],
+        ],
         offset: 0.090,
       },
       bgChanges: [
@@ -78,26 +78,26 @@ describe( 'parseSMSimfile', () => {
           meter: 18,
           radarValues: [ 0.123, 0.345, 0.567, 0.789, 0.000 ],
           noteData: [
-            {
-              384: { type: 'tap' },
-              576: { type: 'hold', subType: 'hold', duration: 24 },
-              912: { type: 'mine' },
-            },
-            {
-              432: { type: 'tap' },
-              624: { type: 'hold', subType: 'roll', duration: 24 },
-              912: { type: 'mine' },
-            },
-            {
-              480: { type: 'tap' },
-              672: { type: 'hold', subType: 'hold', duration: 24 },
-              912: { type: 'mine' },
-            },
-            {
-              528: { type: 'tap' },
-              720: { type: 'hold', subType: 'roll', duration: 24 },
-              912: { type: 'mine' },
-            },
+            [
+              [ 384, { type: 'tap' } ],
+              [ 576, { type: 'hold', subType: 'hold', duration: 24 } ],
+              [ 912, { type: 'mine' } ],
+            ],
+            [
+              [ 432, { type: 'tap' } ],
+              [ 624, { type: 'hold', subType: 'roll', duration: 24 } ],
+              [ 912, { type: 'mine' } ],
+            ],
+            [
+              [ 480, { type: 'tap' } ],
+              [ 672, { type: 'hold', subType: 'hold', duration: 24 } ],
+              [ 912, { type: 'mine' } ],
+            ],
+            [
+              [ 528, { type: 'tap' } ],
+              [ 720, { type: 'hold', subType: 'roll', duration: 24 } ],
+              [ 912, { type: 'mine' } ],
+            ],
           ]
         },
         {
@@ -107,18 +107,18 @@ describe( 'parseSMSimfile', () => {
           meter: 22,
           radarValues: [ 0.114, 0.514, 0.191, 0.981, 0.000 ],
           noteData: [
-            {
-              0: { type: 'mine' },
-            },
-            {
-              0: { type: 'mine' },
-            },
-            {
-              0: { type: 'mine' },
-            },
-            {
-              0: { type: 'mine' },
-            },
+            [
+              [ 0, { type: 'mine' } ],
+            ],
+            [
+              [ 0, { type: 'mine' } ],
+            ],
+            [
+              [ 0, { type: 'mine' } ],
+            ],
+            [
+              [ 0, { type: 'mine' } ],
+            ],
           ]
         },
       ],

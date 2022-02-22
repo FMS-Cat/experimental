@@ -1,13 +1,6 @@
 export interface SMTimingData {
-  /**
-   * Key is beat row, value is bpm.
-   */
-  bpmSegments: { [ row: number ]: number };
-
-  /**
-   * Key is beat row, value is step seconds.
-   */
-  stopSegments: { [ row: number ]: number };
+  bpmSegments: [ row: number, bpm: number ][];
+  stopSegments: [ row: number, stopSeconds: number ][];
 
   /**
    * Offset of beat 0, in seconds.
