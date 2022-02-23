@@ -1,3 +1,4 @@
+import { SMTimingData } from '../SMTimingData';
 import { parseSMSimfile } from '../parseSMSimfile';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
@@ -20,7 +21,7 @@ describe( 'parseSMSimfile', () => {
       sampleLength: 10.0,
       selectable: 'yes',
       displayBPM: [ 100, 400 ],
-      timingData: {
+      timingData: SMTimingData.fromRaw( {
         bpmSegments: [
           [ 0, 100 ],
           [ 960, 400 ],
@@ -43,8 +44,8 @@ describe( 'parseSMSimfile', () => {
           [ 12216, 2.4 ],
           [ 12582, 0.412 ],
         ],
-        offset: 0.090,
-      },
+        offset: 0.009,
+      } ),
       bgChanges: [
         {
           startBeat: 0,

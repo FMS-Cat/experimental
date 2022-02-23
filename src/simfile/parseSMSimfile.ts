@@ -1,3 +1,4 @@
+import { SMTimingData } from './SMTimingData';
 import { SM_ROWS_PER_BEAT, SM_ROWS_PER_MEASURE } from './constants';
 import { parseMSD } from './parseMsd';
 import { stepsTypeColumnsMap } from './stepsTypeColumnsMap';
@@ -10,7 +11,6 @@ import type { SMNoteHold } from './SMNote';
 import type { SMSimfile } from './SMSimfile';
 import type { SMSteps } from './SMSteps';
 import type { SMStepsType } from './SMStepsType';
-import type { SMTimingData } from './SMTimingData';
 
 function parseDisplayBPM( [ _, value, value2 ]: string[] ): SMDisplayBPM {
   if ( value === '*' ) {
@@ -51,11 +51,11 @@ function parseTimingData(
       return [ rowIndex, seconds ] as [ number, number ];
     } ) ?? [];
 
-  return {
+  return SMTimingData.fromRaw( {
     offset,
     bpmSegments,
     stopSegments,
-  };
+  } );
 }
 
 function parseBGChanges( [ _, value ]: string[] ): SMBackgroundChange[] {

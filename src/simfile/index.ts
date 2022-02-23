@@ -10,4 +10,5 @@ export * from './SMSimfile';
 export * from './SMSteps';
 export * from './SMStepsType';
 export * from './SMTimingData';
+export * from './SMTimingDataRaw';
 export * from './stepsTypeColumnsMap';
