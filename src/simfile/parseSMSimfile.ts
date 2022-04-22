@@ -1,3 +1,4 @@
+import { SMSimfile } from './SMSimfile';
 import { SMTimingData } from './SMTimingData';
 import { SM_ROWS_PER_BEAT, SM_ROWS_PER_MEASURE } from './constants';
 import { parseMSD } from './parseMsd';
@@ -8,7 +9,7 @@ import type { SMDifficulty } from './SMDifficulty';
 import type { SMDisplayBPM } from './SMDisplayBPM';
 import type { SMNoteData } from './SMNoteData';
 import type { SMNoteHold } from './SMNote';
-import type { SMSimfile } from './SMSimfile';
+import type { SMSimfileRaw } from './SMSimfileRaw';
 import type { SMSteps } from './SMSteps';
 import type { SMStepsType } from './SMStepsType';
 
@@ -155,7 +156,7 @@ function parseSteps( notesParam: string[] ): SMSteps {
 export function parseSMSimfile( text: string ): SMSimfile {
   const msd = parseMSD( text );
 
-  const sm: SMSimfile = {};
+  const sm: SMSimfileRaw = {};
 
   const notesParams = msd.filter( ( param ) => param[ 0 ] === 'NOTES' );
 
@@ -234,5 +235,5 @@ export function parseSMSimfile( text: string ): SMSimfile {
     sm.notes.push( steps );
   } );
 
-  return sm;
+  return SMSimfile.fromRaw( sm );
 }

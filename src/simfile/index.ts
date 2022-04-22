@@ -7,6 +7,7 @@ export * from './SMDisplayBPM';
 export * from './SMNote';
 export * from './SMNoteData';
 export * from './SMSimfile';
+export * from './SMSimfileRaw';
 export * from './SMSteps';
 export * from './SMStepsType';
 export * from './SMTimingData';

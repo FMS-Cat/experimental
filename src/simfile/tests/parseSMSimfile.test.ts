@@ -1,15 +1,14 @@
-import { SMTimingData } from '../SMTimingData';
 import { parseSMSimfile } from '../parseSMSimfile';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import type { SMSimfile } from '../SMSimfile';
+import type { SMSimfileRaw } from '../SMSimfileRaw';
 
 describe( 'parseSMSimfile', () => {
   it( 'parses brain power', () => {
     const smpath = resolve( __dirname, 'fixtures/steps.sm' );
     const sm = readFileSync( smpath, { encoding: 'utf8' } );
 
-    const expected: SMSimfile = {
+    const expected: SMSimfileRaw = {
       title: 'Giant Steps',
       artist: 'John Coltrane',
       genre: 'ART CORE',
@@ -21,7 +20,7 @@ describe( 'parseSMSimfile', () => {
       sampleLength: 10.0,
       selectable: 'yes',
       displayBPM: [ 100, 400 ],
-      timingData: SMTimingData.fromRaw( {
+      timingData: {
         bpmSegments: [
           [ 0, 100 ],
           [ 960, 400 ],
@@ -45,7 +44,7 @@ describe( 'parseSMSimfile', () => {
           [ 12582, 0.412 ],
         ],
         offset: 0.009,
-      } ),
+      },
       bgChanges: [
         {
           startBeat: 0,
@@ -127,6 +126,6 @@ describe( 'parseSMSimfile', () => {
 
     const subject = parseSMSimfile( sm );
 
-    expect( subject ).toEqual( expected );
+    expect( subject.raw ).toEqual( expected );
   } );
 } );
