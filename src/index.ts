@@ -16,6 +16,7 @@ export * from './MapOfSet';
 export * from './math';
 export * from './poker';
 export * from './Pool';
+export * from './stniccc';
 export * from './Swap';
 export * from './TapTempo';
 export * from './Xorshift';
