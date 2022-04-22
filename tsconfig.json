@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5", // will be overwritten in rollup config
+    "target": "es5", // will be overwritten in esbuild config
     "module": "es6",
     "strict": true,
     "moduleResolution": "node",
