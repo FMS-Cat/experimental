@@ -30,7 +30,7 @@
         const frame = frames[ currentFrame ];
         const { needsClear, indexedMode, palette, polygons } = frame;
 
-        if ( frame.needsClear ) {
+        if ( needsClear ) {
           context.fillStyle = '#000';
           context.fillRect( 0, 0, 256, 200 );
         }
