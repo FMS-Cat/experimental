@@ -8,18 +8,18 @@
   </head>
   <body>
     <canvas id="canvas" width="256" height="200"></canvas>
+    <a id="anchor" download="st-niccc.svg">Download SVG</a>
     <script type="module">
       import {
         colorFromAtariST,
         colorToHex,
         parseSTNICCC,
+        stnicccToSVG,
       } from '../dist/0b5vr-experimental.esm.js';
 
       const respose = await fetch( './assets/st-niccc-scene.bin' );
       const buffer = await respose.arrayBuffer();
       const frames = parseSTNICCC( buffer );
-
-      console.log( frames );
 
       const canvas = document.getElementById( 'canvas' );
       const context = canvas.getContext( '2d' );
@@ -83,6 +83,14 @@
         requestAnimationFrame( update );
       }
       requestAnimationFrame( update );
+
+      const anchor = document.getElementById( 'anchor' );
+
+      const svg = stnicccToSVG( frames );
+
+      const blob = new Blob( [ svg ], { type: 'image/svg+xml' } );
+      const url = URL.createObjectURL( blob );
+      anchor.href = url;
     </script>
   </body>
 </html>
