@@ -7,6 +7,9 @@ import { quatInverse } from './quatInverse';
 import { quatLookRotation } from './quatLookRotation';
 import { quatMultiply } from './quatMultiply';
 import { quatNormalize } from './quatNormalize';
+import { quatRotationX } from './quatRotationX';
+import { quatRotationY } from './quatRotationY';
+import { quatRotationZ } from './quatRotationZ';
 import { quatSlerp } from './quatSlerp';
 import { vecLength } from '../vec/vecLength';
 import { vecLengthSq } from '../vec/vecLengthSq';
@@ -142,6 +145,30 @@ export class Quaternion {
    */
   public static slerp( a: Quaternion, b: Quaternion, t: number ): Quaternion {
     return new Quaternion( quatSlerp( a.elements, b.elements, t ) );
+  }
+
+  /**
+   * Return a quaternion which rotates around x axis.
+   * @param theta An angle around x axis, in degree
+   */
+  public static rotationX( theta: number ): Quaternion {
+    return new Quaternion( quatRotationX( theta ) );
+  }
+
+  /**
+   * Return a quaternion which rotates around y axis.
+   * @param theta An angle around y axis, in degree
+   */
+  public static rotationY( theta: number ): Quaternion {
+    return new Quaternion( quatRotationY( theta ) );
+  }
+
+  /**
+   * Return a quaternion which rotates around z axis.
+   * @param theta An angle around z axis, in degree
+   */
+  public static rotationZ( theta: number ): Quaternion {
+    return new Quaternion( quatRotationZ( theta ) );
   }
 
   /**
