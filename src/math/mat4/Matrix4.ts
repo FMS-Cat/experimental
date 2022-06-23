@@ -11,9 +11,9 @@ import { mat4LookAt } from './mat4LookAt';
 import { mat4LookAtInverse } from './mat4LookAtInverse';
 import { mat4Multiply } from './mat4Multiply';
 import { mat4Perspective } from './mat4Perspective';
-import { mat4RotateX } from './mat4RotateX';
-import { mat4RotateY } from './mat4RotateY';
-import { mat4RotateZ } from './mat4RotateZ';
+import { mat4RotationX } from './mat4RotationX';
+import { mat4RotationY } from './mat4RotationY';
+import { mat4RotationZ } from './mat4RotationZ';
 import { mat4Scale } from './mat4Scale';
 import { mat4ScaleScalar } from './mat4ScaleScalar';
 import { mat4Translate } from './mat4Translate';
@@ -175,24 +175,24 @@ export class Matrix4 {
    * Generate a 3d rotation matrix, rotates around x axis.
    * @param vector Scale
    */
-  public static rotateX( theta: number ): Matrix4 {
-    return new Matrix4( mat4RotateX( theta ) );
+  public static rotationX( theta: number ): Matrix4 {
+    return new Matrix4( mat4RotationX( theta ) );
   }
 
   /**
    * Generate a 3d rotation matrix, rotates around y axis.
    * @param vector Scale
    */
-  public static rotateY( theta: number ): Matrix4 {
-    return new Matrix4( mat4RotateY( theta ) );
+  public static rotationY( theta: number ): Matrix4 {
+    return new Matrix4( mat4RotationY( theta ) );
   }
 
   /**
    * Generate a 3d rotation matrix, rotates around z axis.
    * @param vector Scale
    */
-  public static rotateZ( theta: number ): Matrix4 {
-    return new Matrix4( mat4RotateZ( theta ) );
+  public static rotationZ( theta: number ): Matrix4 {
+    return new Matrix4( mat4RotationZ( theta ) );
   }
 
   /**

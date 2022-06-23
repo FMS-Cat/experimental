@@ -3,7 +3,7 @@ import type { RawMatrix4 } from './RawMatrix4';
 /**
  * Generate a 3d rotation matrix, rotates around z axis.
  */
-export function mat4RotateZ( theta: number ): RawMatrix4 {
+export function mat4RotationZ( theta: number ): RawMatrix4 {
   const c = Math.cos( theta );
   const s = Math.sin( theta );
 

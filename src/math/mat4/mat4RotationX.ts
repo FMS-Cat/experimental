@@ -3,7 +3,7 @@ import type { RawMatrix4 } from './RawMatrix4';
 /**
  * Generate a 3d rotation matrix, rotates around x axis.
  */
-export function mat4RotateX( theta: number ): RawMatrix4 {
+export function mat4RotationX( theta: number ): RawMatrix4 {
   const c = Math.cos( theta );
   const s = Math.sin( theta );
 
