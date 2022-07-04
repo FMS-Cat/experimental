@@ -36,7 +36,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Init Stuff
       uses: ./.github/actions/init
-    - name: Lint
+    - name: Test
       run: yarn test --coverage
     - name: Upload Coverage
       uses: actions/upload-artifact@v2
