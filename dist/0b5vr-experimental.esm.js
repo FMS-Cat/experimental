@@ -1,5 +1,5 @@
 /*!
-* @0b5vr/experimental v0.8.0
+* @0b5vr/experimental v0.9.0
 * Experimental edition of 0b5vr
 *
 * Copyright (c) 2019-2022 0b5vr
@@ -46,6 +46,22 @@ function binarySearch(array, elementOrCompare) {
     }
   }
   return start;
+}
+
+// src/algorithm/traverse.ts
+function traverse(root, traverser) {
+  const nodesNeedProcess = [root];
+  const nodesSeen = new Set(nodesNeedProcess);
+  while (nodesNeedProcess.length > 0) {
+    const currentNode = nodesNeedProcess.shift();
+    const children = traverser(currentNode);
+    if (!children) {
+      break;
+    }
+    const nodesFound = children.filter((node) => !nodesSeen.has(node));
+    nodesNeedProcess.unshift(...nodesFound);
+    nodesFound.map((node) => nodesSeen.add(node));
+  }
 }
 
 // src/array/arraySet.ts
@@ -237,6 +253,15 @@ var ClockRealtime = class extends Clock {
   }
 };
 
+// src/color/colorFromAtariST.ts
+function colorFromAtariST(stColor) {
+  return [
+    (stColor >> 8 & 7) / 7,
+    (stColor >> 4 & 7) / 7,
+    (stColor & 7) / 7
+  ];
+}
+
 // src/math/utils.ts
 function lerp(a, b, x) {
   return a + (b - a) * x;
@@ -271,6 +296,54 @@ function colorToHex(color) {
   return "#" + color.map((v) => ("0" + Math.round(saturate(v) * 255).toString(16)).slice(-2)).join("");
 }
 
+// src/math/vec/vecDot.ts
+function vecDot(vecA, vecB) {
+  return vecA.reduce((sum, v, i) => sum + v * vecB[i], 0);
+}
+
+// src/color/colorTurbo.ts
+function colorTurbo(x) {
+  const kr = [
+    0.13572138,
+    4.6153926,
+    -42.66032258,
+    132.13108234,
+    -152.94239396,
+    59.28637943
+  ];
+  const kg = [
+    0.09140261,
+    2.19418839,
+    4.84296658,
+    -14.18503333,
+    4.27729857,
+    2.82956604
+  ];
+  const kb = [
+    0.1066733,
+    12.64194608,
+    -60.58204836,
+    110.36276771,
+    -89.90310912,
+    27.34824973
+  ];
+  const xt = saturate(x);
+  const xv = [
+    1,
+    xt,
+    xt * xt,
+    xt * xt * xt,
+    xt * xt * xt * xt,
+    xt * xt * xt * xt * xt
+  ];
+  const col = [
+    saturate(vecDot(kr, xv)),
+    saturate(vecDot(kg, xv)),
+    saturate(vecDot(kb, xv))
+  ];
+  return col;
+}
+
 // src/color/eotfRec709.ts
 function eotfRec709(value) {
   return value.map((v) => v < 0.081 ? v / 4.5 : Math.pow((v + 0.099) / 1.099, 1 / 0.45));
@@ -279,6 +352,62 @@ function eotfRec709(value) {
 // src/color/oetfRec709.ts
 function oetfRec709(luminance) {
   return luminance.map((l) => l < 0.018 ? 4.5 * l : 1.099 * Math.pow(l, 0.45) - 0.099);
+}
+
+// src/dag/dagEdgesParents.ts
+function dagEdgesParents(edges, destination) {
+  return edges.filter((edge) => edge[1] === destination).map((edge) => edge[0]);
+}
+
+// src/dag/dagEdgesAncestors.ts
+function dagEdgesAncestors(edges, destination) {
+  const ancestors = /* @__PURE__ */ new Set();
+  traverse(destination, (node) => {
+    const parents = dagEdgesParents(edges, node);
+    parents.map((parent) => ancestors.add(parent));
+    return parents;
+  });
+  return Array.from(ancestors);
+}
+
+// src/dag/dagEdgesChildren.ts
+function dagEdgesChildren(edges, source) {
+  return edges.filter((edge) => edge[0] === source).map((edge) => edge[1]);
+}
+
+// src/dag/dagEdgesDescendants.ts
+function dagEdgesDescendants(edges, source) {
+  const descendants = /* @__PURE__ */ new Set();
+  traverse(source, (node) => {
+    const children = dagEdgesChildren(edges, node);
+    children.map((child) => descendants.add(child));
+    return children;
+  });
+  return Array.from(descendants);
+}
+
+// src/dag/dagEdgesParent.ts
+function dagEdgesParent(edges, destination) {
+  var _a, _b;
+  return (_b = (_a = edges.find((edge) => edge[1] === destination)) == null ? void 0 : _a[0]) != null ? _b : null;
+}
+
+// src/dag/dagEdgesResolve.ts
+function dagEdgesResolve(edges, nodes) {
+  const order = [];
+  const nodeSet = new Set(nodes);
+  let tempEdges = edges.concat();
+  while (tempEdges.length > 0) {
+    nodeSet.forEach((node) => {
+      const hasParents = dagEdgesParent(tempEdges, node) != null;
+      if (!hasParents) {
+        nodeSet.delete(node);
+        order.push(node);
+        tempEdges = tempEdges.filter(([src]) => src !== node);
+      }
+    });
+  }
+  return order.concat(Array.from(nodeSet));
 }
 
 // src/edt/edt.ts
@@ -533,165 +662,6 @@ var MapOfSet = class {
   }
 };
 
-// src/math/mat3/mat3Determinant.ts
-function mat3Determinant(m) {
-  const n11 = m[0], n21 = m[1], n31 = m[2], n12 = m[3], n22 = m[4], n32 = m[5], n13 = m[6], n23 = m[7], n33 = m[8], t11 = n33 * n22 - n32 * n23, t12 = n32 * n13 - n33 * n12, t13 = n23 * n12 - n22 * n13;
-  return n11 * t11 + n21 * t12 + n31 * t13;
-}
-
-// src/math/mat3/mat3FromMat4.ts
-function mat3FromMat4(source) {
-  return [
-    source[0],
-    source[1],
-    source[2],
-    source[4],
-    source[5],
-    source[6],
-    source[8],
-    source[9],
-    source[10]
-  ];
-}
-
-// src/math/mat3/mat3FromQuaternion.ts
-function mat3FromQuaternion(quat) {
-  const x = quat[0];
-  const y = quat[1];
-  const z = quat[2];
-  const w = quat[3];
-  return [
-    1 - 2 * y * y - 2 * z * z,
-    2 * x * y + 2 * z * w,
-    2 * x * z - 2 * y * w,
-    2 * x * y - 2 * z * w,
-    1 - 2 * x * x - 2 * z * z,
-    2 * y * z + 2 * x * w,
-    2 * x * z + 2 * y * w,
-    2 * y * z - 2 * x * w,
-    1 - 2 * x * x - 2 * y * y
-  ];
-}
-
-// src/math/vec/vecScale.ts
-function vecScale(vec, scalar) {
-  return vec.map((v) => v * scalar);
-}
-
-// src/math/mat3/mat3Inverse.ts
-function mat3Inverse(m) {
-  const n11 = m[0], n21 = m[1], n31 = m[2], n12 = m[3], n22 = m[4], n32 = m[5], n13 = m[6], n23 = m[7], n33 = m[8], t11 = n33 * n22 - n32 * n23, t12 = n32 * n13 - n33 * n12, t13 = n23 * n12 - n22 * n13, det = n11 * t11 + n21 * t12 + n31 * t13;
-  if (det === 0) {
-    return vecScale(m, 0);
-  }
-  return vecScale([
-    t11,
-    n31 * n23 - n33 * n21,
-    n32 * n21 - n31 * n22,
-    t12,
-    n33 * n11 - n31 * n13,
-    n31 * n12 - n32 * n11,
-    t13,
-    n21 * n13 - n23 * n11,
-    n22 * n11 - n21 * n12
-  ], 1 / det);
-}
-
-// src/math/mat3/mat3Multiply.ts
-function mat3Multiply(...mats) {
-  if (mats.length < 2) {
-    return mats[0];
-  }
-  const a = mats.shift();
-  const b = mat3Multiply(...mats);
-  const a00 = a[0], a01 = a[1], a02 = a[2], a10 = a[3], a11 = a[4], a12 = a[5], a20 = a[6], a21 = a[7], a22 = a[8], b00 = b[0], b01 = b[1], b02 = b[2], b10 = b[3], b11 = b[4], b12 = b[5], b20 = b[6], b21 = b[7], b22 = b[8];
-  return [
-    a00 * b00 + a10 * b01 + a20 * b02,
-    a01 * b00 + a11 * b01 + a21 * b02,
-    a02 * b00 + a12 * b01 + a22 * b02,
-    a00 * b10 + a10 * b11 + a20 * b12,
-    a01 * b10 + a11 * b11 + a21 * b12,
-    a02 * b10 + a12 * b11 + a22 * b12,
-    a00 * b20 + a10 * b21 + a20 * b22,
-    a01 * b20 + a11 * b21 + a21 * b22,
-    a02 * b20 + a12 * b21 + a22 * b22
-  ];
-}
-
-// src/math/mat3/mat3Transpose.ts
-function mat3Transpose(source) {
-  return [
-    source[0],
-    source[3],
-    source[6],
-    source[1],
-    source[4],
-    source[7],
-    source[2],
-    source[5],
-    source[8]
-  ];
-}
-
-// src/math/mat3/Matrix3.ts
-var rawIdentityMatrix3 = [
-  1,
-  0,
-  0,
-  0,
-  1,
-  0,
-  0,
-  0,
-  1
-];
-var Matrix3 = class {
-  constructor(v = rawIdentityMatrix3) {
-    this.elements = v;
-  }
-  get transpose() {
-    return new Matrix3(mat3Transpose(this.elements));
-  }
-  get determinant() {
-    return mat3Determinant(this.elements);
-  }
-  get inverse() {
-    return new Matrix3(mat3Inverse(this.elements));
-  }
-  get matrix4() {
-    return Matrix4.fromMatrix3(this);
-  }
-  toString() {
-    const m = this.elements.map((v) => v.toFixed(3));
-    return `Matrix3( ${m[0]}, ${m[3]}, ${m[6]}; ${m[1]}, ${m[4]}, ${m[7]}; ${m[2]}, ${m[5]}, ${m[8]} )`;
-  }
-  clone() {
-    return new Matrix3(this.elements.concat());
-  }
-  multiply(...matrices) {
-    return Matrix3.multiply(this, ...matrices);
-  }
-  scaleScalar(scalar) {
-    return new Matrix3(vecScale(this.elements, scalar));
-  }
-  static get identity() {
-    return new Matrix3(rawIdentityMatrix3);
-  }
-  static multiply(...matrices) {
-    if (matrices.length === 0) {
-      return Matrix3.identity;
-    } else {
-      return new Matrix3(mat3Multiply(...matrices.map((m) => m.elements)));
-    }
-  }
-  static fromMatrix4(matrix4) {
-    return new Matrix3(mat3FromMat4(matrix4.elements));
-  }
-  static fromQuaternion(quaternion) {
-    return new Matrix3(mat3FromQuaternion(quaternion.elements));
-  }
-};
-
 // src/math/vec/vecAdd.ts
 function vecAdd(...vecs) {
   if (vecs.length < 2) {
@@ -705,11 +675,6 @@ function vecAdd(...vecs) {
 // src/math/vec/vecDivide.ts
 function vecDivide(vecA, vecB) {
   return vecA.map((v, i) => v / vecB[i]);
-}
-
-// src/math/vec/vecDot.ts
-function vecDot(vecA, vecB) {
-  return vecA.reduce((sum, v, i) => sum + v * vecB[i], 0);
 }
 
 // src/math/vec/vecLength.ts
@@ -740,6 +705,11 @@ function vecMultiply(...vecs) {
 // src/math/vec/vecNeg.ts
 function vecNeg(vec) {
   return vec.map((v) => -v);
+}
+
+// src/math/vec/vecScale.ts
+function vecScale(vec, scalar) {
+  return vec.map((v) => v * scalar);
 }
 
 // src/math/vec/vecNormalize.ts
@@ -917,6 +887,24 @@ var Vector3 = class extends Vector {
   static get zero() {
     return new Vector3([0, 0, 0]);
   }
+  static get px() {
+    return new Vector3([1, 0, 0]);
+  }
+  static get nx() {
+    return new Vector3([-1, 0, 0]);
+  }
+  static get py() {
+    return new Vector3([0, 1, 0]);
+  }
+  static get ny() {
+    return new Vector3([0, -1, 0]);
+  }
+  static get pz() {
+    return new Vector3([0, 0, 1]);
+  }
+  static get nz() {
+    return new Vector3([0, 0, -1]);
+  }
   static get one() {
     return new Vector3([1, 1, 1]);
   }
@@ -927,6 +915,205 @@ var Vector3 = class extends Vector {
       tangent: new Vector3(result.tangent),
       binormal: new Vector3(result.binormal)
     };
+  }
+};
+
+// src/math/box3/box3ContainsPoint.ts
+function box3ContainsPoint(box, point) {
+  return box[0][0] <= point[0] && box[1][0] >= point[0] && box[0][1] <= point[1] && box[1][1] >= point[1] && box[0][2] <= point[2] && box[1][2] >= point[2];
+}
+
+// src/math/box3/Box3.ts
+var Box3 = class {
+  constructor(min = Vector3.zero, max = Vector3.zero) {
+    this.min = min;
+    this.max = max;
+  }
+  get raw() {
+    return [this.min.elements, this.max.elements];
+  }
+  containsPoint(point) {
+    return box3ContainsPoint(this.raw, point.elements);
+  }
+  static fromRaw(box) {
+    return new Box3(new Vector3(box[0]), new Vector3(box[1]));
+  }
+};
+
+// src/math/mat3/mat3FromMat4Transpose.ts
+function mat3FromMat4Transpose(source) {
+  return [
+    source[0],
+    source[4],
+    source[8],
+    source[1],
+    source[5],
+    source[9],
+    source[2],
+    source[6],
+    source[10]
+  ];
+}
+
+// src/math/mat3/mat3Inverse.ts
+function mat3Inverse(m) {
+  const n11 = m[0], n21 = m[1], n31 = m[2], n12 = m[3], n22 = m[4], n32 = m[5], n13 = m[6], n23 = m[7], n33 = m[8], t11 = n33 * n22 - n32 * n23, t12 = n32 * n13 - n33 * n12, t13 = n23 * n12 - n22 * n13, det = n11 * t11 + n21 * t12 + n31 * t13;
+  if (det === 0) {
+    return vecScale(m, 0);
+  }
+  return vecScale([
+    t11,
+    n31 * n23 - n33 * n21,
+    n32 * n21 - n31 * n22,
+    t12,
+    n33 * n11 - n31 * n13,
+    n31 * n12 - n32 * n11,
+    t13,
+    n21 * n13 - n23 * n11,
+    n22 * n11 - n21 * n12
+  ], 1 / det);
+}
+
+// src/math/mat3/mat3CreateNormalMatrix.ts
+function mat3CreateNormalMatrix(m) {
+  return mat3Inverse(mat3FromMat4Transpose(m));
+}
+
+// src/math/mat3/mat3Determinant.ts
+function mat3Determinant(m) {
+  const n11 = m[0], n21 = m[1], n31 = m[2], n12 = m[3], n22 = m[4], n32 = m[5], n13 = m[6], n23 = m[7], n33 = m[8], t11 = n33 * n22 - n32 * n23, t12 = n32 * n13 - n33 * n12, t13 = n23 * n12 - n22 * n13;
+  return n11 * t11 + n21 * t12 + n31 * t13;
+}
+
+// src/math/mat3/mat3FromMat4.ts
+function mat3FromMat4(source) {
+  return [
+    source[0],
+    source[1],
+    source[2],
+    source[4],
+    source[5],
+    source[6],
+    source[8],
+    source[9],
+    source[10]
+  ];
+}
+
+// src/math/mat3/mat3FromQuaternion.ts
+function mat3FromQuaternion(quat) {
+  const x = quat[0];
+  const y = quat[1];
+  const z = quat[2];
+  const w = quat[3];
+  return [
+    1 - 2 * y * y - 2 * z * z,
+    2 * x * y + 2 * z * w,
+    2 * x * z - 2 * y * w,
+    2 * x * y - 2 * z * w,
+    1 - 2 * x * x - 2 * z * z,
+    2 * y * z + 2 * x * w,
+    2 * x * z + 2 * y * w,
+    2 * y * z - 2 * x * w,
+    1 - 2 * x * x - 2 * y * y
+  ];
+}
+
+// src/math/mat3/mat3Multiply.ts
+function mat3Multiply(...mats) {
+  if (mats.length < 2) {
+    return mats[0];
+  }
+  const a = mats.shift();
+  const b = mat3Multiply(...mats);
+  const a00 = a[0], a01 = a[1], a02 = a[2], a10 = a[3], a11 = a[4], a12 = a[5], a20 = a[6], a21 = a[7], a22 = a[8], b00 = b[0], b01 = b[1], b02 = b[2], b10 = b[3], b11 = b[4], b12 = b[5], b20 = b[6], b21 = b[7], b22 = b[8];
+  return [
+    a00 * b00 + a10 * b01 + a20 * b02,
+    a01 * b00 + a11 * b01 + a21 * b02,
+    a02 * b00 + a12 * b01 + a22 * b02,
+    a00 * b10 + a10 * b11 + a20 * b12,
+    a01 * b10 + a11 * b11 + a21 * b12,
+    a02 * b10 + a12 * b11 + a22 * b12,
+    a00 * b20 + a10 * b21 + a20 * b22,
+    a01 * b20 + a11 * b21 + a21 * b22,
+    a02 * b20 + a12 * b21 + a22 * b22
+  ];
+}
+
+// src/math/mat3/mat3Transpose.ts
+function mat3Transpose(source) {
+  return [
+    source[0],
+    source[3],
+    source[6],
+    source[1],
+    source[4],
+    source[7],
+    source[2],
+    source[5],
+    source[8]
+  ];
+}
+
+// src/math/mat3/Matrix3.ts
+var rawIdentityMatrix3 = [
+  1,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  1
+];
+var Matrix3 = class {
+  constructor(v = rawIdentityMatrix3) {
+    this.elements = v;
+  }
+  get transpose() {
+    return new Matrix3(mat3Transpose(this.elements));
+  }
+  get determinant() {
+    return mat3Determinant(this.elements);
+  }
+  get inverse() {
+    return new Matrix3(mat3Inverse(this.elements));
+  }
+  get matrix4() {
+    return Matrix4.fromMatrix3(this);
+  }
+  toString() {
+    const m = this.elements.map((v) => v.toFixed(3));
+    return `Matrix3( ${m[0]}, ${m[3]}, ${m[6]}; ${m[1]}, ${m[4]}, ${m[7]}; ${m[2]}, ${m[5]}, ${m[8]} )`;
+  }
+  clone() {
+    return new Matrix3(this.elements.concat());
+  }
+  multiply(...matrices) {
+    return Matrix3.multiply(this, ...matrices);
+  }
+  scaleScalar(scalar) {
+    return new Matrix3(vecScale(this.elements, scalar));
+  }
+  static get identity() {
+    return new Matrix3(rawIdentityMatrix3);
+  }
+  static multiply(...matrices) {
+    if (matrices.length === 0) {
+      return Matrix3.identity;
+    } else {
+      return new Matrix3(mat3Multiply(...matrices.map((m) => m.elements)));
+    }
+  }
+  static createNormalMatrix(matrix4) {
+    return new Matrix3(mat3CreateNormalMatrix(matrix4.elements));
+  }
+  static fromMatrix4(matrix4) {
+    return new Matrix3(mat3FromMat4(matrix4.elements));
+  }
+  static fromQuaternion(quaternion) {
+    return new Matrix3(mat3FromQuaternion(quaternion.elements));
   }
 };
 
@@ -1192,11 +1379,11 @@ function mat4Multiply(...mats) {
 }
 
 // src/math/mat4/mat4Perspective.ts
-function mat4Perspective(fov = 45, near = 0.01, far = 100) {
+function mat4Perspective(fov = 45, near = 0.01, far = 100, aspect = 1) {
   const p = 1 / Math.tan(fov * Math.PI / 360);
   const d = far - near;
   return [
-    p,
+    p / aspect,
     0,
     0,
     0,
@@ -1215,8 +1402,8 @@ function mat4Perspective(fov = 45, near = 0.01, far = 100) {
   ];
 }
 
-// src/math/mat4/mat4RotateX.ts
-function mat4RotateX(theta) {
+// src/math/mat4/mat4RotationX.ts
+function mat4RotationX(theta) {
   const c = Math.cos(theta);
   const s = Math.sin(theta);
   return [
@@ -1239,8 +1426,8 @@ function mat4RotateX(theta) {
   ];
 }
 
-// src/math/mat4/mat4RotateY.ts
-function mat4RotateY(theta) {
+// src/math/mat4/mat4RotationY.ts
+function mat4RotationY(theta) {
   const c = Math.cos(theta);
   const s = Math.sin(theta);
   return [
@@ -1263,8 +1450,8 @@ function mat4RotateY(theta) {
   ];
 }
 
-// src/math/mat4/mat4RotateZ.ts
-function mat4RotateZ(theta) {
+// src/math/mat4/mat4RotationZ.ts
+function mat4RotationZ(theta) {
   const c = Math.cos(theta);
   const s = Math.sin(theta);
   return [
@@ -1410,6 +1597,9 @@ var Matrix4 = class {
   get matrix3() {
     return Matrix3.fromMatrix4(this);
   }
+  get normalMatrix() {
+    return Matrix3.createNormalMatrix(this);
+  }
   toString() {
     const m = this.elements.map((v) => v.toFixed(3));
     return `Matrix4( ${m[0]}, ${m[4]}, ${m[8]}, ${m[12]}; ${m[1]}, ${m[5]}, ${m[9]}, ${m[13]}; ${m[2]}, ${m[6]}, ${m[10]}, ${m[14]}; ${m[3]}, ${m[7]}, ${m[11]}, ${m[15]} )`;
@@ -1456,14 +1646,14 @@ var Matrix4 = class {
   static scaleScalar(scalar) {
     return new Matrix4(mat4ScaleScalar(scalar));
   }
-  static rotateX(theta) {
-    return new Matrix4(mat4RotateX(theta));
+  static rotationX(theta) {
+    return new Matrix4(mat4RotationX(theta));
   }
-  static rotateY(theta) {
-    return new Matrix4(mat4RotateY(theta));
+  static rotationY(theta) {
+    return new Matrix4(mat4RotationY(theta));
   }
-  static rotateZ(theta) {
-    return new Matrix4(mat4RotateZ(theta));
+  static rotationZ(theta) {
+    return new Matrix4(mat4RotationZ(theta));
   }
   static lookAt(position, target = new Vector3([0, 0, 0]), up = new Vector3([0, 1, 0]), roll = 0) {
     return new Matrix4(mat4LookAt(position.elements, target.elements, up.elements, roll));
@@ -1511,6 +1701,21 @@ function quatNormalize(vec) {
     return [0, 0, 0, 1];
   }
   return vecScale(vec, 1 / len);
+}
+
+// src/math/quat/quatRotationX.ts
+function quatRotationX(theta) {
+  return [Math.sin(theta / 2), 0, 0, Math.cos(theta / 2)];
+}
+
+// src/math/quat/quatRotationY.ts
+function quatRotationY(theta) {
+  return [0, Math.sin(theta / 2), 0, Math.cos(theta / 2)];
+}
+
+// src/math/quat/quatRotationZ.ts
+function quatRotationZ(theta) {
+  return [0, 0, Math.sin(theta / 2), Math.cos(theta / 2)];
 }
 
 // src/math/quat/quatSlerp.ts
@@ -1608,6 +1813,15 @@ var Quaternion = class {
   }
   static slerp(a, b, t) {
     return new Quaternion(quatSlerp(a.elements, b.elements, t));
+  }
+  static rotationX(theta) {
+    return new Quaternion(quatRotationX(theta));
+  }
+  static rotationY(theta) {
+    return new Quaternion(quatRotationY(theta));
+  }
+  static rotationZ(theta) {
+    return new Quaternion(quatRotationZ(theta));
   }
   static lookRotation(look, up) {
     return new Quaternion(quatLookRotation(look.elements, up.elements));
@@ -1722,19 +1936,266 @@ var Euler = class {
   }
 };
 
-// src/math/mat3/mat3FromMat4Transpose.ts
-function mat3FromMat4Transpose(source) {
+// src/math/ray3/ray3DistanceToSphere.ts
+function ray3DistanceToSphere([ro, rd], sphere) {
+  const v = vecSub(ro, sphere[0]);
+  const b = vecDot(v, rd);
+  const c = vecDot(v, v) - sphere[1];
+  const d = b * b - c;
+  if (d < 0) {
+    return null;
+  }
+  const sqrtD = Math.sqrt(d);
+  return [-b - sqrtD, -b + sqrtD];
+}
+
+// src/math/line3/line3Delta.ts
+function line3Delta(line) {
+  return vecSub(line[1], line[0]);
+}
+
+// src/math/ray3/ray3FromLine3.ts
+function ray3FromLine3(line) {
   return [
-    source[0],
-    source[4],
-    source[8],
-    source[1],
-    source[5],
-    source[9],
-    source[2],
-    source[6],
-    source[10]
+    line[0],
+    vecNormalize(line3Delta(line))
   ];
+}
+
+// src/math/ray3/Ray3.ts
+var Ray3 = class {
+  constructor(start = Vector3.zero, end = Vector3.pz) {
+    this.origin = start;
+    this.direction = end;
+  }
+  get raw() {
+    return [this.origin.elements, this.direction.elements];
+  }
+  distanceToSphere(sphere) {
+    return ray3DistanceToSphere(this.raw, sphere.raw);
+  }
+  static fromRaw(ray) {
+    return new Ray3(new Vector3(ray[0]), new Vector3(ray[1]));
+  }
+  static fromLine3(line) {
+    return Ray3.fromRaw(ray3FromLine3(line.raw));
+  }
+};
+
+// src/math/line3/line3ApplyMatrix4.ts
+function line3ApplyMatrix4([start, end], matrix) {
+  return [
+    vec3ApplyMatrix4(start, matrix),
+    vec3ApplyMatrix4(end, matrix)
+  ];
+}
+
+// src/math/line3/line3At.ts
+function line3At(line, t) {
+  return vecAdd(vecScale(line[0], 1 - t), vecScale(line[1], t));
+}
+
+// src/math/line3/line3ClosestPointToPoint.ts
+function line3ClosestPointToPoint(line, point, segment) {
+  const ap = vecSub(point, line[0]);
+  const ab = vecSub(line[1], line[0]);
+  let t = vecDot(ap, ab) / vecDot(ab, ab);
+  segment && (t = saturate(t));
+  return line3At(line, t);
+}
+
+// src/math/line3/line3DistanceToPoint.ts
+function line3DistanceToPoint(line, point, segment) {
+  return vecLength(vecSub(line3ClosestPointToPoint(line, point, segment), point));
+}
+
+// src/math/line3/Line3.ts
+var Line3 = class {
+  constructor(start = Vector3.zero, end = Vector3.zero) {
+    this.start = start;
+    this.end = end;
+  }
+  get raw() {
+    return [this.start.elements, this.end.elements];
+  }
+  get ray() {
+    return Ray3.fromLine3(this);
+  }
+  delta() {
+    return new Vector3(line3Delta(this.raw));
+  }
+  length() {
+    return this.delta.length;
+  }
+  at(t) {
+    return new Vector3(line3At(this.raw, t));
+  }
+  applyMatrix4(matrix) {
+    return Line3.fromRaw(line3ApplyMatrix4(this.raw, matrix.elements));
+  }
+  closestPointToPoint(point, segment) {
+    return new Vector3(line3ClosestPointToPoint(this.raw, point.elements, segment));
+  }
+  distanceToPoint(point, segment) {
+    return line3DistanceToPoint(this.raw, point.elements, segment);
+  }
+  static fromRaw(line) {
+    return new Line3(new Vector3(line[0]), new Vector3(line[1]));
+  }
+};
+
+// src/math/vec3/vec3ApplyMatrix3.ts
+function vec3ApplyMatrix3(v, m) {
+  return [
+    m[0] * v[0] + m[3] * v[1] + m[6] * v[2],
+    m[1] * v[0] + m[4] * v[1] + m[7] * v[2],
+    m[2] * v[0] + m[5] * v[1] + m[8] * v[2]
+  ];
+}
+
+// src/math/plane3/plane3ApplyMatrix4.ts
+function plane3ApplyMatrix4([normal, distance], matrix, normalMatrix) {
+  const newNormal = vecNormalize(vec3ApplyMatrix3(normal, normalMatrix));
+  const coplanar = vecScale(normal, -distance);
+  const refPoint = vec3ApplyMatrix4(coplanar, matrix);
+  const newDistance = -vecDot(refPoint, normal);
+  return [newNormal, newDistance];
+}
+
+// src/math/plane3/plane3DistanceToPoint.ts
+function plane3DistanceToPoint([normal, distance], point) {
+  return vecDot(normal, point) + distance;
+}
+
+// src/math/plane3/plane3Normalize.ts
+function plane3Normalize([normal, distance]) {
+  const invL = 1 / vecLength(normal);
+  return [vecScale(normal, invL), distance * invL];
+}
+
+// src/math/plane3/Plane3.ts
+var Plane3 = class {
+  get raw() {
+    return [this.normal.elements, this.distance];
+  }
+  get normalized() {
+    return Plane3.fromRaw(plane3Normalize(this.raw));
+  }
+  constructor(normal = Vector3.pz, distance = 0) {
+    this.normal = normal;
+    this.distance = distance;
+  }
+  applyMatrix4(matrix, normalMatrix) {
+    var _a;
+    return Plane3.fromRaw(plane3ApplyMatrix4(this.raw, matrix.elements, (_a = normalMatrix == null ? void 0 : normalMatrix.elements) != null ? _a : matrix.normalMatrix.elements));
+  }
+  distanceToPoint(point) {
+    return plane3DistanceToPoint(this.raw, point.elements);
+  }
+  static fromRaw(plane) {
+    return new Plane3(new Vector3(plane[0]), plane[1]);
+  }
+};
+
+// src/math/plane3/planes3ContainPoint.ts
+function planes3ContainPoint(planes, point) {
+  return planes.every((plane) => plane3DistanceToPoint(plane, point) >= 0);
+}
+
+// src/math/plane3/planes3FromBox3.ts
+function planes3FromBox3(box) {
+  return [
+    [[1, 0, 0], -box[0][0]],
+    [[-1, 0, 0], box[1][0]],
+    [[0, 1, 0], -box[0][1]],
+    [[0, -1, 0], box[1][1]],
+    [[0, 0, 1], -box[0][2]],
+    [[0, 0, -1], box[1][2]]
+  ];
+}
+
+// src/math/plane3/planes3FromProjectionMatrix.ts
+function planes3FromProjectionMatrix(m) {
+  const m11 = m[0], m12 = m[4], m13 = m[8], m14 = m[12], m21 = m[1], m22 = m[5], m23 = m[9], m24 = m[13], m31 = m[2], m32 = m[6], m33 = m[10], m34 = m[14], m41 = m[3], m42 = m[7], m43 = m[11], m44 = m[15];
+  return [
+    plane3Normalize([[m41 - m11, m42 - m12, m43 - m13], m44 - m14]),
+    plane3Normalize([[m41 + m11, m42 + m12, m43 + m13], m44 + m14]),
+    plane3Normalize([[m41 - m21, m42 - m22, m43 - m23], m44 - m24]),
+    plane3Normalize([[m41 + m21, m42 + m22, m43 + m23], m44 + m24]),
+    plane3Normalize([[m41 - m31, m42 - m32, m43 - m33], m44 - m34]),
+    plane3Normalize([[m41 + m31, m42 + m32, m43 + m33], m44 + m34])
+  ];
+}
+
+// src/math/plane3/planes3IntersectBox3.ts
+function planes3IntersectBox3(planes, box) {
+  return planes.every((plane) => {
+    const v = plane[0].map((nc, i) => box[nc > 0 ? 1 : 0][i]);
+    return plane3DistanceToPoint(plane, v) >= 0;
+  });
+}
+
+// src/math/plane3/planes3IntersectSphere3.ts
+function planes3IntersectSphere3(planes, sphere) {
+  return planes.every((plane) => plane3DistanceToPoint(plane, sphere[0]) >= -sphere[1]);
+}
+
+// src/math/plane3/Planes3.ts
+var Planes3 = class {
+  get raw() {
+    return this.planes.map((plane) => plane.raw);
+  }
+  constructor(planes) {
+    this.planes = planes;
+  }
+  containPoint(point) {
+    return planes3ContainPoint(this.raw, point.elements);
+  }
+  intersectBox3(box) {
+    return planes3IntersectBox3(this.raw, box.raw);
+  }
+  intersectSphere3(sphere) {
+    return planes3IntersectSphere3(this.raw, sphere.raw);
+  }
+  static fromRaw(planes) {
+    return new Planes3(planes.map((plane) => Plane3.fromRaw(plane)));
+  }
+  static fromBox3(box) {
+    return Planes3.fromRaw(planes3FromBox3(box.raw));
+  }
+  static fromProjectionMatrix(matrix) {
+    return Planes3.fromRaw(planes3FromProjectionMatrix(matrix.elements));
+  }
+};
+
+// src/math/sphere3/sphere3ContainsPoint.ts
+function sphere3ContainsPoint(sphere, point) {
+  return vecLengthSq(vecSub(sphere[0], point)) <= sphere[1] * sphere[1];
+}
+
+// src/math/sphere3/Sphere3.ts
+var Sphere3 = class {
+  constructor(origin = Vector3.zero, radius = 0) {
+    this.origin = origin;
+    this.radius = radius;
+  }
+  get raw() {
+    return [this.origin.elements, this.radius];
+  }
+  containsPoint(point) {
+    return sphere3ContainsPoint(this.raw, point.elements);
+  }
+  static fromRaw(sphere) {
+    return new Sphere3(new Vector3(sphere[0]), sphere[1]);
+  }
+};
+
+// src/math/vec4/vec4ApplyMatrix3.ts
+function vec4ApplyMatrix3(v, m) {
+  const v3 = [v[0], v[1], v[2]];
+  const xyz = vec3ApplyMatrix3(v3, m);
+  const w = v[3];
+  return [xyz[0], xyz[1], xyz[2], w];
 }
 
 // src/math/vec4/Vector4.ts
@@ -1769,6 +2230,9 @@ var Vector4 = class extends Vector {
   }
   toString() {
     return `Vector4( ${this.x.toFixed(3)}, ${this.y.toFixed(3)}, ${this.z.toFixed(3)}, ${this.w.toFixed(3)} )`;
+  }
+  applyMatrix3(matrix) {
+    return new Vector4(vec4ApplyMatrix3(this.elements, matrix.elements));
   }
   applyMatrix4(matrix) {
     return new Vector4(vec4ApplyMatrix4(this.elements, matrix.elements));
@@ -2104,6 +2568,158 @@ var pokerHandsByStrength = [
   "StraightFlush"
 ];
 
+// src/stniccc/parseSTNICCC.ts
+function parseSTNICCC(buffer) {
+  const frames = [];
+  const array = new Uint8Array(buffer);
+  const palette = new Uint16Array(16);
+  let head = 0;
+  let shouldSkip = false;
+  let shouldEnd = false;
+  for (; ; ) {
+    const flags = array[head++];
+    const needsClear = (flags & 1) === 1;
+    const hasPalette = (flags >> 1 & 1) === 1;
+    const indexedMode = (flags >> 2 & 1) === 1;
+    if (hasPalette) {
+      const bitmask = array[head++] << 8 | array[head++];
+      for (let i = 0; i < 16; i++) {
+        if (bitmask >> 15 - i & 1) {
+          palette[i] = array[head++] << 8 | array[head++];
+        }
+      }
+    }
+    if (indexedMode) {
+      const nVertices = array[head++];
+      const vertices = array.subarray(head, head + 2 * nVertices);
+      head += 2 * nVertices;
+      const polygons = [];
+      for (; ; ) {
+        const descriptor = array[head++];
+        if (descriptor === 255) {
+          break;
+        } else if (descriptor === 254) {
+          shouldSkip = true;
+          break;
+        } else if (descriptor === 253) {
+          shouldEnd = true;
+          break;
+        }
+        const colorIndex = descriptor >> 4 & 15;
+        const nIndices = descriptor & 15;
+        const indices = array.subarray(head, head + nIndices);
+        head += nIndices;
+        polygons.push({
+          colorIndex,
+          indices: Array.from(indices)
+        });
+      }
+      frames.push({
+        needsClear,
+        indexedMode,
+        palette: Array.from(palette),
+        vertices: Array.from(vertices),
+        polygons
+      });
+    } else {
+      const polygons = [];
+      for (; ; ) {
+        const descriptor = array[head++];
+        if (descriptor === 255) {
+          break;
+        } else if (descriptor === 254) {
+          shouldSkip = true;
+          break;
+        } else if (descriptor === 253) {
+          shouldEnd = true;
+          break;
+        }
+        const colorIndex = descriptor >> 4 & 15;
+        const nVertices = descriptor & 15;
+        const vertices = array.subarray(head, head + 2 * nVertices);
+        head += 2 * nVertices;
+        polygons.push({
+          colorIndex,
+          vertices: Array.from(vertices)
+        });
+      }
+      frames.push({
+        needsClear,
+        indexedMode,
+        palette: Array.from(palette),
+        polygons
+      });
+    }
+    if (shouldSkip) {
+      head = (Math.floor(head / 65536) + 1) * 65536;
+      shouldSkip = false;
+    }
+    if (shouldEnd) {
+      break;
+    }
+  }
+  return frames;
+}
+
+// src/stniccc/stnicccToSVG.ts
+function stnicccToSVG(frames, options = {}) {
+  var _a;
+  const delta = 1 / ((_a = options == null ? void 0 : options.fps) != null ? _a : 30);
+  let svg = '<svg width="256" height="200" viewBox="0 0 256 200" xmlns="http://www.w3.org/2000/svg">';
+  let style = `g{visibility:hidden;animation-duration:${(delta * frames.length).toFixed(3)}s;animation-iteration-count:infinite;animation-name:frame}@keyframes frame{0%{visibility:visible}${200 / frames.length}%{visibility:hidden}}`;
+  frames.map((frame, iFrame) => {
+    const { indexedMode, palette, polygons } = frame;
+    style += `#f${iFrame}{animation-delay:${(delta * iFrame).toFixed(3)}s}`;
+    const paletteInHex = palette.map((stColor) => {
+      const color = colorFromAtariST(stColor);
+      return colorToHex(color);
+    });
+    let childrenStr = '<rect width="256" height="200" fill="#000" />';
+    let currentColorIndex = -1;
+    let d = "";
+    if (indexedMode) {
+      const { vertices } = frame;
+      polygons.map(({ colorIndex, indices }) => {
+        if (currentColorIndex !== colorIndex) {
+          if (currentColorIndex !== -1) {
+            const colorHex2 = paletteInHex[currentColorIndex];
+            childrenStr += `<path d="${d}" fill="${colorHex2}" />`;
+          }
+          currentColorIndex = colorIndex;
+          d = "";
+        }
+        for (let i = 0; i < indices.length; i++) {
+          const index = indices[i];
+          const x = vertices[2 * index];
+          const y = vertices[2 * index + 1];
+          d += i === 0 ? `M${x},${y}` : `L${x},${y}`;
+        }
+      });
+    } else {
+      polygons.map(({ colorIndex, vertices }) => {
+        if (currentColorIndex !== colorIndex) {
+          if (currentColorIndex !== -1) {
+            const colorHex2 = paletteInHex[currentColorIndex];
+            childrenStr += `<path d="${d}" fill="${colorHex2}" />`;
+          }
+          currentColorIndex = colorIndex;
+          d = "";
+        }
+        for (let i = 0; i < vertices.length; i += 2) {
+          const x = vertices[i];
+          const y = vertices[i + 1];
+          d += i === 0 ? `M${x},${y}` : `L${x},${y}`;
+        }
+      });
+    }
+    const colorHex = paletteInHex[currentColorIndex];
+    childrenStr += `<path d="${d}" fill="${colorHex}" />`;
+    svg += `<g id="f${iFrame}">${childrenStr}</g>`;
+  });
+  svg += `<style>${style}</style></svg>`;
+  return svg;
+}
+
 // src/Swap/Swap.ts
 var Swap = class {
   constructor(a, b) {
@@ -2198,6 +2814,7 @@ function getYugopText(text, phase, randomRatio = 0.5) {
   return text.substring(0, fixLength) + randomStr;
 }
 export {
+  Box3,
   CDS,
   Clock,
   ClockFrame,
@@ -2208,11 +2825,15 @@ export {
   HistoryMeanCalculator,
   HistoryMedianCalculator,
   HistoryPercentileCalculator,
+  Line3,
   MapOfSet,
   Matrix3,
   Matrix4,
+  Plane3,
+  Planes3,
   Pool,
   Quaternion,
+  Sphere3,
   Swap,
   TRIANGLE_STRIP_QUAD,
   TRIANGLE_STRIP_QUAD_3D,
@@ -2229,9 +2850,18 @@ export {
   arraySetHas,
   arraySetUnion,
   binarySearch,
+  box3ContainsPoint,
   clamp,
+  colorFromAtariST,
   colorToHex,
+  colorTurbo,
   createPokerDeck,
+  dagEdgesAncestors,
+  dagEdgesChildren,
+  dagEdgesDescendants,
+  dagEdgesParent,
+  dagEdgesParents,
+  dagEdgesResolve,
   edt1d,
   edt2d,
   eotfRec709,
@@ -2241,7 +2871,13 @@ export {
   evaluatePokerHand,
   getYugopText,
   lerp,
+  line3ApplyMatrix4,
+  line3At,
+  line3ClosestPointToPoint,
+  line3Delta,
+  line3DistanceToPoint,
   linearstep,
+  mat3CreateNormalMatrix,
   mat3Determinant,
   mat3FromMat4,
   mat3FromMat4Transpose,
@@ -2259,9 +2895,9 @@ export {
   mat4LookAtInverse,
   mat4Multiply,
   mat4Perspective,
-  mat4RotateX,
-  mat4RotateY,
-  mat4RotateZ,
+  mat4RotationX,
+  mat4RotationY,
+  mat4RotationZ,
   mat4Scale,
   mat4ScaleScalar,
   mat4Translate,
@@ -2270,6 +2906,15 @@ export {
   matrix3d,
   mod,
   oetfRec709,
+  parseSTNICCC,
+  plane3ApplyMatrix4,
+  plane3DistanceToPoint,
+  plane3Normalize,
+  planes3ContainPoint,
+  planes3FromBox3,
+  planes3FromProjectionMatrix,
+  planes3IntersectBox3,
+  planes3IntersectSphere3,
   pokerHandStrengthMap,
   pokerHandsByStrength,
   pokerRankStrengthMap,
@@ -2283,6 +2928,9 @@ export {
   quatInverse,
   quatMultiply,
   quatNormalize,
+  quatRotationX,
+  quatRotationY,
+  quatRotationZ,
   range,
   sanitizeAngle,
   saturate,
@@ -2291,11 +2939,16 @@ export {
   smootheststep,
   smoothstep,
   sortPokerCardsByRank,
+  sphere3ContainsPoint,
+  stnicccToSVG,
+  traverse,
   triIndexToLineIndex,
+  vec3ApplyMatrix3,
   vec3ApplyMatrix4,
   vec3ApplyQuaternion,
   vec3Cross,
   vec3OrthoNormalize,
+  vec4ApplyMatrix3,
   vec4ApplyMatrix4,
   vecAdd,
   vecDivide,
@@ -2309,4 +2962,11 @@ export {
   vecScale,
   vecSub
 };
+/*!
+ * Turbo colormap
+ *
+ * Copyright 2019 Google LLC. (Apache-2.0)
+ *
+ * https://gist.github.com/mikhailov-work/0d177465a8151eb6ede1768d51d476c7
+ */
 //# sourceMappingURL=0b5vr-experimental.esm.js.map

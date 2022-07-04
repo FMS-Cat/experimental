@@ -54,6 +54,7 @@
         <option value="matrix">matrix</option>
         <option value="oetf">oetf</option>
         <option value="poker">poker</option>
+        <option value="turbo">turbo</option>
         <option value="yugop" selected>yugop</option>
       </select>
     </div>
@@ -151,6 +152,24 @@ export default ( { divContainer } ) => {
   const winRatio = 0.5 + 0.5 * win / 10000.0;
 
   divContainer.textContent = \`hand: \${ myPocket.join( ', ' ) }\\nwinRatio: \${ ( winRatio * 100.0 ).toFixed( 2 ) } %\`;
+};
+`,
+        'turbo': `import { colorTurbo, colorToHex } from '@0b5vr/experimental';
+
+export default ( { divContainer } ) => {
+  divContainer.textContent = '';
+
+  const canvas = document.createElement( 'canvas' );
+  canvas.width = 512;
+  canvas.height = 32;
+  divContainer.appendChild( canvas );
+
+  const context = canvas.getContext( '2d' );
+
+  for ( let i = 0; i < 512; i ++ ) {
+    context.fillStyle = colorToHex( colorTurbo( i / 511.0 ) );
+    context.fillRect( i, 0, 1, 32 );
+  }
 };
 `,
         'yugop': `import { ClockRealtime, getYugopText } from '@0b5vr/experimental';

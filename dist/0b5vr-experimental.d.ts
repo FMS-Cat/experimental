@@ -6,6 +6,7 @@ declare module '@0b5vr/experimental' {
     export * from '@0b5vr/experimental/CDS';
     export * from '@0b5vr/experimental/Clock';
     export * from '@0b5vr/experimental/color';
+    export * from '@0b5vr/experimental/dag';
     export * from '@0b5vr/experimental/edt';
     export * from '@0b5vr/experimental/ExpSmooth';
     export * from '@0b5vr/experimental/GPUTimer';
@@ -14,6 +15,7 @@ declare module '@0b5vr/experimental' {
     export * from '@0b5vr/experimental/math';
     export * from '@0b5vr/experimental/poker';
     export * from '@0b5vr/experimental/Pool';
+    export * from '@0b5vr/experimental/stniccc';
     export * from '@0b5vr/experimental/Swap';
     export * from '@0b5vr/experimental/TapTempo';
     export * from '@0b5vr/experimental/Xorshift';
@@ -22,6 +24,7 @@ declare module '@0b5vr/experimental' {
 
 declare module '@0b5vr/experimental/algorithm' {
     export * from '@0b5vr/experimental/algorithm/binarySearch';
+    export * from '@0b5vr/experimental/algorithm/traverse';
 }
 
 declare module '@0b5vr/experimental/array' {
@@ -41,10 +44,22 @@ declare module '@0b5vr/experimental/Clock' {
 }
 
 declare module '@0b5vr/experimental/color' {
+    export * from '@0b5vr/experimental/color/colorFromAtariST';
     export * from '@0b5vr/experimental/color/colorToHex';
+    export * from '@0b5vr/experimental/color/colorTurbo';
     export * from '@0b5vr/experimental/color/eotfRec709';
     export * from '@0b5vr/experimental/color/oetfRec709';
     export * from '@0b5vr/experimental/color/RawRGB';
+}
+
+declare module '@0b5vr/experimental/dag' {
+    export * from '@0b5vr/experimental/dag/dagEdgesAncestors';
+    export * from '@0b5vr/experimental/dag/dagEdgesChildren';
+    export * from '@0b5vr/experimental/dag/dagEdgesDescendants';
+    export * from '@0b5vr/experimental/dag/dagEdgesParent';
+    export * from '@0b5vr/experimental/dag/dagEdgesParents';
+    export * from '@0b5vr/experimental/dag/dagEdgesResolve';
+    export * from '@0b5vr/experimental/dag/RawDagEdge';
 }
 
 declare module '@0b5vr/experimental/edt' {
@@ -70,10 +85,14 @@ declare module '@0b5vr/experimental/MapOfSet' {
 }
 
 declare module '@0b5vr/experimental/math' {
+    export * from '@0b5vr/experimental/math/box3';
     export * from '@0b5vr/experimental/math/euler';
+    export * from '@0b5vr/experimental/math/line3';
     export * from '@0b5vr/experimental/math/mat3';
     export * from '@0b5vr/experimental/math/mat4';
+    export * from '@0b5vr/experimental/math/plane3';
     export * from '@0b5vr/experimental/math/quat';
+    export * from '@0b5vr/experimental/math/sphere3';
     export * from '@0b5vr/experimental/math/vec';
     export * from '@0b5vr/experimental/math/vec3';
     export * from '@0b5vr/experimental/math/vec4';
@@ -100,6 +119,12 @@ declare module '@0b5vr/experimental/poker' {
 
 declare module '@0b5vr/experimental/Pool' {
     export * from '@0b5vr/experimental/Pool/Pool';
+}
+
+declare module '@0b5vr/experimental/stniccc' {
+    export * from '@0b5vr/experimental/stniccc/parseSTNICCC';
+    export * from '@0b5vr/experimental/stniccc/STNICCCFrame';
+    export * from '@0b5vr/experimental/stniccc/stnicccToSVG';
 }
 
 declare module '@0b5vr/experimental/Swap' {
@@ -131,6 +156,34 @@ declare module '@0b5vr/experimental/algorithm/binarySearch' {
       */
     export function binarySearch<T>(array: ArrayLike<T>, element: T): number;
     export function binarySearch<T>(array: ArrayLike<T>, compare: (element: T) => boolean): number;
+}
+
+declare module '@0b5vr/experimental/algorithm/traverse' {
+    /**
+      * Generic traverse function.
+      *
+      * It performs Depth-First Search.
+      *
+      * The `traverser` function will be executed for each descendants.
+      * You need to return their "children" in an array.
+      * If you want to stop the traversal, return `false` instead.
+      *
+      * @example
+      * ```js
+      * // replicate Three.js traverse for no reason
+      * const meshes = [];
+      * traverse( object3DRoot, ( object ) => {
+      *   if ( object.isMesh ) {
+      *     meshes.push( object );
+      *   }
+      *   return object3DRoot.children;
+      * } );
+      * ```
+      *
+      * @param root The "root" node
+      * @param traverser The traverse function. If the node has "children" return them in an array.
+      */
+    export function traverse<TNode>(root: TNode, traverser: (node: TNode) => TNode[] | false): void;
 }
 
 declare module '@0b5vr/experimental/array/arraySet' {
@@ -302,6 +355,16 @@ declare module '@0b5vr/experimental/Clock/ClockRealtime' {
     }
 }
 
+declare module '@0b5vr/experimental/color/colorFromAtariST' {
+    import type { RawRGB } from '@0b5vr/experimental/color/RawRGB';
+    /**
+      * Converts the input color in Atari-ST color palette format to a {@link RawRGB}.
+      *
+      * @param stColor A color in Atari-ST format
+      */
+    export function colorFromAtariST(stColor: number): RawRGB;
+}
+
 declare module '@0b5vr/experimental/color/colorToHex' {
     import type { RawRGB } from '@0b5vr/experimental/color/RawRGB';
     /**
@@ -309,6 +372,16 @@ declare module '@0b5vr/experimental/color/colorToHex' {
       * @param color color in {@link RawRGB}
       */
     export function colorToHex(color: RawRGB): string;
+}
+
+declare module '@0b5vr/experimental/color/colorTurbo' {
+    import { RawRGB } from '@0b5vr/experimental/color/RawRGB';
+    /**
+        * Generate a turbo gradient.
+        *
+        * Ref: https://gist.github.com/mikhailov-work/0d177465a8151eb6ede1768d51d476c7
+        */
+    export function colorTurbo(x: number): RawRGB;
 }
 
 declare module '@0b5vr/experimental/color/eotfRec709' {
@@ -329,6 +402,83 @@ declare module '@0b5vr/experimental/color/oetfRec709' {
 
 declare module '@0b5vr/experimental/color/RawRGB' {
     export type RawRGB = [number, number, number];
+}
+
+declare module '@0b5vr/experimental/dag/dagEdgesAncestors' {
+    import type { RawDagEdge } from '@0b5vr/experimental/dag/RawDagEdge';
+    /**
+      * Return all ancestor sources the specified destination has.
+      * @param edges An array of dag edge
+      * @param destination The target destination
+      *
+      * See also: {@link dagEdgesChildren}
+      */
+    export function dagEdgesAncestors<T>(edges: RawDagEdge<T>[], destination: T): T[];
+}
+
+declare module '@0b5vr/experimental/dag/dagEdgesChildren' {
+    import { RawDagEdge } from '@0b5vr/experimental/dag/RawDagEdge';
+    /**
+      * Return all children destinations the specified source has.
+      * @param edges An array of dag edge
+      * @param source The target source
+      *
+      * See also: {@link dagEdgesDescendant}
+      */
+    export function dagEdgesChildren<T>(edges: RawDagEdge<T>[], source: T): T[];
+}
+
+declare module '@0b5vr/experimental/dag/dagEdgesDescendants' {
+    import type { RawDagEdge } from '@0b5vr/experimental/dag/RawDagEdge';
+    /**
+      * Return all descendant destinations the specified source has.
+      * @param edges An array of dag edge
+      * @param source The target source
+      *
+      * See also: {@link dagEdgesChildren}
+      */
+    export function dagEdgesDescendants<T>(edges: RawDagEdge<T>[], source: T): T[];
+}
+
+declare module '@0b5vr/experimental/dag/dagEdgesParent' {
+    import { RawDagEdge } from '@0b5vr/experimental/dag/RawDagEdge';
+    /**
+      * Return first parent source the specified destination has.
+      * If it can't find a parent, it will return `null` instead.
+      *
+      * @param edges An array of dag edge
+      * @param destination The target destination
+      *
+      * See also: {@link dagEdgesParents}
+      */
+    export function dagEdgesParent<T>(edges: RawDagEdge<T>[], destination: T): T | null;
+}
+
+declare module '@0b5vr/experimental/dag/dagEdgesParents' {
+    import { RawDagEdge } from '@0b5vr/experimental/dag/RawDagEdge';
+    /**
+      * Return all parent sources the specified destination has.
+      * @param edges An array of dag edge
+      * @param destination The target destination
+      *
+      * See also: {@link dagEdgesChildren}
+      */
+    export function dagEdgesParents<T>(edges: RawDagEdge<T>[], destination: T): T[];
+}
+
+declare module '@0b5vr/experimental/dag/dagEdgesResolve' {
+    import { RawDagEdge } from '@0b5vr/experimental/dag/RawDagEdge';
+    /**
+      * Resolve dag dependency relationship and give you a correct order.
+      *
+      * @param edges An array of dag edges
+      * @param nodes An array of dag nodes
+      */
+    export function dagEdgesResolve<T>(edges: RawDagEdge<T>[], nodes: T[]): T[];
+}
+
+declare module '@0b5vr/experimental/dag/RawDagEdge' {
+    export type RawDagEdge<T> = [T, T];
 }
 
 declare module '@0b5vr/experimental/edt/edt' {
@@ -430,6 +580,12 @@ declare module '@0b5vr/experimental/MapOfSet/MapOfSet' {
     }
 }
 
+declare module '@0b5vr/experimental/math/box3' {
+    export * from '@0b5vr/experimental/math/box3/Box3';
+    export * from '@0b5vr/experimental/math/box3/box3ContainsPoint';
+    export * from '@0b5vr/experimental/math/box3/RawBox3';
+}
+
 declare module '@0b5vr/experimental/math/euler' {
     export * from '@0b5vr/experimental/math/euler/Euler';
     export * from '@0b5vr/experimental/math/euler/eulerFromMat3';
@@ -438,7 +594,18 @@ declare module '@0b5vr/experimental/math/euler' {
     export * from '@0b5vr/experimental/math/euler/EulerOrder';
 }
 
+declare module '@0b5vr/experimental/math/line3' {
+    export * from '@0b5vr/experimental/math/line3/Line3';
+    export * from '@0b5vr/experimental/math/line3/line3ApplyMatrix4';
+    export * from '@0b5vr/experimental/math/line3/line3At';
+    export * from '@0b5vr/experimental/math/line3/line3ClosestPointToPoint';
+    export * from '@0b5vr/experimental/math/line3/line3Delta';
+    export * from '@0b5vr/experimental/math/line3/line3DistanceToPoint';
+    export * from '@0b5vr/experimental/math/line3/RawLine3';
+}
+
 declare module '@0b5vr/experimental/math/mat3' {
+    export { mat3CreateNormalMatrix } from '@0b5vr/experimental/math/mat3/mat3CreateNormalMatrix';
     export { mat3Determinant } from '@0b5vr/experimental/math/mat3/mat3Determinant';
     export { mat3FromMat4 } from '@0b5vr/experimental/math/mat3/mat3FromMat4';
     export { mat3FromMat4Transpose } from '@0b5vr/experimental/math/mat3/mat3FromMat4Transpose';
@@ -461,15 +628,29 @@ declare module '@0b5vr/experimental/math/mat4' {
     export { mat4LookAtInverse } from '@0b5vr/experimental/math/mat4/mat4LookAtInverse';
     export { mat4Multiply } from '@0b5vr/experimental/math/mat4/mat4Multiply';
     export { mat4Perspective } from '@0b5vr/experimental/math/mat4/mat4Perspective';
-    export { mat4RotateX } from '@0b5vr/experimental/math/mat4/mat4RotateX';
-    export { mat4RotateY } from '@0b5vr/experimental/math/mat4/mat4RotateY';
-    export { mat4RotateZ } from '@0b5vr/experimental/math/mat4/mat4RotateZ';
+    export { mat4RotationX } from '@0b5vr/experimental/math/mat4/mat4RotationX';
+    export { mat4RotationY } from '@0b5vr/experimental/math/mat4/mat4RotationY';
+    export { mat4RotationZ } from '@0b5vr/experimental/math/mat4/mat4RotationZ';
     export { mat4Scale } from '@0b5vr/experimental/math/mat4/mat4Scale';
     export { mat4ScaleScalar } from '@0b5vr/experimental/math/mat4/mat4ScaleScalar';
     export { mat4Translate } from '@0b5vr/experimental/math/mat4/mat4Translate';
     export { mat4Transpose } from '@0b5vr/experimental/math/mat4/mat4Transpose';
     export { Matrix4 } from '@0b5vr/experimental/math/mat4/Matrix4';
     export type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
+}
+
+declare module '@0b5vr/experimental/math/plane3' {
+    export * from '@0b5vr/experimental/math/plane3/Plane3';
+    export * from '@0b5vr/experimental/math/plane3/plane3ApplyMatrix4';
+    export * from '@0b5vr/experimental/math/plane3/plane3DistanceToPoint';
+    export * from '@0b5vr/experimental/math/plane3/plane3Normalize';
+    export * from '@0b5vr/experimental/math/plane3/Planes3';
+    export * from '@0b5vr/experimental/math/plane3/planes3ContainPoint';
+    export * from '@0b5vr/experimental/math/plane3/planes3FromBox3';
+    export * from '@0b5vr/experimental/math/plane3/planes3FromProjectionMatrix';
+    export * from '@0b5vr/experimental/math/plane3/planes3IntersectBox3';
+    export * from '@0b5vr/experimental/math/plane3/planes3IntersectSphere3';
+    export * from '@0b5vr/experimental/math/plane3/RawPlane3';
 }
 
 declare module '@0b5vr/experimental/math/quat' {
@@ -481,7 +662,16 @@ declare module '@0b5vr/experimental/math/quat' {
     export { quatInverse } from '@0b5vr/experimental/math/quat/quatInverse';
     export { quatMultiply } from '@0b5vr/experimental/math/quat/quatMultiply';
     export { quatNormalize } from '@0b5vr/experimental/math/quat/quatNormalize';
+    export { quatRotationX } from '@0b5vr/experimental/math/quat/quatRotationX';
+    export { quatRotationY } from '@0b5vr/experimental/math/quat/quatRotationY';
+    export { quatRotationZ } from '@0b5vr/experimental/math/quat/quatRotationZ';
     export type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
+}
+
+declare module '@0b5vr/experimental/math/sphere3' {
+    export * from '@0b5vr/experimental/math/sphere3/RawSphere3';
+    export * from '@0b5vr/experimental/math/sphere3/Sphere3';
+    export * from '@0b5vr/experimental/math/sphere3/sphere3ContainsPoint';
 }
 
 declare module '@0b5vr/experimental/math/vec' {
@@ -501,6 +691,7 @@ declare module '@0b5vr/experimental/math/vec' {
 
 declare module '@0b5vr/experimental/math/vec3' {
     export type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    export { vec3ApplyMatrix3 } from '@0b5vr/experimental/math/vec3/vec3ApplyMatrix3';
     export { vec3ApplyMatrix4 } from '@0b5vr/experimental/math/vec3/vec3ApplyMatrix4';
     export { vec3ApplyQuaternion } from '@0b5vr/experimental/math/vec3/vec3ApplyQuaternion';
     export { vec3Cross } from '@0b5vr/experimental/math/vec3/vec3Cross';
@@ -510,6 +701,7 @@ declare module '@0b5vr/experimental/math/vec3' {
 
 declare module '@0b5vr/experimental/math/vec4' {
     export type { RawVector4 } from '@0b5vr/experimental/math/vec4/RawVector4';
+    export { vec4ApplyMatrix3 } from '@0b5vr/experimental/math/vec4/vec4ApplyMatrix3';
     export { vec4ApplyMatrix4 } from '@0b5vr/experimental/math/vec4/vec4ApplyMatrix4';
     export { Vector4 } from '@0b5vr/experimental/math/vec4/Vector4';
 }
@@ -657,6 +849,46 @@ declare module '@0b5vr/experimental/Pool/Pool' {
     }
 }
 
+declare module '@0b5vr/experimental/stniccc/parseSTNICCC' {
+    import { STNICCCFrame } from '@0b5vr/experimental/stniccc/STNICCCFrame';
+    /**
+      * Ref: http://arsantica-online.com/st-niccc-competition/
+      *
+      * @param buffer The input ST-NICCC data
+      */
+    export function parseSTNICCC(buffer: ArrayBuffer): STNICCCFrame[];
+}
+
+declare module '@0b5vr/experimental/stniccc/STNICCCFrame' {
+    export interface STNICCCFrameIndexed {
+        needsClear: boolean;
+        indexedMode: true;
+        palette: number[];
+        vertices: number[];
+        polygons: {
+            colorIndex: number;
+            indices: number[];
+        }[];
+    }
+    export interface STNICCCFrameNonIndexed {
+        needsClear: boolean;
+        indexedMode: false;
+        palette: number[];
+        polygons: {
+            colorIndex: number;
+            vertices: number[];
+        }[];
+    }
+    export type STNICCCFrame = STNICCCFrameIndexed | STNICCCFrameNonIndexed;
+}
+
+declare module '@0b5vr/experimental/stniccc/stnicccToSVG' {
+    import { STNICCCFrame } from '@0b5vr/experimental/stniccc/STNICCCFrame';
+    export function stnicccToSVG(frames: STNICCCFrame[], options?: {
+        fps?: number;
+    }): string;
+}
+
 declare module '@0b5vr/experimental/Swap/Swap' {
     /**
       * Useful for swap buffer
@@ -700,6 +932,50 @@ declare module '@0b5vr/experimental/yugop/getYugopText' {
       * @param randomRatio The nerd value
       */
     export function getYugopText(text: string, phase: number, randomRatio?: number): string;
+}
+
+declare module '@0b5vr/experimental/math/box3/Box3' {
+    import { Vector3 } from '@0b5vr/experimental/math/vec3/Vector3';
+    import type { RawBox3 } from '@0b5vr/experimental/math/box3/RawBox3';
+    /**
+        * A 3D box.
+        */
+    export class Box3 {
+            min: Vector3;
+            max: Vector3;
+            constructor(min?: Vector3, max?: Vector3);
+            /**
+                * Itself but {@link RawBox3} form.
+                */
+            get raw(): RawBox3;
+            /**
+                * Test if given point is contained in the box or not.
+                *
+                * @param point A point
+                */
+            containsPoint(point: Vector3): boolean;
+            /**
+                * Convert {@link RawBox3} to class form.
+                * @param box A {@link RawBox3}
+                */
+            static fromRaw(box: RawBox3): Box3;
+    }
+}
+
+declare module '@0b5vr/experimental/math/box3/box3ContainsPoint' {
+    import type { RawBox3 } from '@0b5vr/experimental/math/box3/RawBox3';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Test if given point is contained in given box or not.
+      * @param box A box
+      * @param point A point
+      */
+    export function box3ContainsPoint(box: RawBox3, point: RawVector3): boolean;
+}
+
+declare module '@0b5vr/experimental/math/box3/RawBox3' {
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    export type RawBox3 = [min: RawVector3, max: RawVector3];
 }
 
 declare module '@0b5vr/experimental/math/euler/Euler' {
@@ -811,6 +1087,159 @@ declare module '@0b5vr/experimental/math/euler/EulerOrder' {
     export type EulerOrder = 'XYZ' | 'XZY' | 'YXZ' | 'YZX' | 'ZXY' | 'ZYX';
 }
 
+declare module '@0b5vr/experimental/math/line3/Line3' {
+    import { Matrix4 } from '@0b5vr/experimental/math/mat4/Matrix4';
+    import { Ray3 } from '@0b5vr/experimental/math/ray3/Ray3';
+    import { Vector3 } from '@0b5vr/experimental/math/vec3/Vector3';
+    import type { RawLine3 } from '@0b5vr/experimental/math/line3/RawLine3';
+    /**
+        * A 3D line.
+        */
+    export class Line3 {
+            start: Vector3;
+            end: Vector3;
+            constructor(start?: Vector3, end?: Vector3);
+            /**
+                * Itself but {@link RawLine3} form.
+                */
+            get raw(): RawLine3;
+            /**
+                * Itself but a ray.
+                */
+            get ray(): Ray3;
+            /**
+                * A vector that represents delta of the line.
+                */
+            delta(): Vector3;
+            /**
+                * Its length.
+                */
+            length(): number;
+            /**
+                * Return a vector that represents a certain point of the line.
+                * Same as start at t = 0, same as end at t = 1.
+                *
+                * @param t A parameter t
+                */
+            at(t: number): Vector3;
+            /**
+                * Apply given matrix4 to the line.
+                *
+                * @param matrix A matrix4 which will be applied to the line
+                */
+            applyMatrix4(matrix: Matrix4): Line3;
+            /**
+                * Return a point that is on the line which is closest to the given point.
+                *
+                * If `segment` is true, it will treat the line as a segment which has start and end.
+                * Otherwise it will treat the line is infinite.
+                *
+                * @param point A point
+                * @param segment Is the line a segment?
+                */
+            closestPointToPoint(point: Vector3, segment: boolean): Vector3;
+            /**
+                * Return a distance from the line to the given point.
+                *
+                * If `segment` is true, it will treat the line as a segment which has start and end.
+                * Otherwise it will treat the line is infinite.
+                *
+                * @param point A point
+                * @param segment Is the line a segment?
+                */
+            distanceToPoint(point: Vector3, segment: boolean): number;
+            /**
+                * Convert {@link RawLine3} to class form.
+                * @param line A {@link RawLine3}
+                */
+            static fromRaw(line: RawLine3): Line3;
+    }
+}
+
+declare module '@0b5vr/experimental/math/line3/line3ApplyMatrix4' {
+    import type { RawLine3 } from '@0b5vr/experimental/math/line3/RawLine3';
+    import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
+    /**
+      * Apply given matrix4 to given line.
+      *
+      * @param line A line
+      * @param matrix A matrix4 which will be applied to the line
+      */
+    export function line3ApplyMatrix4([start, end]: RawLine3, matrix: RawMatrix4): RawLine3;
+}
+
+declare module '@0b5vr/experimental/math/line3/line3At' {
+    import type { RawLine3 } from '@0b5vr/experimental/math/line3/RawLine3';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Return a vector that represents a certain point of given line.
+      * Same as start at t = 0, same as end at t = 1.
+      *
+      * @param line A line
+      * @param t A parameter t
+      */
+    export function line3At(line: RawLine3, t: number): RawVector3;
+}
+
+declare module '@0b5vr/experimental/math/line3/line3ClosestPointToPoint' {
+    import type { RawLine3 } from '@0b5vr/experimental/math/line3/RawLine3';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Return a point that is on the given line which is closest to the given point.
+      *
+      * If `segment` is true, it will treat the line as a segment which has start and end.
+      * Otherwise it will treat the line is infinite.
+      *
+      * @param line A line
+      * @param point A point
+      * @param segment Is the line a segment?
+      */
+    export function line3ClosestPointToPoint(line: RawLine3, point: RawVector3, segment?: boolean): RawVector3;
+}
+
+declare module '@0b5vr/experimental/math/line3/line3Delta' {
+    import type { RawLine3 } from '@0b5vr/experimental/math/line3/RawLine3';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Return a vector that represents delta of given line.
+      *
+      * @param line A line
+      */
+    export function line3Delta(line: RawLine3): RawVector3;
+}
+
+declare module '@0b5vr/experimental/math/line3/line3DistanceToPoint' {
+    import type { RawLine3 } from '@0b5vr/experimental/math/line3/RawLine3';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Return a distance from the given line to the given point.
+      *
+      * If `segment` is true, it will treat the line as a segment which has start and end.
+      * Otherwise it will treat the line is infinite.
+      *
+      * @param line A line
+      * @param point A point
+      * @param segment Is the line a segment?
+      */
+    export function line3DistanceToPoint(line: RawLine3, point: RawVector3, segment?: boolean): number;
+}
+
+declare module '@0b5vr/experimental/math/line3/RawLine3' {
+    import { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    export type RawLine3 = [start: RawVector3, end: RawVector3];
+}
+
+declare module '@0b5vr/experimental/math/mat3/mat3CreateNormalMatrix' {
+    import type { RawMatrix3 } from '@0b5vr/experimental/math/mat3/RawMatrix3';
+    import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
+    /**
+      * Create a normal matrix out of a matrix4.
+      *
+      * @param matrix A matrix4
+      */
+    export function mat3CreateNormalMatrix(m: RawMatrix4): RawMatrix3;
+}
+
 declare module '@0b5vr/experimental/math/mat3/mat3Determinant' {
     import type { RawMatrix3 } from '@0b5vr/experimental/math/mat3/RawMatrix3';
     export function mat3Determinant(m: RawMatrix3): number;
@@ -830,6 +1259,7 @@ declare module '@0b5vr/experimental/math/mat3/mat3FromMat4Transpose' {
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
     /**
       * Who needs this?
+      * Intended to be used by {@link mat3CreateNormalMatrix}.
       */
     export function mat3FromMat4Transpose(source: RawMatrix4): RawMatrix3;
 }
@@ -921,6 +1351,11 @@ declare module '@0b5vr/experimental/math/mat3/Matrix3' {
                 * @param matrices Matrices
                 */
             static multiply(...matrices: Matrix3[]): Matrix3;
+            /**
+                * Create a normal matrix out of matrix4.
+                * @param matrix4 A matrix4
+                */
+            static createNormalMatrix(matrix4: Matrix4): Matrix3;
             /**
                 * Cast a {@link Matrix4} into a Matrix3.
                 * @param matrix4 A matrix4
@@ -1046,33 +1481,37 @@ declare module '@0b5vr/experimental/math/mat4/mat4Perspective' {
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
     /**
       * Generate a "Perspective" projection matrix.
-      * It won't include aspect!
+      *
+      * @param fov Field of View Y, **IN DEGREES**
+      * @param near Near clip plane
+      * @param far Far clip plane
+      * @param aspect Aspect ratio. **`1.0` BY DEFAULT**
       */
-    export function mat4Perspective(fov?: number, near?: number, far?: number): RawMatrix4;
+    export function mat4Perspective(fov?: number, near?: number, far?: number, aspect?: number): RawMatrix4;
 }
 
-declare module '@0b5vr/experimental/math/mat4/mat4RotateX' {
+declare module '@0b5vr/experimental/math/mat4/mat4RotationX' {
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
     /**
       * Generate a 3d rotation matrix, rotates around x axis.
       */
-    export function mat4RotateX(theta: number): RawMatrix4;
+    export function mat4RotationX(theta: number): RawMatrix4;
 }
 
-declare module '@0b5vr/experimental/math/mat4/mat4RotateY' {
+declare module '@0b5vr/experimental/math/mat4/mat4RotationY' {
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
     /**
       * Generate a 3d rotation matrix, rotates around y axis.
       */
-    export function mat4RotateY(theta: number): RawMatrix4;
+    export function mat4RotationY(theta: number): RawMatrix4;
 }
 
-declare module '@0b5vr/experimental/math/mat4/mat4RotateZ' {
+declare module '@0b5vr/experimental/math/mat4/mat4RotationZ' {
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
     /**
       * Generate a 3d rotation matrix, rotates around z axis.
       */
-    export function mat4RotateZ(theta: number): RawMatrix4;
+    export function mat4RotationZ(theta: number): RawMatrix4;
 }
 
 declare module '@0b5vr/experimental/math/mat4/mat4Scale' {
@@ -1136,6 +1575,10 @@ declare module '@0b5vr/experimental/math/mat4/Matrix4' {
                 * Itself but matrix3.
                 */
             get matrix3(): Matrix3;
+            /**
+                * Itself but normal matrix.
+                */
+            get normalMatrix(): Matrix3;
             toString(): string;
             /**
                 * Clone this.
@@ -1195,17 +1638,17 @@ declare module '@0b5vr/experimental/math/mat4/Matrix4' {
                 * Generate a 3d rotation matrix, rotates around x axis.
                 * @param vector Scale
                 */
-            static rotateX(theta: number): Matrix4;
+            static rotationX(theta: number): Matrix4;
             /**
                 * Generate a 3d rotation matrix, rotates around y axis.
                 * @param vector Scale
                 */
-            static rotateY(theta: number): Matrix4;
+            static rotationY(theta: number): Matrix4;
             /**
                 * Generate a 3d rotation matrix, rotates around z axis.
                 * @param vector Scale
                 */
-            static rotateZ(theta: number): Matrix4;
+            static rotationZ(theta: number): Matrix4;
             /**
                 * Generate a "LookAt" matrix.
                 *
@@ -1250,6 +1693,210 @@ declare module '@0b5vr/experimental/math/mat4/RawMatrix4' {
         number,
         number
     ];
+}
+
+declare module '@0b5vr/experimental/math/plane3/Plane3' {
+    import { Matrix3 } from '@0b5vr/experimental/math/mat3/Matrix3';
+    import { Matrix4 } from '@0b5vr/experimental/math/mat4/Matrix4';
+    import { Vector3 } from '@0b5vr/experimental/math/vec3/Vector3';
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    /**
+        * A 3D plane.
+        */
+    export class Plane3 {
+            normal: Vector3;
+            distance: number;
+            /**
+                * Itself but {@link RawPlane3} form.
+                */
+            get raw(): RawPlane3;
+            /**
+                * Normalized plane?
+                * This normalizes the normal and also divide distance by its original normal length.
+                */
+            get normalized(): Plane3;
+            constructor(normal?: Vector3, distance?: number);
+            /**
+                * Apply given matrix4 to the plane.
+                *
+                * @param matrix A matrix4 which will be applied to the plane
+                * @param normalMatrix A normalMatrix made out of {@link matrix}. Optional
+                */
+            applyMatrix4(matrix: Matrix4, normalMatrix?: Matrix3): Plane3;
+            /**
+                * Return a signed distance from given plane to the given point.
+                *
+                * @param point A point
+                */
+            distanceToPoint(point: Vector3): number;
+            /**
+                * Convert {@link RawPlane3} to class form.
+                * @param plane A {@link RawPlane3}
+                */
+            static fromRaw(plane: RawPlane3): Plane3;
+    }
+}
+
+declare module '@0b5vr/experimental/math/plane3/plane3ApplyMatrix4' {
+    import type { RawMatrix3 } from '@0b5vr/experimental/math/mat3/RawMatrix3';
+    import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    /**
+      * Apply given matrix4 to given plane.
+      *
+      * @param plane A plane
+      * @param matrix A matrix4 which will be applied to the plane
+      * @param normalMatrix A normalMatrix made out of {@link matrix}
+      */
+    export function plane3ApplyMatrix4([normal, distance]: RawPlane3, matrix: RawMatrix4, normalMatrix: RawMatrix3): RawPlane3;
+}
+
+declare module '@0b5vr/experimental/math/plane3/plane3DistanceToPoint' {
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Return a signed distance from given plane to the given point.
+      * Make sure the `normal` is normalized.
+      */
+    export function plane3DistanceToPoint([normal, distance]: RawPlane3, point: RawVector3): number;
+}
+
+declare module '@0b5vr/experimental/math/plane3/plane3Normalize' {
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    /**
+      * Normalize a given plane?
+      * This normalizes the normal and also divide distance by its original normal length.
+      *
+      * I don't come up with any use cases other than {@link planesFromProjectionMatrix}.
+      *
+      * @param plane The plane you want to normalize
+      */
+    export function plane3Normalize([normal, distance]: RawPlane3): RawPlane3;
+}
+
+declare module '@0b5vr/experimental/math/plane3/Planes3' {
+    import { Box3 } from '@0b5vr/experimental/math/box3/Box3';
+    import { Matrix4 } from '@0b5vr/experimental/math/mat4/Matrix4';
+    import { Plane3 } from '@0b5vr/experimental/math/plane3/Plane3';
+    import { Sphere3 } from '@0b5vr/experimental/math/sphere3/Sphere3';
+    import { Vector3 } from '@0b5vr/experimental/math/vec3/Vector3';
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    /**
+        * A set of {@link Plane3}.
+        */
+    export class Planes3 {
+            planes: Plane3[];
+            /**
+                * Itself but {@link RawPlane3}[] form.
+                */
+            get raw(): RawPlane3[];
+            constructor(planes: Plane3[]);
+            /**
+                * Test if given point is contained in the planes or not.
+                *
+                * @param point A point
+                */
+            containPoint(point: Vector3): boolean;
+            /**
+                * Test if given box intersects with the planes or not.
+                *
+                * @param box A box3
+                */
+            intersectBox3(box: Box3): boolean;
+            /**
+                * Test if given sphere intersects with the planes or not.
+                *
+                * It does not do strict intersection test but still should work well with frustum cull use cases.
+                * See the test case for more details.
+                *
+                * @param sphere A sphere3
+                */
+            intersectSphere3(sphere: Sphere3): boolean;
+            /**
+                * Convert {@link RawPlane3}[] to class form.
+                *
+                * @param planes A {@link RawPlane3}[]
+                */
+            static fromRaw(planes: RawPlane3[]): Planes3;
+            /**
+                * Generate a set of plane3 out of a {@link RawBox3}.
+                *
+                * @param box A box
+                */
+            static fromBox3(box: Box3): Planes3;
+            /**
+                * Create frustum planes out of given projection matrix.
+                *
+                * @param matrix A projection matrix
+                */
+            static fromProjectionMatrix(matrix: Matrix4): Planes3;
+    }
+}
+
+declare module '@0b5vr/experimental/math/plane3/planes3ContainPoint' {
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Test if given point is contained in given planes or not.
+      *
+      * @param planes A list of planes
+      * @param point A point
+      */
+    export function planes3ContainPoint(planes: RawPlane3[], point: RawVector3): boolean;
+}
+
+declare module '@0b5vr/experimental/math/plane3/planes3FromBox3' {
+    import type { RawBox3 } from '@0b5vr/experimental/math/box3/RawBox3';
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    /**
+      * Generate a set of plane3 out of a {@link RawBox3}.
+      *
+      * @param box A box
+      */
+    export function planes3FromBox3(box: RawBox3): RawPlane3[];
+}
+
+declare module '@0b5vr/experimental/math/plane3/planes3FromProjectionMatrix' {
+    import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    /**
+      * Create frustum planes out of given projection matrix.
+      *
+      * @param m A projection matrix
+      */
+    export function planes3FromProjectionMatrix(m: RawMatrix4): RawPlane3[];
+}
+
+declare module '@0b5vr/experimental/math/plane3/planes3IntersectBox3' {
+    import type { RawBox3 } from '@0b5vr/experimental/math/box3/RawBox3';
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    /**
+      * Test if given box intersects with planes or not.
+      *
+      * @param planes A list of planes
+      * @param box A box3
+      */
+    export function planes3IntersectBox3(planes: RawPlane3[], box: RawBox3): boolean;
+}
+
+declare module '@0b5vr/experimental/math/plane3/planes3IntersectSphere3' {
+    import { RawSphere3 } from '@0b5vr/experimental/math/sphere3/RawSphere3';
+    import type { RawPlane3 } from '@0b5vr/experimental/math/plane3/RawPlane3';
+    /**
+      * Test if given sphere intersects with planes or not.
+      *
+      * It does not do strict intersection test but still should work well with frustum cull use cases.
+      * See the test case for more details.
+      *
+      * @param planes A list of planes
+      * @param sphere A sphere3
+      */
+    export function planes3IntersectSphere3(planes: RawPlane3[], sphere: RawSphere3): boolean;
+}
+
+declare module '@0b5vr/experimental/math/plane3/RawPlane3' {
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    export type RawPlane3 = [normal: RawVector3, distance: number];
 }
 
 declare module '@0b5vr/experimental/math/quat/Quaternion' {
@@ -1330,6 +1977,21 @@ declare module '@0b5vr/experimental/math/quat/Quaternion' {
                 * @param t How much do we want to rotate the a to b
                 */
             static slerp(a: Quaternion, b: Quaternion, t: number): Quaternion;
+            /**
+                * Return a quaternion which rotates around x axis.
+                * @param theta An angle around x axis, in degree
+                */
+            static rotationX(theta: number): Quaternion;
+            /**
+                * Return a quaternion which rotates around y axis.
+                * @param theta An angle around y axis, in degree
+                */
+            static rotationY(theta: number): Quaternion;
+            /**
+                * Return a quaternion which rotates around z axis.
+                * @param theta An angle around z axis, in degree
+                */
+            static rotationZ(theta: number): Quaternion;
             /**
                 * Return a quaternion which looks at the direction of `look`.
                 * @param look Position where the quaternion will look at
@@ -1413,8 +2075,79 @@ declare module '@0b5vr/experimental/math/quat/quatNormalize' {
     export function quatNormalize(vec: RawQuaternion): RawQuaternion;
 }
 
+declare module '@0b5vr/experimental/math/quat/quatRotationX' {
+    import type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
+    /**
+      * Generate a quaternion rotates around x axis.
+      * @param theta An angle around x axis, in degree
+      */
+    export function quatRotationX(theta: number): RawQuaternion;
+}
+
+declare module '@0b5vr/experimental/math/quat/quatRotationY' {
+    import type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
+    /**
+      * Generate a quaternion rotates around y axis.
+      * @param theta An angle around y axis, in degree
+      */
+    export function quatRotationY(theta: number): RawQuaternion;
+}
+
+declare module '@0b5vr/experimental/math/quat/quatRotationZ' {
+    import type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
+    /**
+      * Generate a quaternion rotates around z axis.
+      * @param theta An angle around z axis, in degree
+      */
+    export function quatRotationZ(theta: number): RawQuaternion;
+}
+
 declare module '@0b5vr/experimental/math/quat/RawQuaternion' {
     export type RawQuaternion = [number, number, number, number];
+}
+
+declare module '@0b5vr/experimental/math/sphere3/RawSphere3' {
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    export type RawSphere3 = [origin: RawVector3, radius: number];
+}
+
+declare module '@0b5vr/experimental/math/sphere3/Sphere3' {
+    import { Vector3 } from '@0b5vr/experimental/math/vec3/Vector3';
+    import type { RawSphere3 } from '@0b5vr/experimental/math/sphere3/RawSphere3';
+    /**
+        * A 3D sphere.
+        */
+    export class Sphere3 {
+            origin: Vector3;
+            radius: number;
+            constructor(origin?: Vector3, radius?: number);
+            /**
+                * Itself but {@link RawSphere3} form.
+                */
+            get raw(): RawSphere3;
+            /**
+                * Test if given point is contained in the sphere or not.
+                *
+                * @param point A point
+                */
+            containsPoint(point: Vector3): boolean;
+            /**
+                * Convert {@link RawSphere3} to class form.
+                * @param sphere A {@link RawSphere3}
+                */
+            static fromRaw(sphere: RawSphere3): Sphere3;
+    }
+}
+
+declare module '@0b5vr/experimental/math/sphere3/sphere3ContainsPoint' {
+    import type { RawSphere3 } from '@0b5vr/experimental/math/sphere3/RawSphere3';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Test if given point is contained in given sphere or not.
+      * @param sphere A sphere
+      * @param point A point
+      */
+    export function sphere3ContainsPoint(sphere: RawSphere3, point: RawVector3): boolean;
 }
 
 declare module '@0b5vr/experimental/math/vec/vecAdd' {
@@ -1565,6 +2298,15 @@ declare module '@0b5vr/experimental/math/vec3/RawVector3' {
     export type RawVector3 = [number, number, number];
 }
 
+declare module '@0b5vr/experimental/math/vec3/vec3ApplyMatrix3' {
+    import type { RawMatrix3 } from '@0b5vr/experimental/math/mat3/RawMatrix3';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Apply a vec3 a mat3.
+      */
+    export function vec3ApplyMatrix3(v: RawVector3, m: RawMatrix3): RawVector3;
+}
+
 declare module '@0b5vr/experimental/math/vec3/vec3ApplyMatrix4' {
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
     import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
@@ -1651,6 +2393,30 @@ declare module '@0b5vr/experimental/math/vec3/Vector3' {
                 */
             static get zero(): Vector3;
             /**
+                * Vector3( 1.0, 0.0, 0.0 )
+                */
+            static get px(): Vector3;
+            /**
+                * Vector3( -1.0, 0.0, 0.0 )
+                */
+            static get nx(): Vector3;
+            /**
+                * Vector3( 0.0, 1.0, 0.0 )
+                */
+            static get py(): Vector3;
+            /**
+                * Vector3( 0.0, -1.0, 0.0 )
+                */
+            static get ny(): Vector3;
+            /**
+                * Vector3( 0.0, 0.0, 1.0 )
+                */
+            static get pz(): Vector3;
+            /**
+                * Vector3( 0.0, 0.0, -1.0 )
+                */
+            static get nz(): Vector3;
+            /**
                 * Vector3( 1.0, 1.0, 1.0 )
                 */
             static get one(): Vector3;
@@ -1670,6 +2436,15 @@ declare module '@0b5vr/experimental/math/vec4/RawVector4' {
     export type RawVector4 = [number, number, number, number];
 }
 
+declare module '@0b5vr/experimental/math/vec4/vec4ApplyMatrix3' {
+    import type { RawMatrix3 } from '@0b5vr/experimental/math/mat3/RawMatrix3';
+    import type { RawVector4 } from '@0b5vr/experimental/math/vec4/RawVector4';
+    /**
+      * Apply a vec4 a mat3 (with an implicit 1 on m44).
+      */
+    export function vec4ApplyMatrix3(v: RawVector4, m: RawMatrix3): RawVector4;
+}
+
 declare module '@0b5vr/experimental/math/vec4/vec4ApplyMatrix4' {
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4';
     import type { RawVector4 } from '@0b5vr/experimental/math/vec4/RawVector4';
@@ -1682,6 +2457,7 @@ declare module '@0b5vr/experimental/math/vec4/vec4ApplyMatrix4' {
 declare module '@0b5vr/experimental/math/vec4/Vector4' {
     import { Matrix4 } from '@0b5vr/experimental/math/mat4/Matrix4';
     import { Vector } from '@0b5vr/experimental/math/vec/Vector';
+    import type { Matrix3 } from '@0b5vr/experimental/math/mat3/Matrix3';
     import type { RawVector4 } from '@0b5vr/experimental/math/vec4/RawVector4';
     /**
         * A Vector3.
@@ -1711,7 +2487,11 @@ declare module '@0b5vr/experimental/math/vec4/Vector4' {
             set w(z: number);
             toString(): string;
             /**
-                * Multiply this vector (with an implicit 1 in the 4th dimension) by m.
+                * Apply this vector a mat3 (with an implicit 1 on m44).
+                */
+            applyMatrix3(matrix: Matrix3): Vector4;
+            /**
+                * Multiply this vector by a mat4.
                 */
             applyMatrix4(matrix: Matrix4): Vector4;
             protected __new(v: RawVector4): Vector4;
@@ -1724,5 +2504,58 @@ declare module '@0b5vr/experimental/math/vec4/Vector4' {
                 */
             static get one(): Vector4;
     }
+}
+
+declare module '@0b5vr/experimental/math/ray3/Ray3' {
+    import { Line3 } from '@0b5vr/experimental/math/line3/Line3';
+    import { Sphere3 } from '@0b5vr/experimental/math/sphere3/Sphere3';
+    import { Vector3 } from '@0b5vr/experimental/math/vec3/Vector3';
+    import type { RawRay3 } from '@0b5vr/experimental/math/ray3/RawRay3';
+    /**
+        * A 3D ray.
+        */
+    export class Ray3 {
+            /**
+                * The origin of the ray.
+                */
+            origin: Vector3;
+            /**
+                * The direction of the ray.
+                * Make sure the direction is normalized.
+                */
+            direction: Vector3;
+            constructor(start?: Vector3, end?: Vector3);
+            /**
+                * Itself but {@link RawRay3} form.
+                */
+            get raw(): RawRay3;
+            /**
+                * Return distances from given ray to sphere.
+                *
+                * The returning distance can be negative.
+                *
+                * The first returning value will be the distance of the incident point.
+                * If the ray does not intersect with sphere, it will return `null`.
+                *
+                * @param sphere A target sphere
+                */
+            distanceToSphere(sphere: Sphere3): [number, number] | null;
+            /**
+                * Convert {@link RawRay3} to class form.
+                * @param ray A {@link RawRay3}
+                */
+            static fromRaw(ray: RawRay3): Ray3;
+            /**
+                * Create a ray out of a line.
+                *
+                * @param line A {@link Line3}
+                */
+            static fromLine3(line: Line3): Ray3;
+    }
+}
+
+declare module '@0b5vr/experimental/math/ray3/RawRay3' {
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    export type RawRay3 = [ro: RawVector3, rd: RawVector3];
 }
 

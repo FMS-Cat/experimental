@@ -44,6 +44,30 @@ export declare class Vector3 extends Vector<Vector3> {
      */
     static get zero(): Vector3;
     /**
+     * Vector3( 1.0, 0.0, 0.0 )
+     */
+    static get px(): Vector3;
+    /**
+     * Vector3( -1.0, 0.0, 0.0 )
+     */
+    static get nx(): Vector3;
+    /**
+     * Vector3( 0.0, 1.0, 0.0 )
+     */
+    static get py(): Vector3;
+    /**
+     * Vector3( 0.0, -1.0, 0.0 )
+     */
+    static get ny(): Vector3;
+    /**
+     * Vector3( 0.0, 0.0, 1.0 )
+     */
+    static get pz(): Vector3;
+    /**
+     * Vector3( 0.0, 0.0, -1.0 )
+     */
+    static get nz(): Vector3;
+    /**
      * Vector3( 1.0, 1.0, 1.0 )
      */
     static get one(): Vector3;

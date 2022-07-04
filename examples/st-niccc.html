@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@0b5vr/experimental - st-niccc.html</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="256" height="200"></canvas>
+    <a id="anchor" download="st-niccc.svg">Download SVG</a>
+    <script type="module">
+      import {
+        colorFromAtariST,
+        colorToHex,
+        parseSTNICCC,
+        stnicccToSVG,
+      } from '../dist/0b5vr-experimental.esm.js';
+
+      const respose = await fetch( './assets/st-niccc-scene.bin' );
+      const buffer = await respose.arrayBuffer();
+      const frames = parseSTNICCC( buffer );
+
+      const canvas = document.getElementById( 'canvas' );
+      const context = canvas.getContext( '2d' );
+
+      let currentFrame = 0;
+
+      function update() {
+        const frame = frames[ currentFrame ];
+        const { needsClear, indexedMode, palette, polygons } = frame;
+
+        if ( needsClear ) {
+          context.fillStyle = '#000';
+          context.fillRect( 0, 0, 256, 200 );
+        }
+
+        const paletteInHex = palette.map( ( stColor ) => {
+          const color = colorFromAtariST( stColor );
+          return colorToHex( color );
+        } );
+
+        if ( indexedMode ) {
+          const { vertices } = frame;
+
+          polygons.forEach( ( { colorIndex, indices } ) => {
+            const colorHex = paletteInHex[ colorIndex ];
+            context.fillStyle = colorHex;
+
+            context.beginPath();
+
+            for ( let i = 0; i < indices.length; i ++ ) {
+              const index = indices[ i ];
+              const x = vertices[ 2 * index ] + 0.5;
+              const y = vertices[ 2 * index + 1 ] + 0.5;
+
+              context.lineTo( x, y );
+            }
+
+            context.fill();
+          } );
+        } else {
+          polygons.forEach( ( { colorIndex, vertices } ) => {
+            const colorHex = paletteInHex[ colorIndex ];
+            context.fillStyle = colorHex;
+
+            context.beginPath();
+
+            for ( let i = 0; i < vertices.length; i += 2 ) {
+              const x = vertices[ i ] + 0.5;
+              const y = vertices[ i + 1 ] + 0.5;
+
+              context.lineTo( x, y );
+            }
+
+            context.fill();
+          } );
+        }
+
+        // currentFrame = 0;
+        currentFrame = ( currentFrame + 1 ) % frames.length;
+
+        requestAnimationFrame( update );
+      }
+      requestAnimationFrame( update );
+
+      const anchor = document.getElementById( 'anchor' );
+
+      const svg = stnicccToSVG( frames );
+
+      const blob = new Blob( [ svg ], { type: 'image/svg+xml' } );
+      const url = URL.createObjectURL( blob );
+      anchor.href = url;
+    </script>
+  </body>
+</html>

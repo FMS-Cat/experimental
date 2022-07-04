@@ -28,6 +28,12 @@ export declare class Vector3 extends Vector<Vector3> {
     applyMatrix4(matrix: Matrix4): Vector3;
     protected __new(v: RawVector3): Vector3;
     static readonly zero: Vector3;
+    static readonly px: Vector3;
+    static readonly nx: Vector3;
+    static readonly py: Vector3;
+    static readonly ny: Vector3;
+    static readonly pz: Vector3;
+    static readonly nz: Vector3;
     static readonly one: Vector3;
     /**
      * Return a tangent which is orthogonal to normal.

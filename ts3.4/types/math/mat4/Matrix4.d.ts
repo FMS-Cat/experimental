@@ -12,6 +12,7 @@ export declare class Matrix4 {
     readonly determinant: number;
     readonly inverse: Matrix4;
     readonly matrix3: Matrix3;
+    readonly normalMatrix: Matrix3;
     toString(): string;
     /**
      * Clone this.
@@ -68,17 +69,17 @@ export declare class Matrix4 {
      * Generate a 3d rotation matrix, rotates around x axis.
      * @param vector Scale
      */
-    static rotateX(theta: number): Matrix4;
+    static rotationX(theta: number): Matrix4;
     /**
      * Generate a 3d rotation matrix, rotates around y axis.
      * @param vector Scale
      */
-    static rotateY(theta: number): Matrix4;
+    static rotationY(theta: number): Matrix4;
     /**
      * Generate a 3d rotation matrix, rotates around z axis.
      * @param vector Scale
      */
-    static rotateZ(theta: number): Matrix4;
+    static rotationZ(theta: number): Matrix4;
     /**
      * Generate a "LookAt" matrix.
      *

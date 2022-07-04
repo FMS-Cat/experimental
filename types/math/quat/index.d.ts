@@ -6,4 +6,7 @@ export { quatFromMatrix4 } from './quatFromMatrix4';
 export { quatInverse } from './quatInverse';
 export { quatMultiply } from './quatMultiply';
 export { quatNormalize } from './quatNormalize';
+export { quatRotationX } from './quatRotationX';
+export { quatRotationY } from './quatRotationY';
+export { quatRotationZ } from './quatRotationZ';
 export type { RawQuaternion } from './RawQuaternion';

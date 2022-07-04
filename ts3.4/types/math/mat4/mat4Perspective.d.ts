@@ -1,6 +1,10 @@
 import { RawMatrix4 } from './RawMatrix4';
 /**
  * Generate a "Perspective" projection matrix.
- * It won't include aspect!
+ *
+ * @param fov Field of View Y, **IN DEGREES**
+ * @param near Near clip plane
+ * @param far Far clip plane
+ * @param aspect Aspect ratio. **`1.0` BY DEFAULT**
  */
-export declare function mat4Perspective(fov?: number, near?: number, far?: number): RawMatrix4;
+export declare function mat4Perspective(fov?: number, near?: number, far?: number, aspect?: number): RawMatrix4;

@@ -46,6 +46,21 @@ export declare class Quaternion {
      */
     static slerp(a: Quaternion, b: Quaternion, t: number): Quaternion;
     /**
+     * Return a quaternion which rotates around x axis.
+     * @param theta An angle around x axis, in degree
+     */
+    static rotationX(theta: number): Quaternion;
+    /**
+     * Return a quaternion which rotates around y axis.
+     * @param theta An angle around y axis, in degree
+     */
+    static rotationY(theta: number): Quaternion;
+    /**
+     * Return a quaternion which rotates around z axis.
+     * @param theta An angle around z axis, in degree
+     */
+    static rotationZ(theta: number): Quaternion;
+    /**
      * Return a quaternion which looks at the direction of `look`.
      * @param look Position where the quaternion will look at
      * @param up The "up vector"

@@ -31,6 +31,11 @@ export declare class Matrix3 {
      */
     static multiply(...matrices: Matrix3[]): Matrix3;
     /**
+     * Create a normal matrix out of matrix4.
+     * @param matrix4 A matrix4
+     */
+    static createNormalMatrix(matrix4: Matrix4): Matrix3;
+    /**
      * Cast a {@link Matrix4} into a Matrix3.
      * @param matrix4 A matrix4
      */
