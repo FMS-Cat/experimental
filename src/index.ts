@@ -20,5 +20,6 @@ export * from './retry';
 export * from './stniccc';
 export * from './Swap';
 export * from './TapTempo';
+export * from './tinyseq';
 export * from './Xorshift';
 export * from './yugop';
