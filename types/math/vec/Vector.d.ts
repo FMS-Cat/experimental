@@ -25,6 +25,10 @@ export declare abstract class Vector<T extends Vector<T>> {
      */
     get negated(): T;
     /**
+     * This but each component is the absolute.
+     */
+    get abs(): T;
+    /**
      * Clone this.
      */
     clone(): T;

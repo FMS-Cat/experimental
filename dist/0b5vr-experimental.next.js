@@ -1,5 +1,5 @@
 /*!
-* @0b5vr/experimental v0.9.0
+* @0b5vr/experimental v0.9.1
 * Experimental edition of 0b5vr
 *
 * Copyright (c) 2019-2022 0b5vr
@@ -262,6 +262,16 @@ function smootherstep(a, b, x) {
 function smootheststep(a, b, x) {
   const t = linearstep(a, b, x);
   return t * t * t * t * (t * (t * (-20 * t + 70) - 84) + 35);
+}
+
+// src/color/colorHSV2RGB.ts
+function colorHSV2RGB([h, s, v]) {
+  const ht = h % 1 * 6;
+  return [0, 4, 2].map((p) => {
+    const colH = Math.min(Math.max(Math.abs((ht + p) % 6 - 3) - 1, 0), 1);
+    const colS = lerp(1, colH, s);
+    return v * colS;
+  });
 }
 
 // src/color/colorToHex.ts
@@ -638,6 +648,11 @@ var MapOfSet = class {
   }
 };
 
+// src/math/vec/vecAbs.ts
+function vecAbs(vec) {
+  return vec.map((v) => Math.abs(v));
+}
+
 // src/math/vec/vecAdd.ts
 function vecAdd(...vecs) {
   if (vecs.length < 2) {
@@ -716,6 +731,9 @@ var Vector = class {
   }
   get negated() {
     return this.__new(vecNeg(this.elements));
+  }
+  get abs() {
+    return this.__new(vecAbs(this.elements));
   }
   clone() {
     return this.__new(this.elements.concat());
@@ -2561,6 +2579,28 @@ var pokerHandsByStrength = [
   "StraightFlush"
 ];
 
+// src/retry/asyncRetry.ts
+async function asyncRetry(func, n) {
+  return await func().catch((error) => {
+    if (n <= 1) {
+      throw error;
+    }
+    return asyncRetry(func, n - 1);
+  });
+}
+
+// src/retry/retry.ts
+function retry(func, n) {
+  try {
+    return func();
+  } catch (error) {
+    if (n <= 1) {
+      throw error;
+    }
+    return retry(func, n - 1);
+  }
+}
+
 // src/stniccc/parseSTNICCC.ts
 function parseSTNICCC(buffer) {
   const frames = [];
@@ -2842,10 +2882,12 @@ export {
   arraySetDiff,
   arraySetHas,
   arraySetUnion,
+  asyncRetry,
   binarySearch,
   box3ContainsPoint,
   clamp,
   colorFromAtariST,
+  colorHSV2RGB,
   colorToHex,
   colorTurbo,
   createPokerDeck,
@@ -2925,6 +2967,7 @@ export {
   quatRotationY,
   quatRotationZ,
   range,
+  retry,
   sanitizeAngle,
   saturate,
   shuffleArray,
@@ -2943,6 +2986,7 @@ export {
   vec3OrthoNormalize,
   vec4ApplyMatrix3,
   vec4ApplyMatrix4,
+  vecAbs,
   vecAdd,
   vecDivide,
   vecDot,

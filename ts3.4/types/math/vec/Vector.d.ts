@@ -8,6 +8,7 @@ export declare abstract class Vector<T extends Vector<T>> {
     readonly manhattanLength: number;
     readonly normalized: T;
     readonly negated: T;
+    readonly abs: T;
     /**
      * Clone this.
      */

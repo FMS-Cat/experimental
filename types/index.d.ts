@@ -12,6 +12,7 @@ export * from './MapOfSet';
 export * from './math';
 export * from './poker';
 export * from './Pool';
+export * from './retry';
 export * from './stniccc';
 export * from './Swap';
 export * from './TapTempo';

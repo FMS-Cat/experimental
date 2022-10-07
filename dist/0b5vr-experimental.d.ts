@@ -15,6 +15,7 @@ declare module '@0b5vr/experimental' {
     export * from '@0b5vr/experimental/math';
     export * from '@0b5vr/experimental/poker';
     export * from '@0b5vr/experimental/Pool';
+    export * from '@0b5vr/experimental/retry';
     export * from '@0b5vr/experimental/stniccc';
     export * from '@0b5vr/experimental/Swap';
     export * from '@0b5vr/experimental/TapTempo';
@@ -45,6 +46,7 @@ declare module '@0b5vr/experimental/Clock' {
 
 declare module '@0b5vr/experimental/color' {
     export * from '@0b5vr/experimental/color/colorFromAtariST';
+    export * from '@0b5vr/experimental/color/colorHSV2RGB';
     export * from '@0b5vr/experimental/color/colorToHex';
     export * from '@0b5vr/experimental/color/colorTurbo';
     export * from '@0b5vr/experimental/color/eotfRec709';
@@ -119,6 +121,11 @@ declare module '@0b5vr/experimental/poker' {
 
 declare module '@0b5vr/experimental/Pool' {
     export * from '@0b5vr/experimental/Pool/Pool';
+}
+
+declare module '@0b5vr/experimental/retry' {
+    export * from '@0b5vr/experimental/retry/asyncRetry';
+    export * from '@0b5vr/experimental/retry/retry';
 }
 
 declare module '@0b5vr/experimental/stniccc' {
@@ -363,6 +370,17 @@ declare module '@0b5vr/experimental/color/colorFromAtariST' {
       * @param stColor A color in Atari-ST format
       */
     export function colorFromAtariST(stColor: number): RawRGB;
+}
+
+declare module '@0b5vr/experimental/color/colorHSV2RGB' {
+    import { RawRGB } from '@0b5vr/experimental/color/RawRGB';
+    /**
+      * Convert a color from HSV to RGB.
+      * Each component of the HSV must be given in [0 - 1] range.
+      *
+      * Ref: https://en.wikipedia.org/wiki/HSV_color_space
+      */
+    export function colorHSV2RGB([h, s, v]: [number, number, number]): RawRGB;
 }
 
 declare module '@0b5vr/experimental/color/colorToHex' {
@@ -675,6 +693,7 @@ declare module '@0b5vr/experimental/math/sphere3' {
 }
 
 declare module '@0b5vr/experimental/math/vec' {
+    export { vecAbs } from '@0b5vr/experimental/math/vec/vecAbs';
     export { vecAdd } from '@0b5vr/experimental/math/vec/vecAdd';
     export { vecDivide } from '@0b5vr/experimental/math/vec/vecDivide';
     export { vecDot } from '@0b5vr/experimental/math/vec/vecDot';
@@ -847,6 +866,24 @@ declare module '@0b5vr/experimental/Pool/Pool' {
         constructor(array: T[]);
         next(): T;
     }
+}
+
+declare module '@0b5vr/experimental/retry/asyncRetry' {
+    /**
+      * Retry given function for n times.
+      *
+      * See also: {@link retry}
+      */
+    export function asyncRetry<T>(func: () => Promise<T>, n: number): Promise<T>;
+}
+
+declare module '@0b5vr/experimental/retry/retry' {
+    /**
+      * Retry given function for n times.
+      *
+      * See also: {@link asyncRetry}
+      */
+    export function retry<T>(func: () => T, n: number): T;
 }
 
 declare module '@0b5vr/experimental/stniccc/parseSTNICCC' {
@@ -2150,6 +2187,13 @@ declare module '@0b5vr/experimental/math/sphere3/sphere3ContainsPoint' {
     export function sphere3ContainsPoint(sphere: RawSphere3, point: RawVector3): boolean;
 }
 
+declare module '@0b5vr/experimental/math/vec/vecAbs' {
+    /**
+      * Return a vector with the absolute of each component of the given vector.
+      */
+    export function vecAbs<T extends number[]>(vec: T): T;
+}
+
 declare module '@0b5vr/experimental/math/vec/vecAdd' {
     /**
       * Return a sum of vectors.
@@ -2255,6 +2299,10 @@ declare module '@0b5vr/experimental/math/vec/Vector' {
                 * This but negated.
                 */
             get negated(): T;
+            /**
+                * This but each component is the absolute.
+                */
+            get abs(): T;
             /**
                 * Clone this.
                 */

@@ -1,3 +1,4 @@
+export { vecAbs } from './vecAbs';
 export { vecAdd } from './vecAdd';
 export { vecDivide } from './vecDivide';
 export { vecDot } from './vecDot';
