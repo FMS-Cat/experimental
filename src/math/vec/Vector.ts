@@ -1,3 +1,4 @@
+import { vecAbs } from './vecAbs';
 import { vecAdd } from './vecAdd';
 import { vecDivide } from './vecDivide';
 import { vecDot } from './vecDot';
@@ -50,6 +51,13 @@ export abstract class Vector<T extends Vector<T>> {
    */
   public get negated(): T {
     return this.__new( vecNeg( this.elements ) );
+  }
+
+  /**
+   * This but each component is the absolute.
+   */
+  public get abs(): T {
+    return this.__new( vecAbs( this.elements ) );
   }
 
   /**
