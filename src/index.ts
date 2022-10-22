@@ -14,6 +14,7 @@ export * from './GPUTimer';
 export * from './HistoryMeanCalculator';
 export * from './MapOfSet';
 export * from './math';
+export * from './midi';
 export * from './poker';
 export * from './Pool';
 export * from './retry';
