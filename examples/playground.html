@@ -54,6 +54,8 @@
         <option value="matrix">matrix</option>
         <option value="oetf">oetf</option>
         <option value="poker">poker</option>
+        <option value="tinyseq">tinyseq</option>
+        <option value="tinyseq-poly">tinyseq-poly</option>
         <option value="turbo">turbo</option>
         <option value="yugop" selected>yugop</option>
       </select>
@@ -77,126 +79,11 @@
 
       const darkMode = window.matchMedia( '(prefers-color-scheme: dark)' ).matches;
 
-      const examples = {
-        'euler': `import { Euler, Quaternion, Vector3 } from '@0b5vr/experimental';
-
-export default ( ( { divContainer } ) => {
-  const quat = Quaternion.fromAxisAngle( new Vector3( [ 1.0, 1.0, 1.0 ] ), 1.0 );
-
-  divContainer.textContent = Euler.fromQuaternion( quat, 'XYZ' );
-} );
-`,
-        'matrix': `import { Matrix4, Quaternion, Vector3 } from '@0b5vr/experimental';
-
-export default ( ( { divContainer } ) => {
-  const t = Matrix4.translate( new Vector3( [ 1.0, 2.0, 3.0 ] ) );
-  const r = Quaternion.fromAxisAngle( new Vector3( [ 0.0, 1.0, 0.0 ] ), 0.25 * Math.PI ).matrix4;
-  const s = Matrix4.scaleScalar( 5.0 );
-
-  const matrix = Matrix4.multiply( t, r, s );
-
-  divContainer.textContent = matrix;
-} );
-`,
-        'oetf': `import { colorToHex, oetfRec709 } from '@0b5vr/experimental';
-
-export default ( { divContainer } ) => {
-  const colorRaw = [ 1.0, 0.5, 0.0 ];
-  const colorLinear = oetfRec709( colorRaw );
-
-  divContainer.innerHTML = '';
-
-  const divRaw = document.createElement( 'div' );
-  divRaw.style.width = '32px';
-  divRaw.style.height = '32px';
-  divRaw.style.background = colorToHex( colorRaw );
-  divContainer.appendChild( divRaw );
-
-  const divLinear = document.createElement( 'div' );
-  divLinear.style.width = '32px';
-  divLinear.style.height = '32px';
-  divLinear.style.background = colorToHex( colorLinear );
-  divContainer.appendChild( divLinear );
-};
-`,
-        'poker': `import { createPokerDeck, evaluatePokerHand, shuffleArray } from '@0b5vr/experimental';
-
-export default ( { divContainer } ) => {
-  const deck = createPokerDeck();
-  shuffleArray( deck );
-
-  const myPocket = [ deck.pop(), deck.pop() ];
-
-  let win = 0.0;
-
-  [ ...Array( 10000 ) ].map( () => {
-    const deckt = shuffleArray( deck.concat() );
-
-    const opPocket = [ deckt.pop(), deckt.pop() ];
-    const community = [ deckt.pop(), deckt.pop(), deckt.pop(), deckt.pop(), deckt.pop() ];
-
-    const myHand = evaluatePokerHand( myPocket.concat( community ) );
-    const opHand = evaluatePokerHand( opPocket.concat( community ) );
-
-    const result = myHand.strength.reduce( ( prev, cur, i ) => {
-      if ( prev === 0 ) {
-        return Math.sign( cur - opHand.strength[ i ] );
-      } else {
-        return prev;
+      async function fetchExample( name ) {
+        const res = await fetch( `./playground-examples/${ name }.js` );
+        const text = await res.text();
+        return text;
       }
-    }, 0 );
-
-    win += result;
-  } );
-
-  const winRatio = 0.5 + 0.5 * win / 10000.0;
-
-  divContainer.textContent = \`hand: \${ myPocket.join( ', ' ) }\\nwinRatio: \${ ( winRatio * 100.0 ).toFixed( 2 ) } %\`;
-};
-`,
-        'turbo': `import { colorTurbo, colorToHex } from '@0b5vr/experimental';
-
-export default ( { divContainer } ) => {
-  divContainer.textContent = '';
-
-  const canvas = document.createElement( 'canvas' );
-  canvas.width = 512;
-  canvas.height = 32;
-  divContainer.appendChild( canvas );
-
-  const context = canvas.getContext( '2d' );
-
-  for ( let i = 0; i < 512; i ++ ) {
-    context.fillStyle = colorToHex( colorTurbo( i / 511.0 ) );
-    context.fillRect( i, 0, 1, 32 );
-  }
-};
-`,
-        'yugop': `import { ClockRealtime, getYugopText } from '@0b5vr/experimental';
-
-export default ( { divContainer } ) => {
-  let unmounted = false;
-
-  const clock = new ClockRealtime();
-  clock.play();
-
-  const update = () => {
-    if ( unmounted ) { return; }
-
-    clock.update();
-
-    divContainer.textContent = getYugopText( '@0b5vr/experimental', clock.time );
-
-    requestAnimationFrame( update );
-  };
-  requestAnimationFrame( update );
-
-  return () => {
-    unmounted = true;
-  };
-};
-`,
-      };
 
       const monaco = await monaco_loader.init();
 
@@ -207,7 +94,7 @@ export default ( { divContainer } ) => {
         } );
 
       const editor = monaco.editor.create( divEditor, {
-        value: examples[ 'yugop' ],
+        value: await fetchExample( 'yugop' ),
         language: 'javascript',
         automaticLayout: true,
         theme: darkMode ? 'vs-dark' : 'vs-light',
@@ -219,6 +106,7 @@ export default ( { divContainer } ) => {
       let lastUnmount;
 
       const apply = () => {
+        divContainer.innerHTML = '';
         lastUnmount?.();
 
         const code = editor.getValue();
@@ -235,8 +123,9 @@ export default ( { divContainer } ) => {
       editor.addCommand( monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, apply );
       editor.addCommand( monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R, apply );
 
-      selectExamples.addEventListener( 'change', () => {
-        editor.getModel().setValue( examples[ selectExamples.value ] );
+      selectExamples.addEventListener( 'change', async () => {
+        const example = await fetchExample( selectExamples.value );
+        editor.getModel().setValue( example );
         apply();
       } );
     </script>
