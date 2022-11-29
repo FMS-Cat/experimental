@@ -26,7 +26,7 @@ const rawMatrixZero: RawMatrix3 = [
   0, 0, 0,
 ];
 
-describe( 'mat4Inverse', () => {
+describe( 'mat3Inverse', () => {
   it( 'returns an inverse of the matrix', () => {
     const subject = mat3Inverse( rawMatrixLookAtFrom345 );
 
