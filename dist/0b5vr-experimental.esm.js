@@ -1,5 +1,5 @@
 /*!
-* @0b5vr/experimental v0.9.1
+* @0b5vr/experimental v0.9.2
 * Experimental edition of 0b5vr
 *
 * Copyright (c) 2019-2022 0b5vr
@@ -63,6 +63,29 @@ function traverse(root, traverser) {
     nodesFound.map((node) => nodesSeen.add(node));
   }
 }
+
+// src/array/arrayRange.ts
+function arrayRange(start, end, step) {
+  let current = start;
+  const ret = [];
+  if (start < end) {
+    step = step != null ? step : 1;
+    while (current < end) {
+      ret.push(current);
+      current += step;
+    }
+  } else {
+    step = step != null ? step : -1;
+    while (current > end) {
+      ret.push(current);
+      current += step;
+    }
+  }
+  return ret;
+}
+
+// src/array/arraySerial.ts
+var arraySerial = (count) => [...Array(count)].map((_, i) => i);
 
 // src/array/arraySet.ts
 function arraySetDelete(array, value) {
@@ -2062,6 +2085,96 @@ var Line3 = class {
   }
 };
 
+// src/math/mat2/mat2Determinant.ts
+function mat2Determinant(m) {
+  return m[0] * m[3] - m[2] * m[1];
+}
+
+// src/math/mat2/mat2Inverse.ts
+function mat2Inverse(m) {
+  const n11 = m[0], n21 = m[1], n12 = m[2], n22 = m[3], det = n11 * n22 - n12 * n21;
+  if (det === 0) {
+    return vecScale(m, 0);
+  }
+  return vecScale([
+    n22,
+    -n21,
+    -n12,
+    n11
+  ], 1 / det);
+}
+
+// src/math/mat2/mat2Multiply.ts
+function mat2Multiply(...mats) {
+  if (mats.length < 2) {
+    return mats[0];
+  }
+  const a = mats.shift();
+  const b = mat2Multiply(...mats);
+  const a00 = a[0], a01 = a[1], a10 = a[2], a11 = a[3], b00 = b[0], b01 = b[1], b10 = b[2], b11 = b[3];
+  return [
+    a00 * b00 + a10 * b01,
+    a01 * b00 + a11 * b01,
+    a00 * b10 + a10 * b11,
+    a01 * b10 + a11 * b11
+  ];
+}
+
+// src/math/mat2/mat2Transpose.ts
+function mat2Transpose(source) {
+  return [
+    source[0],
+    source[2],
+    source[1],
+    source[3]
+  ];
+}
+
+// src/math/mat2/Matrix2.ts
+var rawIdentityMatrix2 = [
+  1,
+  0,
+  0,
+  1
+];
+var Matrix2 = class {
+  constructor(v = rawIdentityMatrix2) {
+    this.elements = v;
+  }
+  get transpose() {
+    return new Matrix2(mat2Transpose(this.elements));
+  }
+  get determinant() {
+    return mat2Determinant(this.elements);
+  }
+  get inverse() {
+    return new Matrix2(mat2Inverse(this.elements));
+  }
+  toString() {
+    const m = this.elements.map((v) => v.toFixed(3));
+    return `Matrix2( ${m[0]}, ${m[2]}; ${m[1]}, ${m[3]} )`;
+  }
+  clone() {
+    return new Matrix2(this.elements.concat());
+  }
+  multiply(...matrices) {
+    return Matrix2.multiply(this, ...matrices);
+  }
+  scaleScalar(scalar) {
+    return new Matrix2(vecScale(this.elements, scalar));
+  }
+  static get identity() {
+    return new Matrix2(rawIdentityMatrix2);
+  }
+  static multiply(...matrices) {
+    if (matrices.length === 0) {
+      return Matrix2.identity;
+    } else {
+      return new Matrix2(mat2Multiply(...matrices.map((m) => m.elements)));
+    }
+  }
+};
+
 // src/math/vec3/vec3ApplyMatrix3.ts
 function vec3ApplyMatrix3(v, m) {
   return [
@@ -2265,6 +2378,79 @@ var Vector4 = class extends Vector {
     return new Vector4([1, 1, 1, 1]);
   }
 };
+
+// src/midi/midiParse.ts
+function readU8(array, headBox) {
+  return array[headBox[0]++];
+}
+function readU16(array, headBox) {
+  return readU8(array, headBox) * 256 + readU8(array, headBox);
+}
+function readU32(array, headBox) {
+  return readU16(array, headBox) * 65536 + readU16(array, headBox);
+}
+function readUVar(array, headBox) {
+  let v = 0;
+  for (; ; ) {
+    const vv = readU8(array, headBox);
+    v = v * 128 + (vv & 127);
+    if (vv < 128) {
+      return v;
+    }
+  }
+}
+function parseHeader(array, headBox) {
+  headBox[0] += 8;
+  return [
+    readU16(array, headBox),
+    readU16(array, headBox),
+    readU16(array, headBox)
+  ];
+}
+function parseTrack(array, headBox) {
+  headBox[0] += 4;
+  const endOfTrack = headBox[0] + readU32(array, headBox) + 4;
+  const track = [];
+  let type = 0;
+  while (headBox[0] < endOfTrack) {
+    const delta = readUVar(array, headBox);
+    const status = readU8(array, headBox);
+    type = status < 128 ? type : status;
+    const data0 = status < 128 ? status : readU8(array, headBox);
+    if (type < 192) {
+      track.push([
+        delta,
+        type,
+        data0,
+        readU8(array, headBox)
+      ]);
+    } else if (type === 255) {
+      const eventLength = readU8(array, headBox);
+      track.push([
+        delta,
+        type,
+        data0,
+        arraySerial(eventLength).map(() => readU8(array, headBox))
+      ]);
+      if (data0 === 47) {
+        break;
+      }
+    } else {
+      throw new Error(`${type}`);
+    }
+  }
+  return track;
+}
+function midiParse(buffer) {
+  const array = new Uint8Array(buffer);
+  const headBox = [0];
+  const header = parseHeader(array, headBox);
+  const tracks = [];
+  while (headBox[0] < array.length) {
+    tracks.push(parseTrack(array, headBox));
+  }
+  return [header, tracks];
+}
 
 // src/poker/pokerRanksByStrength.ts
 var pokerRanksByStrength = [
@@ -2820,6 +3006,152 @@ var TapTempo = class {
   }
 };
 
+// src/tinyseq/createTinyseqPolyReader.ts
+function createTinyseqPolyReader(buffer, options = {}) {
+  var _a, _b, _c, _d;
+  const poly = (_a = options.poly) != null ? _a : 8;
+  const blockSize = (_b = options.blockSize) != null ? _b : 128;
+  const sampleRate = (_c = options.sampleRate) != null ? _c : 48e3;
+  const stepsPerSecond = (_d = options.stepsPerSecond) != null ? _d : 1;
+  let samples = 0;
+  let pos = 0;
+  let note;
+  const notes = arraySerial(poly).fill(-1);
+  const notesTime = arraySerial(poly).fill(-Infinity);
+  const notesOffTime = arraySerial(poly).fill(-Infinity);
+  let nextStep = 0;
+  return () => {
+    const ret = arraySerial(poly).map(() => new Float32Array(4 * blockSize));
+    arraySerial(blockSize).map((iSample) => {
+      const t = samples / sampleRate;
+      const s = t * stepsPerSecond;
+      if (s >= nextStep) {
+        const eventNote = buffer[pos];
+        const eventDeltaStep = buffer[pos + 1];
+        note = (pos === 0 ? 60 : note) + eventNote & 127;
+        let iPoly = notes.indexOf(note);
+        let tEarliest = Infinity;
+        if (iPoly === -1) {
+          notesTime.map((tOn, jPoly) => {
+            const tOff = notesOffTime[jPoly];
+            if (tOn <= tOff) {
+              if (tOff < tEarliest) {
+                iPoly = jPoly;
+                tEarliest = tOff;
+              }
+            }
+          });
+        }
+        if (iPoly === -1) {
+          notesTime.map((tOn, jPoly) => {
+            if (tOn < tEarliest) {
+              iPoly = jPoly;
+              tEarliest = tOn;
+            }
+          });
+        }
+        notes[iPoly] = note;
+        if (eventNote & 128) {
+          if (notesOffTime[iPoly] < notesTime[iPoly]) {
+            notesOffTime[iPoly] = t;
+          }
+        } else {
+          if (notesOffTime[iPoly] >= notesTime[iPoly]) {
+            notesTime[iPoly] = t;
+          }
+        }
+        nextStep += eventDeltaStep;
+        pos = (pos + 2) % buffer.length;
+      }
+      samples++;
+      arraySerial(poly).map((iPoly) => {
+        const noteTime = notesTime[iPoly];
+        const noteOffTime = notesOffTime[iPoly];
+        ret[iPoly][4 * iSample + 0] = t - noteTime;
+        ret[iPoly][4 * iSample + 1] = noteOffTime < noteTime ? 0 : t - noteOffTime;
+        ret[iPoly][4 * iSample + 2] = notes[iPoly];
+        ret[iPoly][4 * iSample + 3] = 0;
+      });
+    });
+    return ret;
+  };
+}
+
+// src/tinyseq/createTinyseqReader.ts
+function createTinyseqReader(buffer, options = {}) {
+  var _a, _b, _c;
+  const blockSize = (_a = options.blockSize) != null ? _a : 128;
+  const sampleRate = (_b = options.sampleRate) != null ? _b : 48e3;
+  const stepsPerSecond = (_c = options.stepsPerSecond) != null ? _c : 960;
+  let samples = 0;
+  let pos = 0;
+  let note;
+  let noteTime = -Infinity;
+  let noteOffTime = -Infinity;
+  let nextStep = 0;
+  return () => {
+    return new Float32Array(arraySerial(blockSize).map(() => {
+      const t = samples / sampleRate;
+      const s = t * stepsPerSecond;
+      if (s >= nextStep) {
+        const eventNote = buffer[pos];
+        const eventDeltaStep = buffer[pos + 1];
+        note = (pos === 0 ? 60 : note) + eventNote & 127;
+        if (eventNote & 128) {
+          if (noteOffTime < noteTime) {
+            noteOffTime = t;
+          }
+        } else {
+          if (noteOffTime >= noteTime) {
+            noteTime = t;
+          }
+        }
+        nextStep += eventDeltaStep;
+        pos = (pos + 2) % buffer.length;
+      }
+      samples++;
+      return [
+        t - noteTime,
+        noteOffTime < noteTime ? 0 : t - noteOffTime,
+        note,
+        0
+      ];
+    }).flat());
+  };
+}
+
+// src/tinyseq/tinyseqFromMidiParseResult.ts
+function tinyseqFromMidiParseResult(midi, { track, tickMultiplier } = {}) {
+  const data = [];
+  let lastNote = 60;
+  let delta = 0;
+  const trackEvents = midi[1][track != null ? track : 0];
+  arraySerial(trackEvents.length + 1).map((i) => {
+    var _a, _b, _c, _d, _e, _f;
+    delta += ((_b = (_a = trackEvents[i]) == null ? void 0 : _a[0]) != null ? _b : 0) * (tickMultiplier != null ? tickMultiplier : 1);
+    if (delta === 0 && i === 0) {
+      return;
+    }
+    const evMsg = (_d = (_c = trackEvents[i - 1]) == null ? void 0 : _c[1]) != null ? _d : 128;
+    const evNote = (_f = (_e = trackEvents[i - 1]) == null ? void 0 : _e[2]) != null ? _f : 60;
+    if (evMsg >= 160) {
+      return;
+    }
+    const noteDelta = evNote - lastNote + 128 & 127;
+    lastNote = evNote;
+    const onoff = evMsg < 144 ? 128 : 0;
+    let deltaConsume = Math.floor(Math.min(delta, 240));
+    data.push(noteDelta + onoff, deltaConsume);
+    delta -= deltaConsume;
+    while (delta >= 1) {
+      deltaConsume = Math.floor(Math.min(delta, 240));
+      data.push(onoff, deltaConsume);
+      delta -= deltaConsume;
+    }
+  });
+  return new Uint8Array(data);
+}
+
 // src/Xorshift/Xorshift.ts
 var Xorshift = class {
   constructor(seed) {
@@ -2869,12 +3201,14 @@ export {
   HistoryPercentileCalculator,
   Line3,
   MapOfSet,
+  Matrix2,
   Matrix3,
   Matrix4,
   Plane3,
   Planes3,
   Pool,
   Quaternion,
+  Ray3,
   Sphere3,
   Swap,
   TRIANGLE_STRIP_QUAD,
@@ -2886,6 +3220,8 @@ export {
   Vector3,
   Vector4,
   Xorshift,
+  arrayRange,
+  arraySerial,
   arraySetAdd,
   arraySetDelete,
   arraySetDiff,
@@ -2900,6 +3236,8 @@ export {
   colorToHex,
   colorTurbo,
   createPokerDeck,
+  createTinyseqPolyReader,
+  createTinyseqReader,
   dagEdgesAncestors,
   dagEdgesChildren,
   dagEdgesDescendants,
@@ -2921,6 +3259,10 @@ export {
   line3Delta,
   line3DistanceToPoint,
   linearstep,
+  mat2Determinant,
+  mat2Inverse,
+  mat2Multiply,
+  mat2Transpose,
   mat3CreateNormalMatrix,
   mat3Determinant,
   mat3FromMat4,
@@ -2948,6 +3290,7 @@ export {
   mat4Transpose,
   matrix2d,
   matrix3d,
+  midiParse,
   mod,
   oetfRec709,
   parseSTNICCC,
@@ -2976,6 +3319,8 @@ export {
   quatRotationY,
   quatRotationZ,
   range,
+  ray3DistanceToSphere,
+  ray3FromLine3,
   retry,
   sanitizeAngle,
   saturate,
@@ -2986,6 +3331,7 @@ export {
   sortPokerCardsByRank,
   sphere3ContainsPoint,
   stnicccToSVG,
+  tinyseqFromMidiParseResult,
   traverse,
   triIndexToLineIndex,
   vec3ApplyMatrix3,

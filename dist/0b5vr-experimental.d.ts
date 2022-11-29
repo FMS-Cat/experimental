@@ -13,12 +13,14 @@ declare module '@0b5vr/experimental' {
     export * from '@0b5vr/experimental/HistoryMeanCalculator';
     export * from '@0b5vr/experimental/MapOfSet';
     export * from '@0b5vr/experimental/math';
+    export * from '@0b5vr/experimental/midi';
     export * from '@0b5vr/experimental/poker';
     export * from '@0b5vr/experimental/Pool';
     export * from '@0b5vr/experimental/retry';
     export * from '@0b5vr/experimental/stniccc';
     export * from '@0b5vr/experimental/Swap';
     export * from '@0b5vr/experimental/TapTempo';
+    export * from '@0b5vr/experimental/tinyseq';
     export * from '@0b5vr/experimental/Xorshift';
     export * from '@0b5vr/experimental/yugop';
 }
@@ -29,6 +31,8 @@ declare module '@0b5vr/experimental/algorithm' {
 }
 
 declare module '@0b5vr/experimental/array' {
+    export * from '@0b5vr/experimental/array/arrayRange';
+    export * from '@0b5vr/experimental/array/arraySerial';
     export * from '@0b5vr/experimental/array/arraySet';
     export * from '@0b5vr/experimental/array/constants';
     export * from '@0b5vr/experimental/array/utils';
@@ -90,10 +94,12 @@ declare module '@0b5vr/experimental/math' {
     export * from '@0b5vr/experimental/math/box3';
     export * from '@0b5vr/experimental/math/euler';
     export * from '@0b5vr/experimental/math/line3';
+    export * from '@0b5vr/experimental/math/mat2';
     export * from '@0b5vr/experimental/math/mat3';
     export * from '@0b5vr/experimental/math/mat4';
     export * from '@0b5vr/experimental/math/plane3';
     export * from '@0b5vr/experimental/math/quat';
+    export * from '@0b5vr/experimental/math/ray3';
     export * from '@0b5vr/experimental/math/sphere3';
     export * from '@0b5vr/experimental/math/vec';
     export * from '@0b5vr/experimental/math/vec3';
@@ -101,6 +107,11 @@ declare module '@0b5vr/experimental/math' {
     export * from '@0b5vr/experimental/math/mod';
     export * from '@0b5vr/experimental/math/sanitizeAngle';
     export * from '@0b5vr/experimental/math/utils';
+}
+
+declare module '@0b5vr/experimental/midi' {
+    export { midiParse } from '@0b5vr/experimental/midi/midiParse';
+    export * from '@0b5vr/experimental/midi/MidiParseResult';
 }
 
 declare module '@0b5vr/experimental/poker' {
@@ -140,6 +151,12 @@ declare module '@0b5vr/experimental/Swap' {
 
 declare module '@0b5vr/experimental/TapTempo' {
     export * from '@0b5vr/experimental/TapTempo/TapTempo';
+}
+
+declare module '@0b5vr/experimental/tinyseq' {
+    export { createTinyseqPolyReader } from '@0b5vr/experimental/tinyseq/createTinyseqPolyReader';
+    export { createTinyseqReader } from '@0b5vr/experimental/tinyseq/createTinyseqReader';
+    export { tinyseqFromMidiParseResult } from '@0b5vr/experimental/tinyseq/tinyseqFromMidiParseResult';
 }
 
 declare module '@0b5vr/experimental/Xorshift' {
@@ -191,6 +208,14 @@ declare module '@0b5vr/experimental/algorithm/traverse' {
       * @param traverser The traverse function. If the node has "children" return them in an array.
       */
     export function traverse<TNode>(root: TNode, traverser: (node: TNode) => TNode[] | false): void;
+}
+
+declare module '@0b5vr/experimental/array/arrayRange' {
+    export function arrayRange(start: number, end: number, step?: number): number[];
+}
+
+declare module '@0b5vr/experimental/array/arraySerial' {
+    export const arraySerial: (count: number) => number[];
 }
 
 declare module '@0b5vr/experimental/array/arraySet' {
@@ -622,6 +647,15 @@ declare module '@0b5vr/experimental/math/line3' {
     export * from '@0b5vr/experimental/math/line3/RawLine3';
 }
 
+declare module '@0b5vr/experimental/math/mat2' {
+    export { mat2Determinant } from '@0b5vr/experimental/math/mat2/mat2Determinant';
+    export { mat2Inverse } from '@0b5vr/experimental/math/mat2/mat2Inverse';
+    export { mat2Multiply } from '@0b5vr/experimental/math/mat2/mat2Multiply';
+    export { mat2Transpose } from '@0b5vr/experimental/math/mat2/mat2Transpose';
+    export { Matrix2 } from '@0b5vr/experimental/math/mat2/Matrix2';
+    export type { RawMatrix2 } from '@0b5vr/experimental/math/mat2/RawMatrix2';
+}
+
 declare module '@0b5vr/experimental/math/mat3' {
     export { mat3CreateNormalMatrix } from '@0b5vr/experimental/math/mat3/mat3CreateNormalMatrix';
     export { mat3Determinant } from '@0b5vr/experimental/math/mat3/mat3Determinant';
@@ -684,6 +718,13 @@ declare module '@0b5vr/experimental/math/quat' {
     export { quatRotationY } from '@0b5vr/experimental/math/quat/quatRotationY';
     export { quatRotationZ } from '@0b5vr/experimental/math/quat/quatRotationZ';
     export type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
+}
+
+declare module '@0b5vr/experimental/math/ray3' {
+    export * from '@0b5vr/experimental/math/ray3/RawRay3';
+    export * from '@0b5vr/experimental/math/ray3/Ray3';
+    export * from '@0b5vr/experimental/math/ray3/ray3DistanceToSphere';
+    export * from '@0b5vr/experimental/math/ray3/ray3FromLine3';
 }
 
 declare module '@0b5vr/experimental/math/sphere3' {
@@ -775,6 +816,37 @@ declare module '@0b5vr/experimental/math/utils' {
     export function smootheststep(a: number, b: number, x: number): number;
 }
 
+declare module '@0b5vr/experimental/midi/midiParse' {
+    import { MidiParseResult } from '@0b5vr/experimental/midi/MidiParseResult';
+    export function midiParse(buffer: ArrayBuffer): MidiParseResult;
+}
+
+declare module '@0b5vr/experimental/midi/MidiParseResult' {
+    export type MidiParseResultHeader = [
+        format: number,
+        tracks: number,
+        division: number
+    ];
+    export type MidiParseResultTrackNoteEvent = [
+        tick: number,
+        type: number,
+        note: number,
+        velocity: number
+    ];
+    export type MidiParseResultTrackMetaEvent = [
+        tick: number,
+        type: number,
+        subtype: number,
+        data: number[]
+    ];
+    export type MidiParseResultTrackEvent = MidiParseResultTrackNoteEvent | MidiParseResultTrackMetaEvent;
+    export type MidiParseResultTrack = MidiParseResultTrackEvent[];
+    export type MidiParseResult = [
+        header: MidiParseResultHeader,
+        tracks: MidiParseResultTrack[]
+    ];
+}
+
 declare module '@0b5vr/experimental/poker/createPokerDeck' {
     import type { PokerCard } from '@0b5vr/experimental/poker/PokerCard';
     /**
@@ -787,13 +859,12 @@ declare module '@0b5vr/experimental/poker/createPokerDeck' {
 declare module '@0b5vr/experimental/poker/evaluatePokerHand' {
     import type { PokerCard } from '@0b5vr/experimental/poker/PokerCard';
     import type { PokerHand } from '@0b5vr/experimental/poker/PokerHand';
-    interface Result {
+    export interface EvaluatePokerHandResult {
         hand: PokerHand;
         strength: number[];
         cards: [PokerCard, PokerCard, PokerCard, PokerCard, PokerCard];
     }
-    export function evaluatePokerHand(cards: PokerCard[]): Result;
-    export {};
+    export function evaluatePokerHand(cards: PokerCard[]): EvaluatePokerHandResult;
 }
 
 declare module '@0b5vr/experimental/poker/PokerCard' {
@@ -948,6 +1019,51 @@ declare module '@0b5vr/experimental/TapTempo/TapTempo' {
         nudge(amount: number): void;
         tap(): void;
     }
+}
+
+declare module '@0b5vr/experimental/tinyseq/createTinyseqPolyReader' {
+    /**
+      * Parse a polyphonic tinyseq buffer.
+      *
+      * Returns [ time, offTime, note, reserved, time, offTime, note, reserved, ... ]
+      */
+    export function createTinyseqPolyReader(buffer: Uint8Array, options?: {
+        poly?: number;
+        blockSize?: number;
+        sampleRate?: number;
+        stepsPerSecond?: number;
+    }): () => Float32Array[];
+}
+
+declare module '@0b5vr/experimental/tinyseq/createTinyseqReader' {
+    /**
+      * Parse a tinyseq buffer.
+      *
+      * Returns [ time, offTime, note, reserved, time, offTime, note, reserved, ... ]
+      */
+    export function createTinyseqReader(buffer: Uint8Array, options?: {
+        blockSize?: number;
+        sampleRate?: number;
+        stepsPerSecond?: number;
+    }): () => Float32Array;
+}
+
+declare module '@0b5vr/experimental/tinyseq/tinyseqFromMidiParseResult' {
+    import { MidiParseResult } from '@0b5vr/experimental/midi';
+    /**
+      * Convert the parsed midi result to a tinyseq binary.
+      *
+      * See: {@link midiParse}
+      *
+      * @param midi The parsed midi result
+      * @param track The index of the midi track you want to convert
+      * @param tickMultiplier Multiply this value to tick
+      * @returns A tinyseq binary
+      */
+    export function tinyseqFromMidiParseResult(midi: MidiParseResult, { track, tickMultiplier }?: {
+        track?: number;
+        tickMultiplier?: number;
+    }): Uint8Array;
 }
 
 declare module '@0b5vr/experimental/Xorshift/Xorshift' {
@@ -1266,6 +1382,89 @@ declare module '@0b5vr/experimental/math/line3/RawLine3' {
     export type RawLine3 = [start: RawVector3, end: RawVector3];
 }
 
+declare module '@0b5vr/experimental/math/mat2/mat2Determinant' {
+    import type { RawMatrix2 } from '@0b5vr/experimental/math/mat2/RawMatrix2';
+    export function mat2Determinant(m: RawMatrix2): number;
+}
+
+declare module '@0b5vr/experimental/math/mat2/mat2Inverse' {
+    import type { RawMatrix2 } from '@0b5vr/experimental/math/mat2/RawMatrix2';
+    /**
+      * Return an inverse of given matrix.
+      */
+    export function mat2Inverse(m: RawMatrix2): RawMatrix2;
+}
+
+declare module '@0b5vr/experimental/math/mat2/mat2Multiply' {
+    import type { RawMatrix2 } from '@0b5vr/experimental/math/mat2/RawMatrix2';
+    /**
+      * Return a multiplication result of matrices.
+      */
+    export function mat2Multiply(...mats: RawMatrix2[]): RawMatrix2;
+}
+
+declare module '@0b5vr/experimental/math/mat2/mat2Transpose' {
+    import type { RawMatrix2 } from '@0b5vr/experimental/math/mat2/RawMatrix2';
+    /**
+      * Transpose a mat2.
+      */
+    export function mat2Transpose(source: RawMatrix2): RawMatrix2;
+}
+
+declare module '@0b5vr/experimental/math/mat2/Matrix2' {
+    import type { RawMatrix2 } from '@0b5vr/experimental/math/mat2/RawMatrix2';
+    /**
+        * A Matrix2.
+        */
+    export class Matrix2 {
+            elements: RawMatrix2;
+            constructor(v?: RawMatrix2);
+            /**
+                * Itself but transposed.
+                */
+            get transpose(): Matrix2;
+            /**
+                * Its determinant.
+                */
+            get determinant(): number;
+            /**
+                * Itself but inverted.
+                */
+            get inverse(): Matrix2;
+            toString(): string;
+            /**
+                * Clone this.
+                */
+            clone(): Matrix2;
+            /**
+                * Multiply this Matrix2 by one or more Matrix2s.
+                */
+            multiply(...matrices: Matrix2[]): Matrix2;
+            /**
+                * Multiply this Matrix3 by a scalar.
+                */
+            scaleScalar(scalar: number): Matrix2;
+            /**
+                * An identity Matrix4.
+                */
+            static get identity(): Matrix2;
+            /**
+                * Multiply two or more matrices.
+                * @param matrices Matrices
+                */
+            static multiply(...matrices: Matrix2[]): Matrix2;
+    }
+}
+
+declare module '@0b5vr/experimental/math/mat2/RawMatrix2' {
+    export type RawMatrix2 = [
+        number,
+        number,
+        number,
+        number
+    ];
+}
+
 declare module '@0b5vr/experimental/math/mat3/mat3CreateNormalMatrix' {
     import type { RawMatrix3 } from '@0b5vr/experimental/math/mat3/RawMatrix3';
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
@@ -1296,6 +1495,7 @@ declare module '@0b5vr/experimental/math/mat3/mat3FromMat4Transpose' {
     import type { RawMatrix4 } from '@0b5vr/experimental/math/mat4/RawMatrix4';
     /**
       * Who needs this?
+      *
       * Intended to be used by {@link mat3CreateNormalMatrix}.
       */
     export function mat3FromMat4Transpose(source: RawMatrix4): RawMatrix3;
@@ -2143,6 +2343,87 @@ declare module '@0b5vr/experimental/math/quat/RawQuaternion' {
     export type RawQuaternion = [number, number, number, number];
 }
 
+declare module '@0b5vr/experimental/math/ray3/RawRay3' {
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    export type RawRay3 = [ro: RawVector3, rd: RawVector3];
+}
+
+declare module '@0b5vr/experimental/math/ray3/Ray3' {
+    import { Line3 } from '@0b5vr/experimental/math/line3/Line3';
+    import { Sphere3 } from '@0b5vr/experimental/math/sphere3/Sphere3';
+    import { Vector3 } from '@0b5vr/experimental/math/vec3/Vector3';
+    import type { RawRay3 } from '@0b5vr/experimental/math/ray3/RawRay3';
+    /**
+        * A 3D ray.
+        */
+    export class Ray3 {
+            /**
+                * The origin of the ray.
+                */
+            origin: Vector3;
+            /**
+                * The direction of the ray.
+                * Make sure the direction is normalized.
+                */
+            direction: Vector3;
+            constructor(start?: Vector3, end?: Vector3);
+            /**
+                * Itself but {@link RawRay3} form.
+                */
+            get raw(): RawRay3;
+            /**
+                * Return distances from given ray to sphere.
+                *
+                * The returning distance can be negative.
+                *
+                * The first returning value will be the distance of the incident point.
+                * If the ray does not intersect with sphere, it will return `null`.
+                *
+                * @param sphere A target sphere
+                */
+            distanceToSphere(sphere: Sphere3): [number, number] | null;
+            /**
+                * Convert {@link RawRay3} to class form.
+                * @param ray A {@link RawRay3}
+                */
+            static fromRaw(ray: RawRay3): Ray3;
+            /**
+                * Create a ray out of a line.
+                *
+                * @param line A {@link Line3}
+                */
+            static fromLine3(line: Line3): Ray3;
+    }
+}
+
+declare module '@0b5vr/experimental/math/ray3/ray3DistanceToSphere' {
+    import type { RawRay3 } from '@0b5vr/experimental/math/ray3/RawRay3';
+    import type { RawSphere3 } from '@0b5vr/experimental/math/sphere3/RawSphere3';
+    /**
+      * Return distances from given ray to sphere.
+      *
+      * The returning distance can be negative.
+      *
+      * The first returning value will be the distance of the incident point.
+      * If the ray does not intersect with sphere, it will return `null`.
+      *
+      * @param ray A ray
+      * @param sphere A target sphere
+      */
+    export function ray3DistanceToSphere([ro, rd]: RawRay3, sphere: RawSphere3): [number, number] | null;
+}
+
+declare module '@0b5vr/experimental/math/ray3/ray3FromLine3' {
+    import type { RawLine3 } from '@0b5vr/experimental/math/line3/RawLine3';
+    import type { RawRay3 } from '@0b5vr/experimental/math/ray3/RawRay3';
+    /**
+      * Convert the given line to a ray.
+      *
+      * @param line A line
+      */
+    export function ray3FromLine3(line: RawLine3): RawRay3;
+}
+
 declare module '@0b5vr/experimental/math/sphere3/RawSphere3' {
     import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
     export type RawSphere3 = [origin: RawVector3, radius: number];
@@ -2552,58 +2833,5 @@ declare module '@0b5vr/experimental/math/vec4/Vector4' {
                 */
             static get one(): Vector4;
     }
-}
-
-declare module '@0b5vr/experimental/math/ray3/Ray3' {
-    import { Line3 } from '@0b5vr/experimental/math/line3/Line3';
-    import { Sphere3 } from '@0b5vr/experimental/math/sphere3/Sphere3';
-    import { Vector3 } from '@0b5vr/experimental/math/vec3/Vector3';
-    import type { RawRay3 } from '@0b5vr/experimental/math/ray3/RawRay3';
-    /**
-        * A 3D ray.
-        */
-    export class Ray3 {
-            /**
-                * The origin of the ray.
-                */
-            origin: Vector3;
-            /**
-                * The direction of the ray.
-                * Make sure the direction is normalized.
-                */
-            direction: Vector3;
-            constructor(start?: Vector3, end?: Vector3);
-            /**
-                * Itself but {@link RawRay3} form.
-                */
-            get raw(): RawRay3;
-            /**
-                * Return distances from given ray to sphere.
-                *
-                * The returning distance can be negative.
-                *
-                * The first returning value will be the distance of the incident point.
-                * If the ray does not intersect with sphere, it will return `null`.
-                *
-                * @param sphere A target sphere
-                */
-            distanceToSphere(sphere: Sphere3): [number, number] | null;
-            /**
-                * Convert {@link RawRay3} to class form.
-                * @param ray A {@link RawRay3}
-                */
-            static fromRaw(ray: RawRay3): Ray3;
-            /**
-                * Create a ray out of a line.
-                *
-                * @param line A {@link Line3}
-                */
-            static fromLine3(line: Line3): Ray3;
-    }
-}
-
-declare module '@0b5vr/experimental/math/ray3/RawRay3' {
-    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
-    export type RawRay3 = [ro: RawVector3, rd: RawVector3];
 }
 
