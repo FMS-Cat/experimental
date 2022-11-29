@@ -1,5 +1,5 @@
 import { MidiParseResult, MidiParseResultHeader, MidiParseResultTrack } from './MidiParseResult';
-import { arraySerial } from '../array';
+import { arraySerial } from '../array/arraySerial';
 
 function readU8( array: Uint8Array, headBox: [ number ] ): number {
   return array[ headBox[ 0 ] ++ ];

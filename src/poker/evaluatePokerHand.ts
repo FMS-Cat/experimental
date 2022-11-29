@@ -8,13 +8,13 @@ import type { PokerHand } from './PokerHand';
 import type { PokerRank } from './PokerRank';
 import type { PokerSuit } from './PokerSuit';
 
-interface Result {
+export interface EvaluatePokerHandResult {
   hand: PokerHand;
   strength: number[];
   cards: [ PokerCard, PokerCard, PokerCard, PokerCard, PokerCard ];
 }
 
-export function evaluatePokerHand( cards: PokerCard[] ): Result {
+export function evaluatePokerHand( cards: PokerCard[] ): EvaluatePokerHandResult {
   // cards mutable edition
   const cards_ = cards.concat();
 
