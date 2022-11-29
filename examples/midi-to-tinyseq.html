@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@0b5vr/experimental - midi-parse.html</title>
+  </head>
+  <body>
+    <label>midi: </label><input id="inputMidi" type="file" /><br />
+    <label>track: </label><input id="inputTrack" type="number" value="0" /><br />
+    <label>tick multiplier: </label><input id="inputTickMultiplier" type="number" value="1.0" /><br />
+    <button id="buttonConvert">Convert</button><br />
+    <br />
+    <pre id="preInfo"></pre>
+    <br />
+    <input id="inputOutput" /><br />
+    <a id="aDownload" download="tinyseq.bin">download tinyseq</a>
+
+    <script type="module">
+      import {
+        midiParse,
+        tinyseqFromMidiParseResult,
+      } from '../dist/0b5vr-experimental.esm.js';
+
+      const inputMidi = document.getElementById( 'inputMidi' );
+      const inputTrack = document.getElementById( 'inputTrack' );
+      const inputTickMultiplier = document.getElementById( 'inputTickMultiplier' );
+      const buttonConvert = document.getElementById( 'buttonConvert' );
+      const preInfo = document.getElementById( 'preInfo' );
+      const inputOutput = document.getElementById( 'inputOutput' );
+      const aDownload = document.getElementById( 'aDownload' );
+
+      function convert( midiBuffer, options ) {
+        const midi = midiParse( midiBuffer );
+        console.log( midi );
+
+        const tinyseq = tinyseqFromMidiParseResult( midi, options );
+
+        preInfo.textContent = `midi format: ${ midi[ 0 ][ 0 ] }
+midi tracks: ${ midi[ 0 ][ 1 ] }
+midi division: ${ midi[ 0 ][ 2 ] }
+midi bytes: ${ midiBuffer.byteLength }
+
+tinyseq bytes: ${ tinyseq.byteLength }`;
+
+        inputOutput.value = JSON.stringify( Array.from( new Uint8Array( tinyseq ) ) );
+
+        const blob = new Blob( [ tinyseq ] );
+        const url = URL.createObjectURL( blob );
+        aDownload.href = url;
+      }
+
+      const respose = await fetch( './assets/adhd.mid' );
+      const defaultBuffer = await respose.arrayBuffer();
+      convert( defaultBuffer, {
+        track: 0,
+        tickMultiplier: 1.0,
+      } );
+
+      // -- listeners ------------------------------------------------------------------------------
+      buttonConvert.addEventListener( 'click', async () => {
+        const file = inputMidi.files[ 0 ];
+        const fileBuffer = await file?.arrayBuffer();
+
+        convert( fileBuffer ?? defaultBuffer, {
+          track: parseInt( inputTrack.value, 10 ),
+          tickMultiplier: parseFloat( inputTickMultiplier.value ),
+        } );
+      } );
+    </script>
+  </body>
+</html>

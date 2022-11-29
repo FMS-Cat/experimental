@@ -1,14 +1,22 @@
 import { arraySerial } from '../array';
 
-const SPS = 48;
-const SAMPLE_RATE = 48000;
-
 /**
  * Parse a tinyseq buffer.
  *
  * Returns [ time, offTime, note, reserved, time, offTime, note, reserved, ... ]
  */
-export function createTinyseqReader( buffer: Uint8Array ): () => Float32Array {
+export function createTinyseqReader(
+  buffer: Uint8Array,
+  options: {
+    blockSize?: number,
+    sampleRate?: number,
+    stepsPerSecond?: number,
+  } = {},
+): () => Float32Array {
+  const blockSize = options.blockSize ?? 128;
+  const sampleRate = options.sampleRate ?? 48000;
+  const stepsPerSecond = options.stepsPerSecond ?? 960.0;
+
   let samples = 0;
   let pos = 0;
   let note: number;
@@ -16,10 +24,10 @@ export function createTinyseqReader( buffer: Uint8Array ): () => Float32Array {
   let noteOffTime = -Infinity;
   let nextStep = 0;
 
-  return ( size = 128 ) => {
-    return new Float32Array( arraySerial( size ).map( () => {
-      const t = samples / SAMPLE_RATE;
-      const s = t * SPS;
+  return () => {
+    return new Float32Array( arraySerial( blockSize ).map( () => {
+      const t = samples / sampleRate;
+      const s = t * stepsPerSecond;
 
       if ( s >= nextStep ) {
         const eventNote = buffer[ pos ];
@@ -31,7 +39,9 @@ export function createTinyseqReader( buffer: Uint8Array ): () => Float32Array {
             noteOffTime = t;
           }
         } else {
-          noteTime = t;
+          if ( noteOffTime >= noteTime ) {
+            noteTime = t;
+          }
         }
 
         nextStep += eventDeltaStep;

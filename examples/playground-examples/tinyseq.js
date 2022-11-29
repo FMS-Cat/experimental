@@ -20,7 +20,11 @@ export default ( ( { divContainer } ) => {
     128,  1, // note off   , delta step  1
       2, 11, // note  on 60, delta step 11
     128, 43, // note off   , delta step 43
-  ] ) );
+  ] ), {
+    blockSize: 1024,
+    sampleRate: audio.sampleRate,
+    stepsPerSecond: 48.0,
+  } );
 
   const processor = audio.createScriptProcessor( 1024, 0, 1 );
 
@@ -31,7 +35,7 @@ export default ( ( { divContainer } ) => {
 
   processor.addEventListener( 'audioprocess', ( event ) => {
     const out = event.outputBuffer.getChannelData( 0 );
-    const seq = read( 1024 );
+    const seq = read();
 
     arraySerial( 1024 ).map( ( i ) => {
       const time = seq[ 4 * i + 0 ];

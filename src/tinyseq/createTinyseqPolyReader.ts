@@ -1,14 +1,24 @@
 import { arraySerial } from '../array';
 
-const SPS = 48;
-const SAMPLE_RATE = 48000;
-
 /**
  * Parse a polyphonic tinyseq buffer.
  *
  * Returns [ time, offTime, note, reserved, time, offTime, note, reserved, ... ]
  */
-export function createTinyseqPolyReader( buffer: Uint8Array, poly: number ): () => Float32Array[] {
+export function createTinyseqPolyReader(
+  buffer: Uint8Array,
+  options: {
+    poly?: number,
+    blockSize?: number,
+    sampleRate?: number,
+    stepsPerSecond?: number,
+  } = {},
+): () => Float32Array[] {
+  const poly = options.poly ?? 8;
+  const blockSize = options.blockSize ?? 128;
+  const sampleRate = options.sampleRate ?? 48000;
+  const stepsPerSecond = options.stepsPerSecond ?? 1.0;
+
   let samples = 0;
   let pos = 0;
   let note: number;
@@ -17,12 +27,12 @@ export function createTinyseqPolyReader( buffer: Uint8Array, poly: number ): () 
   const notesOffTime = arraySerial( poly ).fill( -Infinity );
   let nextStep = 0;
 
-  return ( size = 128 ) => {
-    const ret = arraySerial( poly ).map( () => new Float32Array( 4 * size ) );
+  return () => {
+    const ret = arraySerial( poly ).map( () => new Float32Array( 4 * blockSize ) );
 
-    arraySerial( size ).map( ( iSample ) => {
-      const t = samples / SAMPLE_RATE;
-      const s = t * SPS;
+    arraySerial( blockSize ).map( ( iSample ) => {
+      const t = samples / sampleRate;
+      const s = t * stepsPerSecond;
 
       if ( s >= nextStep ) {
         const eventNote = buffer[ pos ];
@@ -65,7 +75,9 @@ export function createTinyseqPolyReader( buffer: Uint8Array, poly: number ): () 
             notesOffTime[ iPoly ] = t;
           }
         } else {
-          notesTime[ iPoly ] = t;
+          if ( notesOffTime[ iPoly ] >= notesTime[ iPoly ] ) {
+            notesTime[ iPoly ] = t;
+          }
         }
 
         nextStep += eventDeltaStep;

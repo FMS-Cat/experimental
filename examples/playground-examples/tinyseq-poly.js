@@ -22,8 +22,8 @@ export default ( ( { divContainer } ) => {
       5,  0, // note  on 53
       5,  0, // note  on 58
       4, 11, // note  on 62, delta step 11
-    251,  0, // note off 58
-    133,  1, // note off 62, delta step  1
+    252,  0, // note off 58
+    132,  1, // note off 62, delta step  1
     124,  5, // note  on 58, delta step  5
     246,  0, // note off 48
     133,  0, // note off 53
@@ -36,7 +36,12 @@ export default ( ( { divContainer } ) => {
     130,  0, // note off 46
     133,  0, // note off 51
     137, 43, // note off 60, delta step 43
-  ] ), 4 );
+  ] ), {
+    poly: 8,
+    blockSize: 1024,
+    sampleRate: audio.sampleRate,
+    stepsPerSecond: 48.0,
+  } );
 
   const processor = audio.createScriptProcessor( 1024, 0, 1 );
 
@@ -47,7 +52,7 @@ export default ( ( { divContainer } ) => {
 
   processor.addEventListener( 'audioprocess', ( event ) => {
     const out = event.outputBuffer.getChannelData( 0 );
-    const seqs = read( 1024 );
+    const seqs = read();
 
     arraySerial( 1024 ).map( ( i ) => {
       out[ i ] = 0.0;

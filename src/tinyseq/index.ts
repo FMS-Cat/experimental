@@ -1,2 +1,3 @@
-export * from './createTinyseqPolyReader';
-export * from './createTinyseqReader';
+export { createTinyseqPolyReader } from './createTinyseqPolyReader';
+export { createTinyseqReader } from './createTinyseqReader';
+export { tinyseqFromMidiParseResult } from './tinyseqFromMidiParseResult';
