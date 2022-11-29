@@ -2,7 +2,7 @@ import '../../../tests/matchers/toBeCloseToArray';
 import { mat3Transpose } from '../mat3Transpose';
 
 describe( 'mat3Transpose', () => {
-  it( 'returns a matrix3 out of a matrix4', () => {
+  it( 'returns a transposed matrix3', () => {
     const subject = mat3Transpose( [
       1, 2, 3,
       4, 5, 6,
