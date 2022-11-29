@@ -3,6 +3,7 @@ import type { RawMatrix4 } from '../mat4/RawMatrix4';
 
 /**
  * Who needs this?
+ *
  * Intended to be used by {@link mat3CreateNormalMatrix}.
  */
 export function mat3FromMat4Transpose(

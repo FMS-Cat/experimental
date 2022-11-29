@@ -1,6 +1,7 @@
 export * from './box3';
 export * from './euler';
 export * from './line3';
+export * from './mat2';
 export * from './mat3';
 export * from './mat4';
 export * from './plane3';
