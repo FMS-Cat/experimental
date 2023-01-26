@@ -19,6 +19,7 @@ export * from './poker';
 export * from './Pool';
 export * from './retry';
 export * from './stniccc';
+export * from './SmoothDamp';
 export * from './Swap';
 export * from './TapTempo';
 export * from './tinyseq';
