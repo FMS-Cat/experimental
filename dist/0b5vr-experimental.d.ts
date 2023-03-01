@@ -18,6 +18,7 @@ declare module '@0b5vr/experimental' {
     export * from '@0b5vr/experimental/Pool';
     export * from '@0b5vr/experimental/retry';
     export * from '@0b5vr/experimental/stniccc';
+    export * from '@0b5vr/experimental/SmoothDamp';
     export * from '@0b5vr/experimental/Swap';
     export * from '@0b5vr/experimental/TapTempo';
     export * from '@0b5vr/experimental/tinyseq';
@@ -143,6 +144,10 @@ declare module '@0b5vr/experimental/stniccc' {
     export * from '@0b5vr/experimental/stniccc/parseSTNICCC';
     export * from '@0b5vr/experimental/stniccc/STNICCCFrame';
     export * from '@0b5vr/experimental/stniccc/stnicccToSVG';
+}
+
+declare module '@0b5vr/experimental/SmoothDamp' {
+    export * from '@0b5vr/experimental/SmoothDamp/SmoothDamp';
 }
 
 declare module '@0b5vr/experimental/Swap' {
@@ -995,6 +1000,24 @@ declare module '@0b5vr/experimental/stniccc/stnicccToSVG' {
     export function stnicccToSVG(frames: STNICCCFrame[], options?: {
         fps?: number;
     }): string;
+}
+
+declare module '@0b5vr/experimental/SmoothDamp/SmoothDamp' {
+    /**
+      * The naive implementation of so-called SmoothDamp.
+      * Pretty much the same as {@link CDS}, but it has a way easier parameter to tweak, {@link smoothTime}.
+      *
+      * Ref: Game Programming Gems 4, Chapter 1.10
+      *
+      * See: https://github.com/Unity-Technologies/UnityCsReference/blob/a2bdfe9b3c4cd4476f44bf52f848063bfaf7b6b9/Runtime/Export/Math/Mathf.cs#L308
+      */
+    export class SmoothDamp {
+        smoothTime: number;
+        velocity: number;
+        value: number;
+        target: number;
+        update(deltaTime: number): number;
+    }
 }
 
 declare module '@0b5vr/experimental/Swap/Swap' {

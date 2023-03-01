@@ -1,5 +1,5 @@
 /*!
-* @0b5vr/experimental v0.9.2
+* @0b5vr/experimental v0.9.3
 * Experimental edition of 0b5vr
 *
 * Copyright (c) 2019-2022 0b5vr
@@ -73,6 +73,7 @@ __export(src_exports, {
   Pool: () => Pool,
   Quaternion: () => Quaternion,
   Ray3: () => Ray3,
+  SmoothDamp: () => SmoothDamp,
   Sphere3: () => Sphere3,
   Swap: () => Swap,
   TRIANGLE_STRIP_QUAD: () => TRIANGLE_STRIP_QUAD,
@@ -3139,6 +3140,26 @@ function stnicccToSVG(frames, options = {}) {
   svg += `<style>${style}</style></svg>`;
   return svg;
 }
+
+// src/SmoothDamp/SmoothDamp.ts
+var SmoothDamp = class {
+  constructor() {
+    this.smoothTime = 1;
+    this.velocity = 0;
+    this.value = 0;
+    this.target = 0;
+  }
+  update(deltaTime) {
+    const omega = 2 / this.smoothTime;
+    const x = omega * deltaTime;
+    const exp = 1 / (1 + x + 0.48 * x * x + 0.235 * x * x * x);
+    const delta = this.value - this.target;
+    const temp = (this.velocity + omega * delta) * deltaTime;
+    this.velocity = (this.velocity - omega * temp) * exp;
+    this.value = this.target + (delta + temp) * exp;
+    return this.value;
+  }
+};
 
 // src/Swap/Swap.ts
 var Swap = class {
