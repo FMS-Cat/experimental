@@ -25,3 +25,6 @@ export * from './TapTempo';
 export * from './tinyseq';
 export * from './Xorshift';
 export * from './yugop';
+
+export * from './BinaryHeap';
+export * from './notifyObservers';
