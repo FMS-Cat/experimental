@@ -6,7 +6,7 @@ const packageJson = require( '../package.json' );
 const SERVE = process.env.SERVE === '1';
 
 // == banner =======================================================================================
-const copyright = '(c) 2019-2022 0b5vr';
+const copyright = '(c) 2019-2023 0b5vr';
 const licenseName = 'MIT License';
 const licenseUri = 'https://github.com/0b5vr/experimental-npm/blob/release/LICENSE';
 
