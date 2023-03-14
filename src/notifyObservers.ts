@@ -4,6 +4,12 @@
  *
  * @example
  * ```ts
+ * const observers = new Set<( text: string ) => void>();
+ *
+ * observers.add( ( text ) => console.log( text ) );
+ * observers.add( ( text ) => alert( text ) );
+ *
+ * notifyObservers( observers, 'wenis' );
  * ```
  *
  * @param observers The iterator of observers
