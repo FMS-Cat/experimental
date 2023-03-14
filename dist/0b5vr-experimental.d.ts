@@ -24,6 +24,8 @@ declare module '@0b5vr/experimental' {
     export * from '@0b5vr/experimental/tinyseq';
     export * from '@0b5vr/experimental/Xorshift';
     export * from '@0b5vr/experimental/yugop';
+    export * from '@0b5vr/experimental/BinaryHeap';
+    export * from '@0b5vr/experimental/notifyObservers';
 }
 
 declare module '@0b5vr/experimental/algorithm' {
@@ -170,6 +172,45 @@ declare module '@0b5vr/experimental/Xorshift' {
 
 declare module '@0b5vr/experimental/yugop' {
     export { getYugopText } from '@0b5vr/experimental/yugop/getYugopText';
+}
+
+declare module '@0b5vr/experimental/BinaryHeap' {
+    export class BinaryHeap<T> {
+        readonly array: T[];
+        readonly elementIndexMap: Map<T, number>;
+        comparator: (a: T, b: T) => number;
+        static defaultComparator(a: any, b: any): number;
+        get length(): number;
+        get isEmpty(): boolean;
+        get root(): T;
+        constructor(init?: T[], comparator?: (a: T, b: T) => number);
+        push(...elements: T[]): void;
+        pop(): T | null;
+        delete(i: number): boolean;
+        replace(i: number, rep: T): number | null;
+    }
+}
+
+declare module '@0b5vr/experimental/notifyObservers' {
+    /**
+      * A bare function to notify observers.
+      * The incredibly cheap implementation of the observer pattern.
+      *
+      * @example
+      * ```ts
+      * const observers = new Set<( text: string ) => void>();
+      *
+      * observers.add( ( text ) => console.log( text ) );
+      * observers.add( ( text ) => alert( text ) );
+      *
+      * notifyObservers( observers, 'wenis' );
+      * ```
+      *
+      * @param observers The iterator of observers
+      * @param param The param you want to give to observers
+      */
+    export function notifyObservers(observers: Iterable<() => void>): void;
+    export function notifyObservers<T>(observers: Iterable<(arg: T) => void>, param: T): void;
 }
 
 declare module '@0b5vr/experimental/algorithm/binarySearch' {
