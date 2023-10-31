@@ -27,4 +27,4 @@ export * from './Xorshift';
 export * from './yugop';
 
 export * from './BinaryHeap';
-export * from './notifyObservers';
+export { Observer, notifyObservers } from './notifyObservers';

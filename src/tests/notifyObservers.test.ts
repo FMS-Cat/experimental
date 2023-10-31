@@ -1,10 +1,10 @@
-import { notifyObservers } from '../notifyObservers';
+import { Observer, notifyObservers } from '../notifyObservers';
 
 describe( 'notifyObservers', () => {
   it( 'does work without arguments', () => {
     const targetArray: string[] = [];
 
-    const observers = new Set<() => void>();
+    const observers = new Set<Observer>();
 
     observers.add( () => targetArray.push( 'a' ) );
     observers.add( () => targetArray.push( 'b' ) );
@@ -18,7 +18,7 @@ describe( 'notifyObservers', () => {
   it( 'does work with an argument', () => {
     const targetArray: string[] = [];
 
-    const observers = new Set<( prefix: string ) => void>();
+    const observers = new Set<Observer<string>>();
 
     observers.add( ( prefix ) => targetArray.push( prefix + 'a' ) );
     observers.add( ( prefix ) => targetArray.push( prefix + 'b' ) );
