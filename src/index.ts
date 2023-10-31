@@ -27,4 +27,6 @@ export * from './Xorshift';
 export * from './yugop';
 
 export * from './BinaryHeap';
+export { debounce } from './debounce';
 export { Observer, notifyObservers } from './notifyObservers';
+export { throttle } from './throttle';
