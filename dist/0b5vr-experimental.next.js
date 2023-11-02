@@ -1,5 +1,5 @@
 /*!
-* @0b5vr/experimental v0.9.5
+* @0b5vr/experimental v0.9.6
 * Experimental edition of 0b5vr
 *
 * Copyright (c) 2019-2023 0b5vr
@@ -3318,11 +3318,43 @@ var BinaryHeap = class {
   }
 };
 
+// src/debounce.ts
+function debounce(func, timeoutMs) {
+  let id;
+  return () => {
+    if (id) {
+      clearTimeout(id);
+    }
+    id = setTimeout(() => {
+      func();
+      id = null;
+    }, timeoutMs);
+  };
+}
+
 // src/notifyObservers.ts
 function notifyObservers(observers, param) {
   for (const observer of observers) {
     observer(param);
   }
+}
+
+// src/throttle.ts
+function throttle(func, rateMs) {
+  let waiting = false;
+  let lastTime = -Infinity;
+  return () => {
+    const now = Date.now();
+    const untilNext = Math.max(0, lastTime + rateMs - now);
+    if (!waiting) {
+      setTimeout(() => {
+        lastTime = Date.now();
+        func();
+        waiting = false;
+      }, untilNext);
+      waiting = true;
+    }
+  };
 }
 export {
   BinaryHeap,
@@ -3383,6 +3415,7 @@ export {
   dagEdgesParent,
   dagEdgesParents,
   dagEdgesResolve,
+  debounce,
   edt1d,
   edt2d,
   eotfRec709,
@@ -3453,11 +3486,13 @@ export {
   quatFromMatrix3,
   quatFromMatrix4,
   quatInverse,
+  quatLookRotation,
   quatMultiply,
   quatNormalize,
   quatRotationX,
   quatRotationY,
   quatRotationZ,
+  quatSlerp,
   range,
   ray3DistanceToSphere,
   ray3FromLine3,
@@ -3471,6 +3506,7 @@ export {
   sortPokerCardsByRank,
   sphere3ContainsPoint,
   stnicccToSVG,
+  throttle,
   tinyseqFromMidiParseResult,
   traverse,
   triIndexToLineIndex,

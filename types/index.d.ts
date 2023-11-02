@@ -22,4 +22,6 @@ export * from './tinyseq';
 export * from './Xorshift';
 export * from './yugop';
 export * from './BinaryHeap';
-export * from './notifyObservers';
+export { debounce } from './debounce';
+export { Observer, notifyObservers } from './notifyObservers';
+export { throttle } from './throttle';

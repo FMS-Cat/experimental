@@ -25,7 +25,9 @@ declare module '@0b5vr/experimental' {
     export * from '@0b5vr/experimental/Xorshift';
     export * from '@0b5vr/experimental/yugop';
     export * from '@0b5vr/experimental/BinaryHeap';
-    export * from '@0b5vr/experimental/notifyObservers';
+    export { debounce } from '@0b5vr/experimental/debounce';
+    export { Observer, notifyObservers } from '@0b5vr/experimental/notifyObservers';
+    export { throttle } from '@0b5vr/experimental/throttle';
 }
 
 declare module '@0b5vr/experimental/algorithm' {
@@ -191,26 +193,68 @@ declare module '@0b5vr/experimental/BinaryHeap' {
     }
 }
 
-declare module '@0b5vr/experimental/notifyObservers' {
+declare module '@0b5vr/experimental/debounce' {
     /**
-      * A bare function to notify observers.
-      * The incredibly cheap implementation of the observer pattern.
+      * Make the given function a debounced one.
       *
       * @example
       * ```ts
-      * const observers = new Set<( text: string ) => void>();
+      * const func = debounce( 100, () => {
+      *   // some expensive procedure
+      * } );
       *
-      * observers.add( ( text ) => console.log( text ) );
-      * observers.add( ( text ) => alert( text ) );
-      *
-      * notifyObservers( observers, 'wenis' );
+      * func();
+      * func();
+      * func();
       * ```
-      *
-      * @param observers The iterator of observers
-      * @param param The param you want to give to observers
       */
-    export function notifyObservers(observers: Iterable<() => void>): void;
-    export function notifyObservers<T>(observers: Iterable<(arg: T) => void>, param: T): void;
+    export function debounce(func: () => void, timeoutMs: number): () => void;
+}
+
+declare module '@0b5vr/experimental/notifyObservers' {
+    /**
+        * An utility type definition to use along with {@link notifyObservers}.
+        */
+    export type Observer<TEvent = void> = (event: TEvent) => void;
+    /**
+        * A bare function to notify observers.
+        * The incredibly cheap implementation of the observer pattern.
+        *
+        * Use along with the utility type definition {@link Observer}.
+        *
+        * @example
+        * ```ts
+        * const observers = new Set<Observer<string>>();
+        *
+        * observers.add( ( text ) => console.log( text ) );
+        * observers.add( ( text ) => alert( text ) );
+        *
+        * notifyObservers( observers, 'wenis' );
+        * ```
+        *
+        * @param observers The iterator of observers
+        * @param param The param you want to give to observers
+        */
+    export function notifyObservers(observers: Iterable<Observer<void>>): void;
+    export function notifyObservers<T>(observers: Iterable<Observer<T>>, param: T): void;
+}
+
+declare module '@0b5vr/experimental/throttle' {
+    /**
+      * Make the given function a throttled one.
+      *
+      * @example
+      * ```ts
+      * const func = throttle( 100, () => {
+      *   // some expensive procedure
+      * } );
+      *
+      * func();
+      * func();
+      * func();
+      * ```
+      */
+    export function throttle(func: () => void, rateMs: number): () => void;
 }
 
 declare module '@0b5vr/experimental/algorithm/binarySearch' {
@@ -758,11 +802,13 @@ declare module '@0b5vr/experimental/math/quat' {
     export { quatFromMatrix3 } from '@0b5vr/experimental/math/quat/quatFromMatrix3';
     export { quatFromMatrix4 } from '@0b5vr/experimental/math/quat/quatFromMatrix4';
     export { quatInverse } from '@0b5vr/experimental/math/quat/quatInverse';
+    export { quatLookRotation } from '@0b5vr/experimental/math/quat/quatLookRotation';
     export { quatMultiply } from '@0b5vr/experimental/math/quat/quatMultiply';
     export { quatNormalize } from '@0b5vr/experimental/math/quat/quatNormalize';
     export { quatRotationX } from '@0b5vr/experimental/math/quat/quatRotationX';
     export { quatRotationY } from '@0b5vr/experimental/math/quat/quatRotationY';
     export { quatRotationZ } from '@0b5vr/experimental/math/quat/quatRotationZ';
+    export { quatSlerp } from '@0b5vr/experimental/math/quat/quatSlerp';
     export type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
 }
 
@@ -2356,6 +2402,15 @@ declare module '@0b5vr/experimental/math/quat/quatInverse' {
     export function quatInverse(quat: RawQuaternion): RawQuaternion;
 }
 
+declare module '@0b5vr/experimental/math/quat/quatLookRotation' {
+    import type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
+    import type { RawVector3 } from '@0b5vr/experimental/math/vec3/RawVector3';
+    /**
+      * Return a quaternion which looks at the direction of `look`.
+      */
+    export function quatLookRotation(look: RawVector3, up?: RawVector3): RawQuaternion;
+}
+
 declare module '@0b5vr/experimental/math/quat/quatMultiply' {
     import type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
     /**
@@ -2401,6 +2456,17 @@ declare module '@0b5vr/experimental/math/quat/quatRotationZ' {
       * @param theta An angle around z axis, in degree
       */
     export function quatRotationZ(theta: number): RawQuaternion;
+}
+
+declare module '@0b5vr/experimental/math/quat/quatSlerp' {
+    import type { RawQuaternion } from '@0b5vr/experimental/math/quat/RawQuaternion';
+    /**
+      * Interpolate between two quaternions.
+      * @param a "from" quaternion
+      * @param b "to" quaternion
+      * @param t How much do we want to rotate the a to b
+      */
+    export function quatSlerp(a: RawQuaternion, b: RawQuaternion, t: number): RawQuaternion;
 }
 
 declare module '@0b5vr/experimental/math/quat/RawQuaternion' {

@@ -1,5 +1,5 @@
 /*!
-* @0b5vr/experimental v0.9.5
+* @0b5vr/experimental v0.9.6
 * Experimental edition of 0b5vr
 *
 * Copyright (c) 2019-2023 0b5vr
@@ -111,6 +111,7 @@ var OBSVR_EXPERIMENTAL = (() => {
     dagEdgesParent: () => dagEdgesParent,
     dagEdgesParents: () => dagEdgesParents,
     dagEdgesResolve: () => dagEdgesResolve,
+    debounce: () => debounce,
     edt1d: () => edt1d,
     edt2d: () => edt2d,
     eotfRec709: () => eotfRec709,
@@ -181,11 +182,13 @@ var OBSVR_EXPERIMENTAL = (() => {
     quatFromMatrix3: () => quatFromMatrix3,
     quatFromMatrix4: () => quatFromMatrix4,
     quatInverse: () => quatInverse,
+    quatLookRotation: () => quatLookRotation,
     quatMultiply: () => quatMultiply,
     quatNormalize: () => quatNormalize,
     quatRotationX: () => quatRotationX,
     quatRotationY: () => quatRotationY,
     quatRotationZ: () => quatRotationZ,
+    quatSlerp: () => quatSlerp,
     range: () => range,
     ray3DistanceToSphere: () => ray3DistanceToSphere,
     ray3FromLine3: () => ray3FromLine3,
@@ -199,6 +202,7 @@ var OBSVR_EXPERIMENTAL = (() => {
     sortPokerCardsByRank: () => sortPokerCardsByRank,
     sphere3ContainsPoint: () => sphere3ContainsPoint,
     stnicccToSVG: () => stnicccToSVG,
+    throttle: () => throttle,
     tinyseqFromMidiParseResult: () => tinyseqFromMidiParseResult,
     traverse: () => traverse,
     triIndexToLineIndex: () => triIndexToLineIndex,
@@ -3524,11 +3528,43 @@ var OBSVR_EXPERIMENTAL = (() => {
     }
   };
 
+  // src/debounce.ts
+  function debounce(func, timeoutMs) {
+    let id;
+    return () => {
+      if (id) {
+        clearTimeout(id);
+      }
+      id = setTimeout(() => {
+        func();
+        id = null;
+      }, timeoutMs);
+    };
+  }
+
   // src/notifyObservers.ts
   function notifyObservers(observers, param) {
     for (const observer of observers) {
       observer(param);
     }
+  }
+
+  // src/throttle.ts
+  function throttle(func, rateMs) {
+    let waiting = false;
+    let lastTime = -Infinity;
+    return () => {
+      const now = Date.now();
+      const untilNext = Math.max(0, lastTime + rateMs - now);
+      if (!waiting) {
+        setTimeout(() => {
+          lastTime = Date.now();
+          func();
+          waiting = false;
+        }, untilNext);
+        waiting = true;
+      }
+    };
   }
   return __toCommonJS(src_exports);
 })();
