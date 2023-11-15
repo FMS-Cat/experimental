@@ -4,6 +4,7 @@ import { vecDivide } from './vecDivide';
 import { vecDot } from './vecDot';
 import { vecLength } from './vecLength';
 import { vecLengthSq } from './vecLengthSq';
+import { vecLerp } from './vecLerp';
 import { vecManhattanLength } from './vecManhattanLength';
 import { vecMultiply } from './vecMultiply';
 import { vecNeg } from './vecNeg';
@@ -106,6 +107,17 @@ export abstract class Vector<T extends Vector<T>> {
    */
   public scale( scalar: number ): T {
     return this.__new( vecScale( this.elements, scalar ) );
+  }
+
+  /**
+   * Linearly interpolate the vector with another vector.
+   * The {@link t} won't be clamped.
+   *
+   * @param vector - Another vector
+   * @param t - A number interpolating two vectors. Usually in range [0, 1] but not clamped
+   */
+  public lerp( vector: T, t: number ): T {
+    return this.__new( vecLerp( this.elements, vector.elements, t ) );
   }
 
   /**

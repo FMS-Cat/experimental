@@ -4,6 +4,7 @@ export { vecDivide } from './vecDivide';
 export { vecDot } from './vecDot';
 export { vecLength } from './vecLength';
 export { vecLengthSq } from './vecLengthSq';
+export { vecLerp } from './vecLerp';
 export { vecManhattanLength } from './vecManhattanLength';
 export { vecMultiply } from './vecMultiply';
 export { vecNeg } from './vecNeg';
