@@ -1,6 +1,7 @@
 export * from './createPokerDeck';
 export * from './evaluatePokerHand';
 export * from './PokerCard';
+export * from './pokerCardToUnicode';
 export * from './PokerHand';
 export * from './pokerHandsByStrength';
 export * from './pokerHandStrengthMap';
