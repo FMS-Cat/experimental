@@ -6,13 +6,29 @@ Actually a memo for myself
 
 Author code on `dev` branch
 
-Merge the `dev` into `release` once you bump the version
+```
+yarn
+yarn dev
+```
 
-### Deploy
+Test is your friend
 
-Pushing to `release` automatically deploys
+### Releasing
 
+```
+git switch dev
+npm version <new-version>
+git push origin dev --tags
+git switch release
+git merge dev
+git push origin release --tags
+git switch dev
+```
+
+Pushing to `release` automatically deploys.
 See `deploy-release` workflow on GitHub Actions
+
+Don't forget to make a [release](https://github.com/0b5vr/experimental-npm/releases)!
 
 ### Nightly builds
 
